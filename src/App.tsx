@@ -28,6 +28,35 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
 	{
 		path: '/',
+		element: <Landing />,
+		errorElement: <Error />,
+	},
+	{
+		path: 'login',
+		element: <Login />,
+	},
+	{
+		path: 'forgotten-password',
+		element: <ForgottenPassword />,
+	},
+	{
+		path: 'reset-password',
+		element: <ResetPassword />,
+	},
+	{
+		path: 'register',
+		element: <Register />,
+	},
+	{
+		path: 'evaluating',
+		element: <Evaluating />,
+	},
+	{
+		path: 'email',
+		element: <Email />,
+	},
+	{
+		path: 'crm',
 		element: <HomeLayout />,
 		errorElement: <Error />,
 		children: [
@@ -56,34 +85,6 @@ const router = createBrowserRouter([
 				element: <Events />,
 			},
 		],
-	},
-	{
-		path: 'login',
-		element: <Login />,
-	},
-	{
-		path: 'forgotten-password',
-		element: <ForgottenPassword />,
-	},
-	{
-		path: 'reset-password',
-		element: <ResetPassword />,
-	},
-	{
-		path: 'register',
-		element: <Register />,
-	},
-	{
-		path: 'landing',
-		element: <Landing />,
-	},
-	{
-		path: 'evaluating',
-		element: <Evaluating />,
-	},
-	{
-		path: 'email',
-		element: <Email />,
 	},
 ]);
 
