@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "lint:format": "eslint --fix",
     "format:fix": "prettier --write .",
-    "type-check": "tsc --project tsconfig.json --pretty --noEmit && echo ",
+    "type-check": "tsc  --pretty --noEmit && echo ",
     "prepare": "husky install"
   },
   "lint-staged": {
