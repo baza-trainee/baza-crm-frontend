@@ -5,11 +5,11 @@ import linkedinIcon from '../../assets/common/linkedin.svg';
 
 const Header: React.FC = () => {
   return (
-    <header className="fixed top-0 left-0 w-screen">
+    <header className="w-screen px-[120px] py-[30px] flex justify-between items-center ">
       <Link to="/">
         <img src={logoIcon} width={100} height={100} alt="Logo" />
       </Link>
-      <nav className="flex space-x-4">
+      <nav className="flex gap-[50px]">
         <a href="https://discord.com" target="_blank" rel="noopener noreferrer">
           <img src={discordIcon} width={32} height={32} alt="Discord" />
         </a>

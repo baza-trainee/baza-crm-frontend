@@ -1,8 +1,11 @@
 const Invocation = () => {
   return (
-    <div>
-      <h1>Invocation</h1>
-    </div>
+    <section>
+      <p>
+        Заповни анкету на Baza Trainee Ukraine і чекай на запрошення до CRM
+        системи, де ти можеш обрати свій перший проєкт
+      </p>
+    </section>
   );
 };
 
