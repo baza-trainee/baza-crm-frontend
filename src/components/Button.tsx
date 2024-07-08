@@ -3,12 +3,13 @@ import React from 'react';
 type ButtonProps = {
   label: string;
   onClick?: () => void;
+  additionalClass?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({ label, onClick }) => {
+const Button: React.FC<ButtonProps> = ({ label, onClick, additionalClass }) => {
   return (
     <button
-      className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+      className={`w-[254px] h-10 text-white rounded ${additionalClass}`}
       onClick={onClick}
     >
       {label}

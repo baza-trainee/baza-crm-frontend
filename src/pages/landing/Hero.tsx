@@ -13,12 +13,14 @@ const Hero = () => {
           onClick={() => {
             alert('Увійти');
           }}
+          additionalClass="bg-primary-blue hover:bg-transparent hover:border-4 hover:border-primary-blue"
         />
         <Button
           label="Заповнити анкету"
           onClick={() => {
             alert('Заповнити анкету');
           }}
+          additionalClass="bg-transparent border-4 border-primary-blue hover:bg-primary-blue"
         />
       </div>
       <p className="text-white text-xl w-[530px] mx-auto font-open-sans font-normal leading-7 tracking-[0.4px] text-center ">
