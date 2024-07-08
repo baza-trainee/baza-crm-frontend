@@ -1,25 +1,37 @@
+import { Link } from 'react-router-dom';
 import Button from '../../components/Button';
 const Hero = () => {
   return (
-    <section>
-      <h1 className="font-bold text-7xl leading-[108px] text-white">
-        Crm Baza Trainee Ukraine
+    <section className="pt-[300px] pb-[100px]">
+      <h1 className="font-lato text-7xl leading-[108px] text-white text-center font-bold mb-[50px]">
+        <span className="block uppercase">Crm</span>
+        <span className="block">Baza Trainee Ukraine</span>
       </h1>
-      <Button
-        label="Увійти"
-        onClick={() => {
-          alert('Увійти');
-        }}
-      />
-      <Button
-        label="Заповнити анкету"
-        onClick={() => {
-          alert('Заповнити анкету');
-        }}
-      />
-      <p className="text-white">
+      <div className="flex justify-center gap-8 mb-[50px]">
+        <Button
+          label="Увійти"
+          onClick={() => {
+            alert('Увійти');
+          }}
+        />
+        <Button
+          label="Заповнити анкету"
+          onClick={() => {
+            alert('Заповнити анкету');
+          }}
+        />
+      </div>
+      <p className="text-white text-xl w-[530px] mx-auto font-open-sans font-normal leading-7 tracking-[0.4px] text-center ">
         Зареєструватися може лише учасник, який подав заявку та пройшов
-        співбесіду з менеджером проєкту через Baza Trainee Ukraine
+        співбесіду з менеджером проєкту через{' '}
+        <Link
+          to="https://baza-trainee.tech/ua"
+          className="underline hover:text-blue-700"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Baza Trainee Ukraine
+        </Link>
       </p>
     </section>
   );
