@@ -15,7 +15,7 @@ const Footer = () => {
             <img src={discordIcon} width={32} height={32} alt="Discord" />
           </Link>
           <Link
-            to="https://linkedin.com"
+            to="https://www.linkedin.com/company/baza-trainee-ukraine/"
             target="_blank"
             rel="noopener noreferrer"
           >
