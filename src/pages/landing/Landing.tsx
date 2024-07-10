@@ -4,10 +4,20 @@ import About from './About';
 import Invocation from './Invocation';
 import Gallery from './Gallery';
 import Footer from './Footer';
+import bgImage from '../../assets/common/Logo-bg.svg';
 
 const Landing = () => {
   return (
-    <div className="bg-top-menu-dark">
+    <div
+      className="bg-no-repeat bg-cover bg-start bg-top-menu-dark"
+      style={{
+        backgroundImage: `url(${bgImage})
+      `,
+        backgroundSize: '1564px 1452px',
+        backgroundPosition: '178px 43px',
+        // minHeight: '1452px',
+      }}
+    >
       <Header />
       <main>
         <Hero />

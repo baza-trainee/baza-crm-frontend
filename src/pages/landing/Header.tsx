@@ -5,7 +5,7 @@ import linkedinIcon from '../../assets/common/linkedin.svg';
 
 const Header: React.FC = () => {
   return (
-    <header className="w-screen px-[120px] py-[30px] flex justify-between items-center ">
+    <header className="w-full px-[120px] py-[30px] flex justify-between items-center ">
       <Link
         to="https://baza-trainee.tech/ua"
         target="_blank"

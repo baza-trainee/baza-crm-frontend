@@ -3,7 +3,7 @@ import Button from '../../components/Button';
 const Hero = () => {
   return (
     <section className="pt-[300px] pb-[100px]">
-      <h1 className="font-lato text-7xl leading-[108px] text-white text-center font-bold mb-[50px]">
+      <h1 className="font-lato text-7xl leading-[108px] text-white text-center font-bold mb-[150px]">
         <span className="block uppercase">Crm</span>
         <span className="block">Baza Trainee Ukraine</span>
       </h1>
