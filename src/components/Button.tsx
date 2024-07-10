@@ -1,8 +1,19 @@
-const Button = () => {
+import React from 'react';
+
+type ButtonProps = {
+  label: string;
+  onClick?: () => void;
+  additionalClass?: string;
+};
+
+const Button: React.FC<ButtonProps> = ({ label, onClick, additionalClass }) => {
   return (
-    <div>
-      <h1>Button</h1>
-    </div>
+    <button
+      className={`w-[254px] h-10 text-white rounded ${additionalClass}`}
+      onClick={onClick}
+    >
+      {label}
+    </button>
   );
 };
 

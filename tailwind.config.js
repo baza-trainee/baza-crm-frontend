@@ -3,6 +3,10 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        lato: ['Lato', 'sans-serif'],
+        'open-sans': ['Open Sans', 'sans-serif'],
+      },
       colors: {
         'sidebar-text': '#e4f1ff',
         'light-blue-bg': '#f8f9fd',
