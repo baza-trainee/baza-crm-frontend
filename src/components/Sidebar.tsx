@@ -1,38 +1,63 @@
+import { Link } from 'react-router-dom';
+import logo from '../assets/common/client_login.svg';
+import projects from '../assets/common/projects.svg';
+import knowledge from '../assets/common/knowledge.svg';
+import news from '../assets/common/news.svg';
+import loyalty from '../assets/common/loyalty_programs.svg';
+import events from '../assets/common/events.svg';
 const Sidebar = () => {
   return (
     <div className="fixed top-0 left-0 max-w-[150px] h-[1060px] bg-[#3B3E57] text-[#888888]">
       {/* <h1>Sidebar</h1> */}
-      <ul className="flex flex-col place-content-center text-center font-['Open_Sans'] text-base">
-        <li className="max-w-[100px] h-[95px] hover:text-[#E4F1FF] hover:bg-[#788AA0]">
-          <div>
-            <h2>Портал учасника</h2>
-          </div>
-        </li>
-        <li className="max-w-[100px] h-[95px] hover:text-[#E4F1FF] hover:bg-[#788AA0]">
-          <div className="h-[95px]">
-            <h2>Проєкти</h2>
-          </div>
-        </li>
-        <li className="max-w-[100px] h-[95px] hover:text-[#E4F1FF] hover:bg-[#788AA0]">
-          <div className="h-[95px]">
-            <h2>База знань</h2>
-          </div>
-        </li>
-        <li className="max-w-[100px] h-[95px] hover:text-[#E4F1FF] hover:bg-[#788AA0]">
-          <div className="h-[95px]">
-            <h2>Новини</h2>
-          </div>
-        </li>
-        <li className="max-w-[100px] h-[95px] hover:text-[#E4F1FF] hover:bg-[#788AA0]">
-          <div className="h-[95px]">
-            <h2>Програма лояльності</h2>
-          </div>
-        </li>
-        <li className="max-w-[100px] h-[95px] hover:text-[#E4F1FF] hover:bg-[#788AA0]">
-          <div className="h-[95px]">
-            <h2>Події та заходи</h2>
-          </div>
-        </li>
+      <ul className="flex flex-col gap-5 place-content-center text-center font-['Open_Sans'] text-base">
+        <Link to="/crm">
+          <li className="max-w-[100px] h-[98px] opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100">
+            <div className="flex flex-col items-center">
+              <img src={logo} width={50} height={50}></img>
+              <h2>Портал учасника</h2>
+            </div>
+          </li>
+        </Link>
+        <Link to="projects">
+          <li className="max-w-[100px] h-[98px] opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100">
+            <div className="flex flex-col items-center">
+              <img src={projects} width={50} height={50}></img>
+              <h2>Проєкти</h2>
+            </div>
+          </li>
+        </Link>
+        <Link to="knowledge">
+          <li className="max-w-[100px] h-[98px] opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100">
+            <div className="flex flex-col items-center">
+              <img src={knowledge} width={50} height={50}></img>
+              <h2>База знань</h2>
+            </div>
+          </li>
+        </Link>
+        <Link to="communication">
+          <li className="max-w-[100px] h-[98px] opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100">
+            <div className="flex flex-col items-center">
+              <img src={news} width={50} height={50}></img>
+              <h2>Новини</h2>
+            </div>
+          </li>
+        </Link>
+        <Link to="loyalty">
+          <li className="max-w-[100px] h-[98px] opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100">
+            <div className="flex flex-col items-center">
+              <img src={loyalty} width={50} height={50}></img>
+              <h2>Програма лояльності</h2>
+            </div>
+          </li>
+        </Link>
+        <Link to="events">
+          <li className="max-w-[100px] h-[98px] opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100">
+            <div className="flex flex-col items-center">
+              <img src={events} width={50} height={50}></img>
+              <h2>Події та заходи</h2>
+            </div>
+          </li>
+        </Link>
       </ul>
     </div>
   );
