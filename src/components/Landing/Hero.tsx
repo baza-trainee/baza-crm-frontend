@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import Button from '../../components/Button';
+
 const Hero = () => {
   return (
     <section className="pt-[300px] pb-[100px]">
@@ -13,7 +14,7 @@ const Hero = () => {
           onClick={() => {
             alert('Увійти');
           }}
-          additionalClass="bg-primary-blue hover:bg-transparent hover:border-4 hover:border-primary-blue"
+          additionalClass="bg-primary-blue border-4 border-primary-blue hover:bg-transparent hover:border-4 hover:border-primary-blue"
         />
         <Button
           label="Заповнити анкету"
@@ -28,7 +29,7 @@ const Hero = () => {
         співбесіду з менеджером проєкту через{' '}
         <Link
           to="https://baza-trainee.tech/ua"
-          className="underline hover:text-blue-700"
+          className="underline duration-500 hover:text-primary-blue"
           target="_blank"
           rel="noopener noreferrer"
         >
