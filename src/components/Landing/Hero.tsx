@@ -9,13 +9,12 @@ const Hero = () => {
         <span className="block">Baza Trainee Ukraine</span>
       </h1>
       <div className="flex justify-center gap-8 mb-[50px]">
-        <Button
-          label="Увійти"
-          onClick={() => {
-            alert('Увійти');
-          }}
-          additionalClass="bg-primary-blue border-4 border-primary-blue hover:bg-transparent hover:border-4 hover:border-primary-blue"
-        />
+        <Link to="/crm">
+          <Button
+            label="Увійти"
+            additionalClass="bg-primary-blue border-4 border-primary-blue hover:bg-transparent hover:border-4 hover:border-primary-blue"
+          />
+        </Link>
         <Button
           label="Заповнити анкету"
           onClick={() => {

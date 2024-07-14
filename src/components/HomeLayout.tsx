@@ -7,7 +7,7 @@ const HomeLayout = () => {
     <main className="flex">
       <Sidebar />
       <div>
-        <Outlet />{' '}
+        <Outlet />
       </div>
     </main>
   );
