@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+
 import discordIcon from '../../assets/common/discord.svg';
 import linkedinIcon from '../../assets/common/linkedin.svg';
 
@@ -26,7 +27,7 @@ const Footer = () => {
           to="/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-light-grey text-sm font-open-sans font-normal leading-[22px] underline"
+          className="text-light-grey text-sm font-open-sans font-normal leading-[22px] underline duration-500 hover:text-primary-blue"
         >
           Правила користування сайтом
         </Link>
@@ -34,7 +35,7 @@ const Footer = () => {
           to="/"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-light-grey text-base font-open-sans font-normal leading-[26px] underline"
+          className="text-light-grey text-base font-open-sans font-normal leading-[26px] underline duration-500 hover:text-primary-blue"
         >
           Політика конфіденційності
         </Link>
