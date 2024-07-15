@@ -1,8 +1,10 @@
+import ProjectsHeader from '../components/Projects/ProjectsHeader';
+
 const Projects = () => {
   return (
-    <div>
-      <h1>Projects</h1>
-    </div>
+    <section className="flex flex-col gap-5 px-8 py-5">
+      <ProjectsHeader />
+    </section>
   );
 };
 
