@@ -5,7 +5,7 @@ import { projects } from '../data';
 
 const Projects = () => {
   return (
-    <section className="flex flex-col w-full gap-5 px-8 py-5">
+    <section className="flex flex-col w-full min-h-screen gap-5 px-8 py-5 bg-red">
       <ProjectsHeader />
       <ProjectsTabs />
       {projects.length === 0 && (

@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 
 const HomeLayout = () => {
   return (
-    <main className="min-h-screen bg-light-blue-bg">
+    <main className="min-h-screen">
       <Sidebar />
       <div className="ml-[150px]">
         <Outlet />
