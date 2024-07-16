@@ -4,9 +4,9 @@ import Sidebar from './Sidebar';
 
 const HomeLayout = () => {
   return (
-    <main className="flex">
+    <main className="min-h-screen bg-light-blue-bg">
       <Sidebar />
-      <div>
+      <div className="ml-[150px]">
         <Outlet />
       </div>
     </main>

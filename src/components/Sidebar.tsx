@@ -8,7 +8,7 @@ import events from '../assets/common/events.svg';
 
 const Sidebar = () => {
   return (
-    <div className="w-[150px] h-screen bg-[#3B3E57] text-[#888888] p-6">
+    <div className="w-[150px] h-screen bg-[#3B3E57] text-[#888888] p-6 fixed">
       {/* <h1>Sidebar</h1> */}
       <ul className="flex flex-col gap-5 place-content-center text-center font-['Open_Sans'] text-base">
         <Link to="/crm">
