@@ -43,6 +43,7 @@ export default {
         'light-gray': '#ccc',
         orange: '#f16600',
         'light-green': '#84e78d',
+        'dark-green': '#14B541',
       },
     },
     screens: {
