@@ -1,13 +1,28 @@
+import { useState } from 'react';
+
 import Project from '../components/Projects/Project';
 import ProjectsHeader from '../components/Projects/ProjectsHeader';
 import ProjectsTabs from '../components/Projects/ProjectsTabs';
 import { projects } from '../data';
 
 const Projects = () => {
+  const [selectedOption, setSelectedOption] = useState({
+    value: 'all',
+    label: 'Всі',
+  });
+
+  const filteredProjects =
+    selectedOption.value === 'all'
+      ? projects
+      : projects.filter((project) => project.label === selectedOption.label);
+
   return (
-    <section className="flex flex-col w-full gap-5 px-8 py-5">
+    <section className="flex flex-col w-full min-h-screen gap-5 px-8 py-5 bg-light-blue-bg">
       <ProjectsHeader />
-      <ProjectsTabs />
+      <ProjectsTabs
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+      />
       {projects.length === 0 && (
         <div className="flex flex-col max-w-md gap-3 px-4 py-12 text-xl">
           <p>
@@ -19,8 +34,8 @@ const Projects = () => {
         </div>
       )}
       {projects.length > 0 && (
-        <div className="grid grid-cols-3 gap-5 lg:grid-cols-4 xl:grid-cols-5">
-          {projects.map((project) => (
+        <div className="grid grid-cols-3 gap-5 lg:grid-cols-4 xl:grid-cols-5 place-items-center">
+          {filteredProjects.map((project) => (
             <Project key={project.id} {...project} />
           ))}
         </div>

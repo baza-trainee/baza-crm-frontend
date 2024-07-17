@@ -13,6 +13,7 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Loyalty from './pages/Loyalty';
 import Portal from './pages/Portal';
+import ProjectPage from './pages/ProjectPage';
 import Projects from './pages/Projects';
 import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
@@ -67,6 +68,10 @@ const router = createBrowserRouter([
       {
         path: 'projects',
         element: <Projects />,
+      },
+      {
+        path: 'projects/:id',
+        element: <ProjectPage />,
       },
       {
         path: 'knowledge',

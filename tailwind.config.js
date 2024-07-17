@@ -27,6 +27,7 @@ export default {
         'primary-blue': '#1e70eb',
         'active-blue': '#4285f4',
         'disabled-blue': '#2a4875',
+        'light-blue': '#2e57db',
         'card-background': '#2f4865',
         'normal-ui': '#91a2b6',
         'hover-blue': '#a1caff',
@@ -40,7 +41,9 @@ export default {
         'disabled-gray': '#888',
         'hover-gray': '#788aa0',
         'light-gray': '#ccc',
-        'input-gray': '#ccc',
+        orange: '#f16600',
+        'light-green': '#84e78d',
+        'dark-green': '#14B541',
       },
     },
     screens: {
