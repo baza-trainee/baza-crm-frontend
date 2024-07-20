@@ -1,5 +1,5 @@
 import Select, { OptionProps } from 'react-select';
-import { Square, SquareCheckBig } from 'lucide-react';
+import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
 
 type OptionType = {
   value: string;
@@ -20,9 +20,9 @@ const CustomOption = (props: OptionProps<OptionType>) => (
   >
     <span className="mr-2">
       {props.isSelected ? (
-        <SquareCheckBig size={20} stroke="#1E70EB" />
+        <FaCheckSquare size={20} color="#1E70EB" />
       ) : (
-        <Square size={20} stroke="#1E70EB" />
+        <FaRegSquare size={20} fill="#1E70EB" />
       )}
     </span>
     {props.label}

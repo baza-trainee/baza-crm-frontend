@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import Project from '../components/Projects/Project';
 import ProjectsHeader from '../components/Projects/ProjectsHeader';
 import ProjectsTabs from '../components/Projects/ProjectsTabs';
@@ -10,6 +10,7 @@ const Projects = () => {
     value: 'all',
     label: 'Всі',
   });
+  const [parent] = useAutoAnimate();
 
   const filteredProjects =
     selectedOption.value === 'all'
@@ -34,7 +35,10 @@ const Projects = () => {
         </div>
       )}
       {projects.length > 0 && (
-        <div className="grid grid-cols-3 gap-5 lg:grid-cols-4 xl:grid-cols-5 place-items-center">
+        <div
+          className="grid grid-cols-3 gap-5 lg:grid-cols-4 xl:grid-cols-5 place-items-center"
+          ref={parent}
+        >
           {filteredProjects.map((project) => (
             <Project key={project.id} {...project} />
           ))}
