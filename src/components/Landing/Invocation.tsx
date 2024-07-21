@@ -14,7 +14,7 @@ const Invocation = () => {
         onClick={() => {
           alert('Заповнити анкету');
         }}
-        additionalClass="bg-primary-blue hover:bg-transparent hover:border-4 hover:border-primary-blue"
+        additionalClass="bg-primary-blue border-4 border-primary-blue hover:bg-transparent hover:border-4 hover:border-primary-blue"
       />
     </section>
   );

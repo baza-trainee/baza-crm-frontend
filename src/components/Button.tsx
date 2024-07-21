@@ -9,7 +9,7 @@ type ButtonProps = {
 const Button: React.FC<ButtonProps> = ({ label, onClick, additionalClass }) => {
   return (
     <button
-      className={`w-[254px] h-10 text-white rounded ${additionalClass}`}
+      className={`w-[254px] duration-500 h-10 text-white rounded ${additionalClass}`}
       onClick={onClick}
     >
       {label}
