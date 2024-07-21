@@ -24,12 +24,6 @@ const ResetPassword = () => {
   return (
     <div className="w-full bg-[#071933] pt-[50px] pb-[198px]">
       <LogoSection width="700px" title="Відновлення пароля" />
-      {/* <div className='w-full mb-[30px]'>
-        <img src={logo} alt='Logo' className='w-[150px] h-[150px] mx-auto' />
-      </div>
-      <div className='w-[891px] text-center pt-[50px] mx-auto'>
-        <h1 className='font-Lato font-sans text-[40px] text-white'>Відновлення пароля</h1>
-      </div> */}
       <div className="w-[151px] mt-[50px] mx-auto font-Open Sans font-sans text-[16px] text-[#a1caff] font-normal leading-6 underline decoration-0">
         <a href="#">Повернутися назад</a>
       </div>

@@ -28,15 +28,6 @@ const Login = () => {
         width="469px"
         title="Вхід до CRM системи Baza Trainee Ukraine"
       />
-      {/* <div className="w-full mb-[30px]">
-        <img src={logo} alt="Logo" className="w-[150px] h-[150px] mx-auto" />
-      </div>
-      <div className="w-[469px] text-center pt-[50px] mx-auto">
-        <h1 className="font-Lato font-sans text-[40px] text-white">
-          Вхід до CRM системи Baza Trainee Ukraine{' '}
-        </h1>
-      </div> */}
-
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-[538px] mt-[50px] mx-auto"
