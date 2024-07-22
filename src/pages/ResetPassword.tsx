@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
+import PopUp from '../components/LoginRegister/PopUp';
 import LogoSection from '../components/LoginRegister/LogoSection';
 
 type Inputs = {
@@ -18,9 +20,15 @@ const ResetPassword = () => {
     mode: 'onBlur',
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    alert(JSON.stringify(data));
+  const onSubmit: SubmitHandler<Inputs> = () => {
+    setIsPopUpVisible(true);
     reset();
+  };
+
+  const [isPopUpVisible, setIsPopUpVisible] = useState(false);
+
+  const handleClosePopUp = () => {
+    setIsPopUpVisible(false);
   };
 
   return (
@@ -41,8 +49,12 @@ const ResetPassword = () => {
             {...register('password', {
               required: "обов'язкове поле",
               minLength: {
-                value: 5,
-                message: 'Мінімум 5 символів',
+                value: 8,
+                message: 'Мінімум 8 символів',
+              },
+              maxLength: {
+                value: 30,
+                message: 'Максимум 30 символів',
               },
             })}
             className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[8px]"
@@ -62,8 +74,12 @@ const ResetPassword = () => {
             {...register('confirmPassword', {
               required: "обов'язкове поле",
               minLength: {
-                value: 5,
-                message: 'Мінімум 5 символів',
+                value: 8,
+                message: 'Мінімум 8 символів',
+              },
+              maxLength: {
+                value: 30,
+                message: 'Максимум 30 символів',
               },
             })}
             className="font-Lato font-sans font-normal text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[49px]"
@@ -74,6 +90,13 @@ const ResetPassword = () => {
         </div>
         <ButtonLogin label="Зберегти" type="submit" disabled={!isValid} />
       </form>
+      {isPopUpVisible && (
+        <PopUp
+          text1="Вітаю!"
+          text2="Пароль успішно відновлено."
+          onClose={handleClosePopUp}
+        />
+      )}
     </div>
   );
 };

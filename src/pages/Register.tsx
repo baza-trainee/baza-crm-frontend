@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
+import PopUp from '../components/LoginRegister/PopUp';
 import LogoSection from '../components/LoginRegister/LogoSection';
 
 type Inputs = {
@@ -19,9 +21,15 @@ const Register = () => {
     mode: 'onBlur',
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    alert(JSON.stringify(data));
+  const onSubmit: SubmitHandler<Inputs> = () => {
+    setIsPopUpVisible(true);
     reset();
+  };
+
+  const [isPopUpVisible, setIsPopUpVisible] = useState(false);
+
+  const handleClosePopUp = () => {
+    setIsPopUpVisible(false);
   };
 
   return (
@@ -113,6 +121,13 @@ const Register = () => {
           disabled={!isValid}
         />
       </form>
+      {isPopUpVisible && (
+        <PopUp
+          text1="Вітаю!"
+          text2="Реєстрація пройшла успішно."
+          onClose={handleClosePopUp}
+        />
+      )}
     </div>
   );
 };
