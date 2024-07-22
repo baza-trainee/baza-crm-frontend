@@ -1,4 +1,6 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
 
 type Inputs = {
@@ -25,7 +27,7 @@ const ResetPassword = () => {
     <div className="w-full bg-[#071933] pt-[50px] pb-[198px]">
       <LogoSection width="700px" title="Відновлення пароля" />
       <div className="w-[151px] mt-[50px] mx-auto font-Open Sans font-sans text-[16px] text-[#a1caff] font-normal leading-6 underline decoration-0">
-        <a href="#">Повернутися назад</a>
+        <Link to="/forgotten-password">Повернутися назад</Link>
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -70,13 +72,7 @@ const ResetPassword = () => {
             {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}
           </div>
         </div>
-        <button
-          type="submit"
-          disabled={!isValid}
-          className="block w-[254px] h-[40px] mx-auto font-Open Sans font-sans text-[16px] font-semibold text-white bg-[#1e70eb] rounded-[10px]"
-        >
-          Зберегти
-        </button>
+        <ButtonLogin label="Зберегти" type="submit" disabled={!isValid} />
       </form>
     </div>
   );

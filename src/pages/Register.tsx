@@ -1,4 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
+import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
 
 type Inputs = {
@@ -50,8 +51,12 @@ const Register = () => {
             {...register('password', {
               required: "обов'язкове поле",
               minLength: {
-                value: 5,
-                message: 'Мінімум 5 символів',
+                value: 8,
+                message: 'Мінімум 8 символів',
+              },
+              maxLength: {
+                value: 30,
+                message: 'Максимум 30 символів',
               },
             })}
             className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[23.5px]"
@@ -68,8 +73,12 @@ const Register = () => {
             {...register('confirmPassword', {
               required: "обов'язкове поле",
               minLength: {
-                value: 5,
-                message: 'Мінімум 5 символів',
+                value: 8,
+                message: 'Мінімум 8 символів',
+              },
+              maxLength: {
+                value: 30,
+                message: 'Максимум 30 символів',
               },
             })}
             className="font-Lato font-sans font-normal text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[49px]"
@@ -98,13 +107,11 @@ const Register = () => {
             .
           </label>
         </div>
-        <button
+        <ButtonLogin
+          label="Зареєструватися"
           type="submit"
           disabled={!isValid}
-          className="block w-[254px] h-[40px] mx-auto font-Open Sans font-sans text-[16px] font-semibold text-white bg-[#1e70eb] rounded-[10px]"
-        >
-          Зареєструватися
-        </button>
+        />
       </form>
     </div>
   );
