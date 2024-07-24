@@ -1,6 +1,6 @@
 import Card from '../../components/Card';
 
-const About = () => {
+const About: React.FC = () => {
   return (
     <section className="px-[120px] pt-[50px] pb-[100px] mb-[50px]">
       <h2 className="font-lato font-bold leading-[60px] text-[40px] p-[10px] mb-10 text-white text-center">

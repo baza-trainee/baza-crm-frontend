@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const Invocation = () => {
+const Invocation: React.FC = () => {
   return (
     <section className="px-[120px] pt-[50px] pb-[150px] flex flex-col items-center">
       <p className="min-w-[1021px] h-auto font-lato font-bold leading-[60px] text-[40px] text-white text-center mb-[100px]">
