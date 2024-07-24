@@ -51,6 +51,9 @@ export default {
       lg: '1920px',
       xl: '2560px',
     },
+    backgroundPosition: {
+      'custom-position': 'center top 30px',
+    },
   },
   plugins: ['daisyui'],
 };
