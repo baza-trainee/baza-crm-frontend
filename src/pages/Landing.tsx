@@ -9,13 +9,10 @@ import Invocation from '../components/Landing/Invocation';
 const Landing = () => {
   return (
     <div
-      className="bg-no-repeat bg-cover bg-start bg-top-menu-dark"
+      className="bg-no-repeat bg-start bg-top-menu-dark bg-contain md:bg-contain lg:bg-[length:1564px_1452px] bg-custom-position "
       style={{
         backgroundImage: `url(${bgImage})
       `,
-        backgroundSize: '1564px 1452px',
-        backgroundPosition: '178px 43px',
-        // minHeight: '1452px',
       }}
     >
       <Header />
