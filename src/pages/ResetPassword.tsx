@@ -1,4 +1,8 @@
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import ButtonLogin from '../components/LoginRegister/ButtonLogin';
+import PopUp from '../components/LoginRegister/PopUp';
 import LogoSection from '../components/LoginRegister/LogoSection';
 
 type Inputs = {
@@ -16,16 +20,22 @@ const ResetPassword = () => {
     mode: 'onBlur',
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    alert(JSON.stringify(data));
+  const onSubmit: SubmitHandler<Inputs> = () => {
+    setIsPopUpVisible(true);
     reset();
+  };
+
+  const [isPopUpVisible, setIsPopUpVisible] = useState(false);
+
+  const handleClosePopUp = () => {
+    setIsPopUpVisible(false);
   };
 
   return (
     <div className="w-full bg-[#071933] pt-[50px] pb-[198px]">
       <LogoSection width="700px" title="Відновлення пароля" />
       <div className="w-[151px] mt-[50px] mx-auto font-Open Sans font-sans text-[16px] text-[#a1caff] font-normal leading-6 underline decoration-0">
-        <a href="#">Повернутися назад</a>
+        <Link to="/forgotten-password">Повернутися назад</Link>
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -39,8 +49,12 @@ const ResetPassword = () => {
             {...register('password', {
               required: "обов'язкове поле",
               minLength: {
-                value: 5,
-                message: 'Мінімум 5 символів',
+                value: 8,
+                message: 'Мінімум 8 символів',
+              },
+              maxLength: {
+                value: 30,
+                message: 'Максимум 30 символів',
               },
             })}
             className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[8px]"
@@ -60,8 +74,12 @@ const ResetPassword = () => {
             {...register('confirmPassword', {
               required: "обов'язкове поле",
               minLength: {
-                value: 5,
-                message: 'Мінімум 5 символів',
+                value: 8,
+                message: 'Мінімум 8 символів',
+              },
+              maxLength: {
+                value: 30,
+                message: 'Максимум 30 символів',
               },
             })}
             className="font-Lato font-sans font-normal text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[49px]"
@@ -70,14 +88,15 @@ const ResetPassword = () => {
             {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}
           </div>
         </div>
-        <button
-          type="submit"
-          disabled={!isValid}
-          className="block w-[254px] h-[40px] mx-auto font-Open Sans font-sans text-[16px] font-semibold text-white bg-[#1e70eb] rounded-[10px]"
-        >
-          Зберегти
-        </button>
+        <ButtonLogin label="Зберегти" type="submit" disabled={!isValid} />
       </form>
+      {isPopUpVisible && (
+        <PopUp
+          text1="Вітаю!"
+          text2="Пароль успішно відновлено."
+          onClose={handleClosePopUp}
+        />
+      )}
     </div>
   );
 };
