@@ -1,4 +1,4 @@
-import Button from '../../components/Button';
+import { Link } from 'react-router-dom';
 
 const Invocation = () => {
   return (
@@ -9,13 +9,14 @@ const Invocation = () => {
         і чекай на запрошення до CRM системи, де ти можеш <br />
         обрати свій перший проєкт
       </p>
-      <Button
-        label="Заповнити анкету"
-        onClick={() => {
-          alert('Заповнити анкету');
-        }}
-        additionalClass="bg-primary-blue border-4 border-primary-blue hover:bg-transparent hover:border-4 hover:border-primary-blue"
-      />
+      <Link
+        to="/register"
+        className="flex justify-center duration-500 items-center bg-primary-blue border-4 border-primary-blue hover:bg-transparent hover:border-4 hover:border-primary-blue w-[254px] h-10 text-white rounded"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Заповнити анкету
+      </Link>
     </section>
   );
 };
