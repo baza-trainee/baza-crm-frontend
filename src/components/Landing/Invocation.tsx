@@ -12,8 +12,6 @@ const Invocation: React.FC = () => {
       <Link
         to="/register"
         className="flex justify-center duration-500 items-center bg-primary-blue border-4 border-primary-blue hover:bg-transparent hover:border-4 hover:border-primary-blue w-[254px] h-10 text-white rounded"
-        target="_blank"
-        rel="noopener noreferrer"
       >
         Заповнити анкету
       </Link>
