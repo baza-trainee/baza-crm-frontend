@@ -20,8 +20,6 @@ const Hero: React.FC = () => {
         <Link
           to="/register"
           className="flex justify-center items-center bg-transparent border-4 border-primary-blue hover:bg-primary-blue w-[254px] duration-500 h-10 text-white rounded"
-          target="_blank"
-          rel="noopener noreferrer"
         >
           Заповнити анкету
         </Link>
