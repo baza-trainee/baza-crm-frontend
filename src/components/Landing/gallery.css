@@ -1,0 +1,57 @@
+.landingSwiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-wrapper {
+  padding-top: 120px;
+  padding-bottom: 120px;
+  display: flex;
+  align-items: center;
+}
+
+.swiper-slide {
+  width: 882px !important;
+  height: 506px;
+  opacity: 0.2;
+}
+
+.swiper-slide img,
+.swiper-slide-active img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-slide-active {
+  width: 1078px !important;
+  height: 640px;
+  opacity: 1;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+  transition: opacity 0.5s ease;
+  width: 130px;
+  height: 130px;
+  opacity: 1;
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  opacity: 0.8;
+}
+
+.swiper-button-prev {
+  transform: translateY(-50%) rotate(180deg);
+  margin-left: 110px;
+}
+
+.swiper-button-next {
+  margin-right: 132px;
+}

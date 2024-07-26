@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import discordIcon from '../../assets/common/discord.svg';
 import linkedinIcon from '../../assets/common/linkedin.svg';
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return (
     <footer className="px-[120px] py-[50px] bg-sidebar-bg flex flex-col items-center gap-[50px] ">
       <div className="flex gap-[100px] justify-center items-center">
