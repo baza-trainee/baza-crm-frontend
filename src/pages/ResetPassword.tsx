@@ -32,9 +32,9 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="w-full bg-[#071933] pt-[50px] pb-[198px]">
+    <div className="w-full bg-text-black pt-[50px] pb-[198px]">
       <LogoSection width="700px" title="Відновлення пароля" />
-      <div className="w-[151px] mt-[50px] mx-auto font-Open Sans font-sans text-[16px] text-[#a1caff] font-normal leading-6 underline decoration-0">
+      <div className="w-[151px] mt-[50px] mx-auto font-Open Sans font-sans text-[16px] text-hover-blue font-normal leading-6 underline decoration-0">
         <Link to="/forgotten-password">Повернутися назад</Link>
       </div>
       <form
@@ -57,9 +57,9 @@ const ResetPassword = () => {
                 message: 'Максимум 30 символів',
               },
             })}
-            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[8px]"
+            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[8px]"
           />
-          <p className="font-Open Sans font-sans text-[12px] font-normal text-[#91a2b6]">
+          <p className="font-Open Sans font-sans text-[12px] font-normal text-normal-ui">
             Пароль має містити від 8 до 30 символів
           </p>
           <div className="h-[40px] text-red">
@@ -82,7 +82,7 @@ const ResetPassword = () => {
                 message: 'Максимум 30 символів',
               },
             })}
-            className="font-Lato font-sans font-normal text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[49px]"
+            className="font-Lato font-sans font-normal text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[49px]"
           />
           <div className="h-[40px] text-red">
             {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}

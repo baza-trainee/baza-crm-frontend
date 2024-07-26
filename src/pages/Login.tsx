@@ -29,7 +29,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full bg-[#071933] pt-[50px] pb-[280px]">
+    <div className="w-full bg-text-black pt-[50px] pb-[280px]">
       <LogoSection
         width="469px"
         title="Вхід до CRM системи Baza Trainee Ukraine"
@@ -44,7 +44,7 @@ const Login = () => {
           </label>
           <input
             {...register('login')}
-            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
+            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
           />
         </div>
         <div className="flex flex-col">
@@ -63,7 +63,7 @@ const Login = () => {
                 message: 'Максимум 30 символів',
               },
             })}
-            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[23.5px]"
+            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[23.5px]"
           />
           <div className="h-[40px] text-red">
             {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}
@@ -73,12 +73,12 @@ const Login = () => {
       </form>
       <div className="flex justify-between w-[254px] mx-auto pt-[50px]">
         <div className="w-[216px] text-center">
-          <p className="font-Open Sans font-sans text-[16px] leading-[1.5] text-[#b1aeae]">
+          <p className="font-Open Sans font-sans text-[16px] leading-[1.5] text-light-grey">
             Забули свій пароль?
             <br />
             <Link
               to="/forgotten-password"
-              className="underline cursor-pointer text-[#788aa0]"
+              className="underline cursor-pointer text-hover-gray"
             >
               Відновити
             </Link>
@@ -100,7 +100,7 @@ const Login = () => {
               link={
                 <a
                   href="mailto:administarator"
-                  className="underline text-[#4285f4]"
+                  className="underline text-active-blue"
                 >
                   написати Адміністратору
                 </a>

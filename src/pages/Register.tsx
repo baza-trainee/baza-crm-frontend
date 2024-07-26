@@ -33,7 +33,7 @@ const Register = () => {
   };
 
   return (
-    <div className="w-full bg-[#071933] pt-[50px] pb-[198px]">
+    <div className="w-full bg-text-black pt-[50px] pb-[198px]">
       <LogoSection
         width="700px"
         title="Реєстрація учасника в CRM системі на Baza Trainee Ukraine"
@@ -48,7 +48,7 @@ const Register = () => {
           </label>
           <input
             {...register('login')}
-            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
+            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
           />
         </div>
         <div className="flex flex-col">
@@ -67,7 +67,7 @@ const Register = () => {
                 message: 'Максимум 30 символів',
               },
             })}
-            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[23.5px]"
+            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[23.5px]"
           />
           <div className="h-[40px] text-red">
             {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}
@@ -89,7 +89,7 @@ const Register = () => {
                 message: 'Максимум 30 символів',
               },
             })}
-            className="font-Lato font-sans font-normal text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[49px]"
+            className="font-Lato font-sans font-normal text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[49px]"
           />
           <div className="h-[40px] text-red">
             {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}
@@ -103,7 +103,7 @@ const Register = () => {
             type="checkbox"
             className="w-[20px] h-[20px] mt-[4px]"
           />
-          <label className="font-Open Sans font-sans text-[16px] text-[#b1aeae]">
+          <label className="font-Open Sans font-sans text-[16px] text-light-grey">
             Погоджуюсь з{' '}
             <span className="underline leading-[1.62] cursor-pointer ">
               <a>Правилами користування</a>
