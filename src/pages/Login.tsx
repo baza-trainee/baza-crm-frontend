@@ -29,7 +29,7 @@ const Login = () => {
   };
 
   return (
-    <div className="w-full bg-text-black pt-[50px] pb-[280px]">
+    <div className="grid h-screen place-items-center w-full bg-text-black pt-[50px] pb-[280px]">
       <LogoSection
         width="469px"
         title="Вхід до CRM системи Baza Trainee Ukraine"

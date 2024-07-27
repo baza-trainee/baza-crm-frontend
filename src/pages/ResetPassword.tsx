@@ -32,7 +32,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="w-full bg-text-black pt-[50px] pb-[198px]">
+    <div className="grid h-screen place-items-center w-full bg-text-black pt-[50px] pb-[198px]">
       <LogoSection width="700px" title="Відновлення пароля" />
       <div className="w-[151px] mt-[50px] mx-auto font-Open Sans font-sans text-[16px] text-hover-blue font-normal leading-6 underline decoration-0">
         <Link to="/forgotten-password">Повернутися назад</Link>

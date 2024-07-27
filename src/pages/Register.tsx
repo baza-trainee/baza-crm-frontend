@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import PopUp from '../components/LoginRegister/PopUp';
 import LogoSection from '../components/LoginRegister/LogoSection';
+import axios from 'axios';
 
 type Inputs = {
   login: string;
@@ -21,19 +22,33 @@ const Register = () => {
     mode: 'onBlur',
   });
 
-  const onSubmit: SubmitHandler<Inputs> = () => {
-    setIsPopUpVisible(true);
-    reset();
-  };
-
   const [isPopUpVisible, setIsPopUpVisible] = useState(false);
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      if (data.password !== data.confirmPassword) {
+        return;
+      }
+
+      /* add crm url-backend  */
+      const response = await axios.post('http://#/register', {
+        username: data.login,
+        password: data.password,
+      });
+
+      if (response.data.token) {
+        setIsPopUpVisible(true);
+        reset();
+      }
+    } catch (error) {}
+  };
 
   const handleClosePopUp = () => {
     setIsPopUpVisible(false);
   };
 
   return (
-    <div className="w-full bg-text-black pt-[50px] pb-[198px]">
+    <div className="grid h-screen place-items-center w-full bg-text-black pt-[50px] pb-[198px]">
       <LogoSection
         width="700px"
         title="Реєстрація учасника в CRM системі на Baza Trainee Ukraine"
@@ -92,7 +107,9 @@ const Register = () => {
             className="font-Lato font-sans font-normal text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[49px]"
           />
           <div className="h-[40px] text-red">
-            {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}
+            {errors?.confirmPassword && (
+              <p>{errors?.confirmPassword?.message || 'Error!'}</p>
+            )}
           </div>
         </div>
         <div className="flex gap-[10px] mb-[32px]">
