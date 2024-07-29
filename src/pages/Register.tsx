@@ -1,7 +1,5 @@
-import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
-import PopUp from '../components/LoginRegister/PopUp';
 import LogoSection from '../components/LoginRegister/LogoSection';
 
 type Inputs = {
@@ -16,20 +14,20 @@ const Register = () => {
     register,
     formState: { errors, isValid },
     handleSubmit,
+    watch,
     reset,
   } = useForm<Inputs>({
     mode: 'onBlur',
   });
 
-  const onSubmit: SubmitHandler<Inputs> = () => {
-    setIsPopUpVisible(true);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    // ------------console---------------- //
+    console.log('Login:', data.login);
+    console.log('Password:', data.password);
+    console.log('confirmPassword:', data.confirmPassword);
+    // ------------console---------------- //
+
     reset();
-  };
-
-  const [isPopUpVisible, setIsPopUpVisible] = useState(false);
-
-  const handleClosePopUp = () => {
-    setIsPopUpVisible(false);
   };
 
   return (
@@ -88,11 +86,18 @@ const Register = () => {
                 value: 30,
                 message: 'Максимум 30 символів',
               },
+              validate: (val: string) => {
+                if (watch('password') != val) {
+                  return 'Паролі не співпадають';
+                }
+              },
             })}
             className="font-Lato font-sans font-normal text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[49px]"
           />
           <div className="h-[40px] text-red">
-            {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}
+            {errors?.confirmPassword && (
+              <p>{errors?.confirmPassword?.message || 'Error!'}</p>
+            )}
           </div>
         </div>
         <div className="flex gap-[10px] mb-[32px]">
@@ -121,13 +126,6 @@ const Register = () => {
           disabled={!isValid}
         />
       </form>
-      {isPopUpVisible && (
-        <PopUp
-          text1="Вітаю!"
-          text2="Реєстрація пройшла успішно."
-          onClose={handleClosePopUp}
-        />
-      )}
     </div>
   );
 };
