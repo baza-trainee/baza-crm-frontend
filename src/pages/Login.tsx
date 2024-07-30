@@ -28,18 +28,15 @@ const Login = () => {
   const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      const response = await axios.post(
-        'https://http://185.161.208.63:5000/api/v1/auth/login',
-        {
-          email: data.login,
-          password: data.password,
-        },
-      );
-      dispatch(setUser(response.data));
-    } catch (error) {
-      console.error('Помилка входу:', error);
-    }
+    const response = await axios.post(
+      'http://185.161.208.63:5000/api/v1/auth/login',
+      {
+        email: data.login,
+        password: data.password,
+      },
+    );
+    console.log('Відповідь сервера:', response.data);
+    dispatch(setUser(response.data));
 
     reset();
   };
