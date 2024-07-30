@@ -68,31 +68,31 @@ const PortalUserForm: React.FC = () => {
       <div className="flex gap-5">
         <div className="w-full">
           <CustomInput
-            name="firstName"
+            id="firstName"
             label="Ім'я"
             register={register}
             icon={pencilIcon}
           />
           <CustomInput
-            name="lastName"
+            id="lastName"
             label="Прізвище"
             register={register}
             icon={pencilIcon}
           />
           <CustomInput
-            name="country"
+            id="country"
             label="Країна"
             register={register}
             icon={pencilIcon}
           />
           <CustomInput
-            name="city"
+            id="city"
             label="Місто"
             register={register}
             icon={pencilIcon}
           />
           <CustomInput
-            name="phone"
+            id="phone"
             label="Телефон"
             register={register}
             icon={pencilIcon}
@@ -153,9 +153,9 @@ const PortalUserForm: React.FC = () => {
               <option value="Postman">Postman</option>
             </select>
           </div> */}
-          <CustomInput name="email" label="Email" register={register} />
+          <CustomInput id="email" label="Email" register={register} />
           <CustomInput
-            name="linkedin"
+            id="linkedin"
             label="Linkedin"
             register={register}
             icon={pencilIcon}
