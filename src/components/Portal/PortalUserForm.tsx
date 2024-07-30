@@ -1,14 +1,15 @@
 import { useForm } from 'react-hook-form';
+import CustomInput from './CustomInput';
 import pencilIcon from '../../assets/common/pencil.svg';
-import chevronDownIcon from '../../assets/common/chevron-down.svg';
+// import chevronDownIcon from '../../assets/common/chevron-down.svg';
 
-interface UserData {
+export interface UserData {
   firstName: string;
   lastName: string;
   country: string;
   city: string;
   phone: string;
-  resume: File;
+  resume: File | null;
   specialization: string[];
   technologies: string[];
   email: string;
@@ -50,7 +51,10 @@ const PortalUserForm: React.FC = () => {
       country: '',
       city: '',
       phone: '',
-      specialization: [],
+      //   specialization: [],
+      //   technologies: [],
+      email: '',
+      linkedin: '',
     },
   });
 
@@ -63,117 +67,52 @@ const PortalUserForm: React.FC = () => {
     >
       <div className="flex gap-5">
         <div className="w-full">
-          <label
-            htmlFor="firstName"
-            className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
-          >
-            {' '}
-            Ім'я
-          </label>
-          <div className="relative">
-            <input
-              className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px]"
-              id="firstName"
-              {...register('firstName')}
-            />
-            <button type="button" className="absolute right-4 bottom top-2">
-              {' '}
-              <img src={pencilIcon} width={24} height={24} alt="pencil" />
-            </button>
-          </div>
-
-          <label
-            className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
-            htmlFor="lastName"
-          >
-            Прізвище{' '}
-          </label>
-          <div className="relative">
-            {' '}
-            <input
-              className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px]"
-              id="lastName"
-              {...register('lastName')}
-            />
-            <button type="button" className="absolute right-4 bottom top-2">
-              {' '}
-              <img src={pencilIcon} width={24} height={24} alt="pencil" />
-            </button>
-          </div>
-          <label
-            className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
-            htmlFor="country"
-          >
-            Країна{' '}
-          </label>
-          <div className="relative">
-            {' '}
-            <input
-              className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px]"
-              id="country"
-              {...register('country')}
-            />
-            <button type="button" className="absolute right-4 bottom top-2">
-              {' '}
-              <img src={pencilIcon} width={24} height={24} alt="pencil" />
-            </button>
-          </div>
-          <label
-            className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
-            htmlFor="city"
-          >
-            Місто{' '}
-          </label>
-          <div className="relative">
-            <input
-              className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px]"
-              id="city"
-              {...register('city')}
-            />
-            <button type="button" className="absolute right-4 bottom top-2">
-              {' '}
-              <img src={pencilIcon} width={24} height={24} alt="pencil" />
-            </button>
-          </div>
-          <label
-            className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
-            htmlFor="phone"
-          >
-            Телефон{' '}
-          </label>
-          <div className="relative">
-            <input
-              className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px]"
-              id="phone"
-              {...register('phone')}
-              placeholder="+380"
-            />
-            <button type="button" className="absolute right-4 bottom top-2">
-              {' '}
-              <img src={pencilIcon} width={24} height={24} alt="pencil" />
-            </button>
-          </div>
-          <label
-            className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
-            htmlFor="resume"
-          >
-            Резюме{' '}
-          </label>
-          <div className="relative">
-            <input
-              type="file"
-              className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px]"
-              id="resume"
-              {...register('resume')}
-            />
-            <button type="button" className="absolute right-4 bottom top-2">
-              {' '}
-              <img src={chevronDownIcon} width={24} height={24} alt="pencil" />
-            </button>
-          </div>
+          <CustomInput
+            id="firstName"
+            name="firstName"
+            label="Ім'я"
+            register={register}
+            icon={pencilIcon}
+          />
+          <CustomInput
+            id="lastName"
+            name="lastName"
+            label="Прізвище"
+            register={register}
+            icon={pencilIcon}
+          />
+          <CustomInput
+            id="country"
+            name="country"
+            label="Країна"
+            register={register}
+            icon={pencilIcon}
+          />
+          <CustomInput
+            id="city"
+            name="city"
+            label="Місто"
+            register={register}
+            icon={pencilIcon}
+          />
+          <CustomInput
+            id="phone"
+            name="phone"
+            label="Телефон"
+            register={register}
+            icon={pencilIcon}
+            placeholder="+380"
+          />
+          {/* <CustomInput
+            id="resume"
+            label="Резюме"
+            register={register}
+            icon={chevronDownIcon}
+            type="file"
+          /> */}
         </div>
         <div className="w-full">
-          <label
+          {/* <label
             className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
             htmlFor="specialization"
           >
@@ -218,37 +157,20 @@ const PortalUserForm: React.FC = () => {
               <option value="Swagger">Swagger</option>
               <option value="Postman">Postman</option>
             </select>
-          </div>
-          <label
-            className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
-            htmlFor="email"
-          >
-            Email
-          </label>
-          <div className="relative">
-            <input
-              className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px]"
-              id="email"
-              {...register('email')}
-            />
-          </div>
-          <label
-            className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
-            htmlFor="linkedin"
-          >
-            Linkedin
-          </label>
-          <div className="relative">
-            <input
-              className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px]"
-              id="linkedin"
-              {...register('linkedin')}
-            />
-            <button type="button" className="absolute right-4 bottom top-2">
-              {' '}
-              <img src={pencilIcon} width={24} height={24} alt="pencil" />
-            </button>
-          </div>
+          </div> */}
+          <CustomInput
+            id="email"
+            name="email"
+            label="Email"
+            register={register}
+          />
+          <CustomInput
+            id="linkedin"
+            name="linkedin"
+            label="Linkedin"
+            register={register}
+            icon={pencilIcon}
+          />
         </div>
       </div>
 
