@@ -2,17 +2,15 @@ import { UseFormRegister } from 'react-hook-form';
 import { UserData } from './PortalUserForm';
 
 interface CustomInputProps {
-  id: string;
+  name: keyof UserData;
   label: string;
   type?: string;
   placeholder?: string;
   icon?: string;
   register: UseFormRegister<UserData>;
-  name: keyof UserData;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
-  id,
   label,
   type,
   placeholder,
@@ -23,7 +21,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   return (
     <div>
       <label
-        htmlFor={id}
+        htmlFor={name}
         className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
       >
         {label}
@@ -32,7 +30,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
         <input
           type={type}
           className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px]"
-          id={id}
+          id={name}
           placeholder={placeholder}
           {...register(name)}
         />
