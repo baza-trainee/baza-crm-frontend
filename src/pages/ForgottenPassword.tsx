@@ -23,7 +23,7 @@ const ForgottenPassword = () => {
   };
 
   return (
-    <div className="grid h-screen place-items-center w-full bg-text-black pt-[50px] pb-[280px]">
+    <div className="grid min-h-screen place-items-center w-full bg-text-black pb-[280px]">
       <LogoSection width="700px" title="Забули свій пароль?" />
       <Link
         to="/login"

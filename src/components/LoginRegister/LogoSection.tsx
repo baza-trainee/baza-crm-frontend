@@ -11,7 +11,7 @@ const LogoSection: React.FC<LogoSectionProps> = ({
   width = '700px',
 }) => {
   return (
-    <div>
+    <div className="pt-[50px]">
       <div className="w-full mb-[30px]">
         <img
           src={logo}

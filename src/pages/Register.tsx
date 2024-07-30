@@ -1,4 +1,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../features/authSlice';
+import axios from 'axios';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
 
@@ -20,12 +23,26 @@ const Register = () => {
     mode: 'onBlur',
   });
 
-  const onSubmit: SubmitHandler<Inputs> = () => {
+  const dispatch = useDispatch();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log('Відправка запиту з даними:', data);
+    console.log('Відправка запиту з:', data.login);
+    console.log('Відправка запиту з:', data.password);
+    const response = await axios.post(
+      'http://185.161.208.63:5000/api/v1/auth/register',
+      {
+        email: data.login,
+        password: data.password,
+      },
+    );
+    console.log('Відповідь сервера-реєстрація:', response.data);
+    dispatch(setUser(response.data));
     reset();
   };
 
   return (
-    <div className="grid h-screen place-items-center w-full bg-text-black pt-[50px] pb-[198px]">
+    <div className="grid min-h-screen place-items-center w-full bg-text-black pb-[198px]">
       <LogoSection
         width="700px"
         title="Реєстрація учасника в CRM системі на Baza Trainee Ukraine"
