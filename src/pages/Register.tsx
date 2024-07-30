@@ -20,13 +20,7 @@ const Register = () => {
     mode: 'onBlur',
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    // ------------console---------------- //
-    console.log('Login:', data.login);
-    console.log('Password:', data.password);
-    console.log('confirmPassword:', data.confirmPassword);
-    // ------------console---------------- //
-
+  const onSubmit: SubmitHandler<Inputs> = () => {
     reset();
   };
 

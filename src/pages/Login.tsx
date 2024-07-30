@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../features/authSlice';
 import LogoSection from '../components/LoginRegister/LogoSection';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import Tooltip from '../../src/components/LoginRegister/ToolTip';
 import help from '../../src/assets/common/circle-help.svg';
+import axios from 'axios';
 
 type Inputs = {
   login: string;
@@ -22,9 +25,22 @@ const Login = () => {
   });
 
   const [showTooltip, setShowTooltip] = useState(false);
+  const dispatch = useDispatch();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    alert(JSON.stringify(data));
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const response = await axios.post(
+        'https://http://185.161.208.63:5000/api/v1/auth/login',
+        {
+          email: data.login,
+          password: data.password,
+        },
+      );
+      dispatch(setUser(response.data));
+    } catch (error) {
+      console.error('Помилка входу:', error);
+    }
+
     reset();
   };
 
