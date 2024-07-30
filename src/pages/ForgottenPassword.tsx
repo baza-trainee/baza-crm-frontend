@@ -23,11 +23,11 @@ const ForgottenPassword = () => {
   };
 
   return (
-    <div className="w-full bg-[#071933] pt-[50px] pb-[280px]">
+    <div className="grid h-screen place-items-center w-full bg-text-black pt-[50px] pb-[280px]">
       <LogoSection width="700px" title="Забули свій пароль?" />
       <Link
         to="/login"
-        className="flex w-[151px] mt-[50px] mx-auto font-Open Sans font-sans text-[16px] text-[#a1caff] font-normal leading-6 underline decoration-0"
+        className="flex w-[151px] mt-[50px] mx-auto font-Open Sans font-sans text-[16px] text-hover-blue font-normal leading-6 underline decoration-0"
       >
         Повернутися назад
       </Link>
@@ -41,10 +41,10 @@ const ForgottenPassword = () => {
           </label>
           <input
             {...register('email')}
-            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
+            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
           />
         </div>
-        <div className="font-Open Sans font-sans my-[30px] p-[16px] rounded-[10px] bg-[#91a2b6]">
+        <div className="font-Open Sans font-sans my-[30px] p-[16px] rounded-[10px] bg-normal-ui">
           <p className="mb-[8px] text-[16px] leading-6 font-semibold text-[rgba(0, 0, 0, 0.2)]">
             На вказану електронну пошту буде відправлено повідомлення з
             посиланням для відновлення паролю. Посилання діє 30хв.
@@ -54,7 +54,7 @@ const ForgottenPassword = () => {
               Якщо лист не отримано, спробуйте ще через 1хв.
             </p>
             <p>
-              <span className="text-[#1e70eb]">59</span> сек.
+              <span className="text-primary-blue">59</span> сек.
             </p>
           </div>
         </div>
