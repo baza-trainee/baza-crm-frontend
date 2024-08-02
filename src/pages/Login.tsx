@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -26,9 +27,10 @@ const Login = () => {
 
   const [showTooltip, setShowTooltip] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log('Відправка запиту з даними:', data);
+    // console.log('sent:', data);
     const response = await axios.post(
       'http://185.161.208.63:5000/api/v1/auth/login',
       {
@@ -36,9 +38,16 @@ const Login = () => {
         password: data.password,
       },
     );
-    console.log('Відповідь сервера-логін:', response.data);
-    dispatch(setUser(response.data));
+    // console.log('answer:', response.data);
+    dispatch(
+      setUser({
+        email: response.data.email,
+        id: response.data.id,
+        token: response.data.token,
+      }),
+    );
 
+    navigate('/');
     reset();
   };
 
@@ -116,7 +125,7 @@ const Login = () => {
                 text="Якщо у тебе виникли проблеми — ти можеш "
                 link={
                   <a
-                    href="mailto:administarator"
+                    href="mailto:administarator@gmail.com"
                     className="underline text-active-blue"
                   >
                     написати Адміністратору

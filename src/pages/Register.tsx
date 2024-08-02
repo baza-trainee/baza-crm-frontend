@@ -26,9 +26,8 @@ const Register = () => {
   const dispatch = useDispatch();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log('Відправка запиту з даними:', data);
-    console.log('Відправка запиту з:', data.login);
-    console.log('Відправка запиту з:', data.password);
+    console.log('sent:', data.login);
+    console.log('sent:', data.password);
     const response = await axios.post(
       'http://185.161.208.63:5000/api/v1/auth/register',
       {
@@ -36,7 +35,7 @@ const Register = () => {
         password: data.password,
       },
     );
-    console.log('Відповідь сервера-реєстрація:', response.data);
+    console.log('answer:', response.data);
     dispatch(setUser(response.data));
     reset();
   };
