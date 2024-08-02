@@ -14,7 +14,7 @@ const PopUp: React.FC<PopUpProps> = ({
   return (
     <div className="fixed inset-0 flex items-center justify-center">
       <div
-        className={`font-Open Sans font-sans text-[20px] font-bold leading-[1.5] w-[600px] p-[50px] pb-[100px] bg-[#f8f9fd] rounded-[10px] ${additionalClass}`}
+        className={`font-Open Sans font-sans text-[20px] font-bold leading-[1.5] w-[600px] p-[50px] pb-[100px] bg-light-blue-bg rounded-[10px] ${additionalClass}`}
       >
         <div className="flex justify-end mb-[36px]">
           <svg
