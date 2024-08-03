@@ -33,7 +33,7 @@ const Login = () => {
     // console.log('sent:', data);
     try {
       const response = await axios.post(
-        'http://185.161.208.63:5000/api/v1/auth/login',
+        'https://185.161.208.63:5000/api/v1/auth/login',
         {
           email: data.login,
           password: data.password,
