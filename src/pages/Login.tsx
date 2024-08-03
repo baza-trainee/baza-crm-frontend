@@ -31,24 +31,33 @@ const Login = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     // console.log('sent:', data);
-    const response = await axios.post(
-      'http://185.161.208.63:5000/api/v1/auth/login',
-      {
-        email: data.login,
-        password: data.password,
-      },
-    );
-    // console.log('answer:', response.data);
-    dispatch(
-      setUser({
-        email: response.data.email,
-        id: response.data.id,
-        token: response.data.token,
-      }),
-    );
+    try {
+      const response = await axios.post(
+        'http://185.161.208.63:5000/api/v1/auth/login',
+        {
+          email: data.login,
+          password: data.password,
+        },
+      );
 
-    navigate('/');
-    reset();
+      console.log('answer:', response.data);
+      dispatch(
+        setUser({
+          email: response.data.email,
+          id: response.data.id,
+          token: response.data.token,
+        }),
+      );
+
+      navigate('/');
+      reset();
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Login error:', error.response.data);
+      } else {
+        console.error('Unexpected error:', error);
+      }
+    }
   };
 
   return (
