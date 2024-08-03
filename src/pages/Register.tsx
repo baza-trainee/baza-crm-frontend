@@ -1,4 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../features/authSlice';
 import axios from 'axios';
@@ -24,20 +25,36 @@ const Register = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log('sent:', data.login);
-    console.log('sent:', data.password);
-    const response = await axios.post(
-      'http://185.161.208.63:5000/api/v1/auth/register',
-      {
-        email: data.login,
-        password: data.password,
-      },
-    );
-    console.log('answer:', response.data);
-    dispatch(setUser(response.data));
-    reset();
+    try {
+      const response = await axios.post(
+        'https://185.161.208.63:5000/api/v1/auth/register',
+        {
+          email: data.login,
+          password: data.password,
+        },
+      );
+
+      console.log('answer:', response.data);
+      dispatch(
+        setUser({
+          email: response.data.email,
+          id: response.data.id,
+          token: response.data.token,
+        }),
+      );
+
+      navigate('/crm');
+      reset();
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Registration error:', error.response.data);
+      } else {
+        console.error('Unexpected error:', error);
+      }
+    }
   };
 
   return (
