@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form';
 import CustomInput from './CustomInput';
 import pencilIcon from '../../assets/common/pencil.svg';
-// import chevronDownIcon from '../../assets/common/chevron-down.svg';
+import chevronDownIcon from '../../assets/common/chevron-down.svg';
+import CustomSelect, { SelectOption } from './CustomSelect';
+import { useState } from 'react';
 
 export interface UserData {
   firstName: string;
@@ -16,16 +18,16 @@ export interface UserData {
   linkedin: string;
 }
 
-// const specializationList = [
-//   { value: 'design', label: 'Design' },
-//   { value: 'frontend', label: 'Frontend' },
-//   { value: 'backend', label: 'Backend' },
-//   { value: 'fullstack', label: 'Full Stack' },
-//   { value: 'qa', label: 'QA Manual' },
-//   { value: 'pm', label: 'PM' },
-// ];
+const specializationList: SelectOption[] = [
+  { value: 'design', label: 'Design' },
+  { value: 'frontend', label: 'Frontend' },
+  { value: 'backend', label: 'Backend' },
+  { value: 'fullstack', label: 'Full Stack' },
+  { value: 'qa', label: 'QA Manual' },
+  { value: 'pm', label: 'PM' },
+];
 
-// const technologiesList = [
+// const technologiesList: SelectOption[] = [
 //   { value: 'figma', label: 'Figma' },
 //   { value: 'uiUx', label: 'Ui/UX' },
 //   { value: 'canva', label: 'Canva' },
@@ -51,14 +53,18 @@ const PortalUserForm: React.FC = () => {
       country: '',
       city: '',
       phone: '',
-      //   specialization: [],
-      //   technologies: [],
+      specialization: [],
+      technologies: [],
       email: '',
       linkedin: '',
     },
   });
 
   const onSubmit = handleSubmit((data) => console.log(data));
+
+  const [selectedSpecializations, setSelectedSpecializations] = useState<
+    readonly SelectOption[]
+  >([]);
 
   return (
     <form
@@ -98,35 +104,21 @@ const PortalUserForm: React.FC = () => {
             icon={pencilIcon}
             placeholder="+380"
           />
-          {/* <CustomInput
+          <CustomInput
             id="resume"
             label="Резюме"
             register={register}
             icon={chevronDownIcon}
             type="file"
-          /> */}
+          />
         </div>
         <div className="w-full">
-          {/* <label
-            className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
-            htmlFor="specialization"
-          >
-            Спеціалізація
-          </label>
-          <div className="relative">
-            <select
-              className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px]"
-              id="specialization"
-              {...register('specialization')}
-            >
-              <option value="Design">Design</option>
-              <option value="Frontend">Frontend</option>
-              <option value="Backend">Backend</option>
-              <option value="Full Stack">Full Stack</option>
-              <option value="QA Manual">QA Manual</option>
-              <option value="PM">PM</option>
-            </select>
-          </div>
+          <CustomSelect
+            label="Спеціалізація"
+            options={specializationList}
+            value={Array.from(selectedSpecializations)}
+            onChange={(newValue) => setSelectedSpecializations(newValue)}
+          />
 
           <label
             className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
@@ -152,7 +144,7 @@ const PortalUserForm: React.FC = () => {
               <option value="Swagger">Swagger</option>
               <option value="Postman">Postman</option>
             </select>
-          </div> */}
+          </div>
           <CustomInput id="email" label="Email" register={register} />
           <CustomInput
             id="linkedin"
