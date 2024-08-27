@@ -30,7 +30,7 @@ const Register = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       const response = await axios.post(
-        'https://185.161.208.63:5000/api/v1/auth/register',
+        'http://185.161.208.63:5000/api/v1/auth/register',
         {
           email: data.login,
           password: data.password,
