@@ -1,10 +1,9 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../features/authSlice';
-import axios from 'axios';
+import { useMutation } from '@tanstack/react-query';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
+import { registerUser } from '../components/LoginRegister/Auth';
 
 type Inputs = {
   login: string;
@@ -24,37 +23,26 @@ const Register = () => {
     mode: 'onBlur',
   });
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      const response = await axios.post(
-        'https://185.161.208.63:5000/api/v1/auth/register',
-        {
-          email: data.login,
-          password: data.password,
-        },
-      );
+  type RegisterResponse = {
+    message: string;
+  };
 
-      console.log('answer:', response.data);
-      dispatch(
-        setUser({
-          email: response.data.email,
-          id: response.data.id,
-          token: response.data.token,
-        }),
-      );
-
+  const mutation = useMutation({
+    mutationFn: registerUser,
+    onSuccess: (data: RegisterResponse) => {
+      console.log('Registration successful:', data);
       navigate('/crm');
       reset();
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        console.error('Registration error:', error.response.data);
-      } else {
-        console.error('Unexpected error:', error);
-      }
-    }
+    },
+    onError: (error: Error) => {
+      console.error('Registration error:', error);
+    },
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    mutation.mutate({ login: data.login, password: data.password });
   };
 
   return (

@@ -1,5 +1,9 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../features/authSlice';
+import axios from 'axios';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
 
@@ -17,9 +21,37 @@ const ForgottenPassword = () => {
     mode: 'onBlur',
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    alert(JSON.stringify(data));
-    reset();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log('sent:', data);
+    try {
+      const response = await axios.post(
+        'http://185.161.208.63:5000/api/v1/auth/#',
+        {
+          email: data.email,
+        },
+      );
+
+      console.log('answer:', response.data);
+      dispatch(
+        setUser({
+          email: response.data.email,
+          id: response.data.id,
+          token: response.data.token,
+        }),
+      );
+
+      navigate('/login');
+      reset();
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Login error:', error.response.data);
+      } else {
+        console.error('Unexpected error:', error);
+      }
+    }
   };
 
   return (
