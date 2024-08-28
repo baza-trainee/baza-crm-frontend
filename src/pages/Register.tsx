@@ -1,7 +1,6 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
 import { registerUser } from '../components/LoginRegister/Auth';
@@ -30,18 +29,15 @@ const Register = () => {
     message: string;
   };
 
-  const mutation = useMutation(registerUser, {
+  const mutation = useMutation({
+    mutationFn: registerUser,
     onSuccess: (data: RegisterResponse) => {
       console.log('Registration successful:', data);
       navigate('/crm');
       reset();
     },
-    onError: (error: RegisterResponse) => {
-      if (axios.isAxiosError(error) && error.response) {
-        console.error('Registration error:', error.response.data);
-      } else {
-        console.error('Unexpected error:', error);
-      }
+    onError: (error: Error) => {
+      console.error('Registration error:', error);
     },
   });
 
