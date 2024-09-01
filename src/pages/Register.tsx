@@ -42,7 +42,7 @@ const Register = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    mutation.mutate({ login: data.login, password: data.password });
+    mutation.mutate({ email: data.login, password: data.password });
   };
 
   return (
