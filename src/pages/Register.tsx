@@ -80,10 +80,10 @@ const Register = () => {
                 message: 'Максимум 30 символів',
               },
             })}
-            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[23.5px]"
+            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[8px]"
           />
-          <div className="h-[40px] text-red">
-            {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}
+          <div className="font-Open Sans font-sans text-[12px] mb-[12px] text-light-grey">
+            <p>Пароль має містити від 8 до 30 символів</p>
           </div>
         </div>
         <div className="flex flex-col">

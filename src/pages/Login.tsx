@@ -1,13 +1,10 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { loginUser } from '../components/LoginRegister/LoginRequest';
 import { Link } from 'react-router-dom';
 import LogoSection from '../components/LoginRegister/LogoSection';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
-import Tooltip from '../../src/components/LoginRegister/ToolTip';
-import help from '../../src/assets/common/circle-help.svg';
 
 type Inputs = {
   login: string;
@@ -23,8 +20,6 @@ const Login = () => {
   } = useForm<Inputs>({
     mode: 'onBlur',
   });
-
-  const [showTooltip, setShowTooltip] = useState(false);
 
   const navigate = useNavigate();
 
@@ -65,6 +60,7 @@ const Login = () => {
             </label>
             <input
               {...register('login')}
+              placeholder="example@gmail.com"
               className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
             />
           </div>
@@ -94,43 +90,17 @@ const Login = () => {
           </div>
           <ButtonLogin label="Увійти" type="submit" disabled={!isValid} />
         </form>
-        <div className="flex justify-between w-[254px] mx-auto pt-[50px]">
-          <div className="w-[216px] text-center">
-            <p className="font-Open Sans font-sans text-[16px] leading-[1.5] text-light-grey">
-              Забули свій пароль?
-              <br />
-              <Link
-                to="/forgotten-password"
-                className="underline cursor-pointer text-hover-gray"
-              >
-                Відновити
-              </Link>
-            </p>
-          </div>
-          <div
-            onMouseEnter={() => setShowTooltip(true)}
-            onMouseLeave={() => setShowTooltip(false)}
-            className="relative"
-          >
-            <img
-              src={help}
-              alt="help"
-              className="w-[24px] h-[24px] cursor-pointer"
-            />
-            {showTooltip && (
-              <Tooltip
-                text="Якщо у тебе виникли проблеми — ти можеш "
-                link={
-                  <a
-                    href="mailto:administarator@gmail.com"
-                    className="underline text-active-blue"
-                  >
-                    написати Адміністратору
-                  </a>
-                }
-              />
-            )}
-          </div>
+        <div className="w-[216px] mx-auto pt-[50px] text-center">
+          <p className="font-Open Sans font-sans text-[16px] leading-[1.5] text-light-grey">
+            Забули свій пароль?
+            <br />
+            <Link
+              to="/forgotten-password"
+              className="underline cursor-pointer text-hover-gray"
+            >
+              Відновити
+            </Link>
+          </p>
         </div>
       </div>
     </div>
