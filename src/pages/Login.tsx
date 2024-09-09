@@ -1,14 +1,13 @@
+import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { loginUser } from '../components/LoginRegister/LoginRequest';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setUser } from '../features/authSlice';
 import LogoSection from '../components/LoginRegister/LogoSection';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import Tooltip from '../../src/components/LoginRegister/ToolTip';
 import help from '../../src/assets/common/circle-help.svg';
-import axios from 'axios';
 
 type Inputs = {
   login: string;
@@ -26,38 +25,27 @@ const Login = () => {
   });
 
   const [showTooltip, setShowTooltip] = useState(false);
-  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    // console.log('sent:', data);
-    try {
-      const response = await axios.post(
-        'https://185.161.208.63:5000/api/v1/auth/login',
-        {
-          email: data.login,
-          password: data.password,
-        },
-      );
+  type LoginResponse = {
+    message: string;
+  };
 
-      console.log('answer:', response.data);
-      dispatch(
-        setUser({
-          email: response.data.email,
-          id: response.data.id,
-          token: response.data.token,
-        }),
-      );
-
-      navigate('/');
+  const mutation = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data: LoginResponse) => {
+      console.log('Login successful:', data);
+      navigate('/crm');
       reset();
-    } catch (error) {
-      if (axios.isAxiosError(error) && error.response) {
-        console.error('Login error:', error.response.data);
-      } else {
-        console.error('Unexpected error:', error);
-      }
-    }
+    },
+    onError: (error: Error) => {
+      console.error('Login error:', error);
+    },
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    mutation.mutate({ email: data.login, password: data.password });
   };
 
   return (

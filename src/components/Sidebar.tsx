@@ -4,7 +4,7 @@ import projects from '../assets/common/projects.svg';
 import knowledge from '../assets/common/knowledge.svg';
 import news from '../assets/common/news.svg';
 import loyalty from '../assets/common/loyalty_programs.svg';
-import events from '../assets/common/events.svg';
+// import events from '../assets/common/events.svg';
 
 const Sidebar = () => {
   return (
@@ -43,19 +43,19 @@ const Sidebar = () => {
             </div>
           </li>
         </Link>
-        <Link to="loyalty">
-          <li className="opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100 duration-500 rounded-lg p-1">
-            <div className="flex flex-col items-center">
-              <img src={loyalty} width={50} height={50}></img>
-              <h2>Програма лояльності</h2>
-            </div>
-          </li>
-        </Link>
-        <Link to="events">
+        {/* <Link to="events">
           <li className="opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100 duration-500 rounded-lg p-1">
             <div className="flex flex-col items-center">
               <img src={events} width={50} height={50}></img>
               <h2>Події та заходи</h2>
+            </div>
+          </li>
+        </Link> */}
+        <Link to="questionnaires">
+          <li className="opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100 duration-500 rounded-lg p-1">
+            <div className="flex flex-col items-center">
+              <img src={loyalty} width={50} height={50}></img>
+              <h2>Анкети</h2>
             </div>
           </li>
         </Link>
