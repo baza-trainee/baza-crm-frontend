@@ -5,6 +5,8 @@ import { loginUser } from '../components/LoginRegister/LoginRequest';
 import { Link } from 'react-router-dom';
 import LogoSection from '../components/LoginRegister/LogoSection';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
+import { useState } from 'react';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 
 type Inputs = {
   login: string;
@@ -16,12 +18,14 @@ const Login = () => {
     register,
     formState: { errors, isValid },
     handleSubmit,
+    watch,
     reset,
   } = useForm<Inputs>({
     mode: 'onBlur',
   });
 
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   type LoginResponse = {
     message: string;
@@ -42,6 +46,8 @@ const Login = () => {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     mutation.mutate({ email: data.login, password: data.password });
   };
+
+  const password = watch('password', '');
 
   return (
     <div className="grid min-h-screen place-items-center w-full bg-text-black pb-[280px]">
@@ -64,11 +70,13 @@ const Login = () => {
               className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col relative">
             <label className="font-Open Sans font-sans text-[20px] font-normal leading-[1.5] text-white mb-[2.5px]">
               Пароль <span className="text-red">*</span>
             </label>
             <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Пароль"
               {...register('password', {
                 required: "обов'язкове поле",
                 minLength: {
@@ -80,8 +88,21 @@ const Login = () => {
                   message: 'Максимум 30 символів',
                 },
               })}
-              className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[23.5px]"
+              className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[23.5px] ${
+                password ? 'bg-white' : 'bg-input-normal-state'
+              }`}
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-[16px] top-[52px] transform -translate-y-1/2 text-gray-500"
+            >
+              {showPassword ? (
+                <AiOutlineEyeInvisible size={24} />
+              ) : (
+                <AiOutlineEye size={24} />
+              )}
+            </button>
             <div className="h-[40px] text-red">
               {errors?.password && (
                 <p>{errors?.password?.message || 'Error!'}</p>
