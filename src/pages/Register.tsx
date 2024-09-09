@@ -1,7 +1,9 @@
-import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../features/authSlice';
+import axios from 'axios';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
-import PopUp from '../components/LoginRegister/PopUp';
 import LogoSection from '../components/LoginRegister/LogoSection';
 
 type Inputs = {
@@ -16,24 +18,47 @@ const Register = () => {
     register,
     formState: { errors, isValid },
     handleSubmit,
+    watch,
     reset,
   } = useForm<Inputs>({
     mode: 'onBlur',
   });
 
-  const onSubmit: SubmitHandler<Inputs> = () => {
-    setIsPopUpVisible(true);
-    reset();
-  };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [isPopUpVisible, setIsPopUpVisible] = useState(false);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const response = await axios.post(
+        'https://185.161.208.63:5000/api/v1/auth/register',
+        {
+          email: data.login,
+          password: data.password,
+        },
+      );
 
-  const handleClosePopUp = () => {
-    setIsPopUpVisible(false);
+      console.log('answer:', response.data);
+      dispatch(
+        setUser({
+          email: response.data.email,
+          id: response.data.id,
+          token: response.data.token,
+        }),
+      );
+
+      navigate('/crm');
+      reset();
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        console.error('Registration error:', error.response.data);
+      } else {
+        console.error('Unexpected error:', error);
+      }
+    }
   };
 
   return (
-    <div className="w-full bg-[#071933] pt-[50px] pb-[198px]">
+    <div className="grid min-h-screen place-items-center w-full bg-text-black pb-[198px]">
       <LogoSection
         width="700px"
         title="Реєстрація учасника в CRM системі на Baza Trainee Ukraine"
@@ -48,7 +73,7 @@ const Register = () => {
           </label>
           <input
             {...register('login')}
-            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
+            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
           />
         </div>
         <div className="flex flex-col">
@@ -67,7 +92,7 @@ const Register = () => {
                 message: 'Максимум 30 символів',
               },
             })}
-            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[23.5px]"
+            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[23.5px]"
           />
           <div className="h-[40px] text-red">
             {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}
@@ -88,11 +113,18 @@ const Register = () => {
                 value: 30,
                 message: 'Максимум 30 символів',
               },
+              validate: (val: string) => {
+                if (watch('password') != val) {
+                  return 'Паролі не співпадають';
+                }
+              },
             })}
-            className="font-Lato font-sans font-normal text-[16px] bg-[#d2e4ff] rounded-[10px] p-[16px] h-[40px]  mb-[49px]"
+            className="font-Lato font-sans font-normal text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[49px]"
           />
           <div className="h-[40px] text-red">
-            {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}
+            {errors?.confirmPassword && (
+              <p>{errors?.confirmPassword?.message || 'Error!'}</p>
+            )}
           </div>
         </div>
         <div className="flex gap-[10px] mb-[32px]">
@@ -103,7 +135,7 @@ const Register = () => {
             type="checkbox"
             className="w-[20px] h-[20px] mt-[4px]"
           />
-          <label className="font-Open Sans font-sans text-[16px] text-[#b1aeae]">
+          <label className="font-Open Sans font-sans text-[16px] text-light-grey">
             Погоджуюсь з{' '}
             <span className="underline leading-[1.62] cursor-pointer ">
               <a>Правилами користування</a>
@@ -121,13 +153,6 @@ const Register = () => {
           disabled={!isValid}
         />
       </form>
-      {isPopUpVisible && (
-        <PopUp
-          text1="Вітаю!"
-          text2="Реєстрація пройшла успішно."
-          onClose={handleClosePopUp}
-        />
-      )}
     </div>
   );
 };
