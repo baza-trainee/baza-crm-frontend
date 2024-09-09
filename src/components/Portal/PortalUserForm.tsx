@@ -67,10 +67,7 @@ const PortalUserForm: React.FC = () => {
   >([]);
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="p-5 w-[844px] rounded-[10px] border border-solid border-card-border flex flex-col gap-5"
-    >
+    <form onSubmit={onSubmit} className="flex flex-col gap-5 p-5">
       <div className="flex gap-5">
         <div className="w-full">
           <CustomInput
