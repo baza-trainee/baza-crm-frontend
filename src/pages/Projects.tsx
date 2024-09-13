@@ -4,6 +4,9 @@ import Project from '../components/Projects/Project';
 import ProjectsHeader from '../components/Projects/ProjectsHeader';
 import ProjectsTabs from '../components/Projects/ProjectsTabs';
 import { projects } from '../data';
+import { useQuery } from '@tanstack/react-query';
+import { fetchProjects } from '../utils/fetchProjects';
+import Spinner from '../components/Spinner';
 
 const Projects = () => {
   const [selectedOption, setSelectedOption] = useState({
@@ -12,10 +15,36 @@ const Projects = () => {
   });
   const [parent] = useAutoAnimate();
 
+  const { data, isPending, isError } = useQuery({
+    queryKey: ['projects'],
+    queryFn: () => fetchProjects(),
+  });
+
   const filteredProjects =
     selectedOption.value === 'all'
       ? projects
       : projects.filter((project) => project.label === selectedOption.label);
+
+  if (isPending) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return (
+      <section className="flex flex-col w-full gap-5 px-8 py-5 bg-light-blue-bg height-100">
+        <ProjectsHeader />
+        <ProjectsTabs
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
+        />
+        <h2 className="text-2xl text-center mt-[10%]">
+          Виникла помилка при завантаженні проєктів. Спробуйте пізніше.
+        </h2>
+      </section>
+    );
+  }
+
+  console.log(data);
 
   return (
     <section className="flex flex-col w-full min-h-screen gap-5 px-8 py-5 bg-light-blue-bg">

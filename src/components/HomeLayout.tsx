@@ -1,10 +1,11 @@
 import { Outlet } from 'react-router-dom';
+
 import Header from './Header';
 import Sidebar from './Sidebar';
 
 const HomeLayout = () => {
   return (
-    <main className="min-h-screen">
+    <main>
       <Header />
       <Sidebar />
       <div className="ml-[150px] mt-[70px]">
