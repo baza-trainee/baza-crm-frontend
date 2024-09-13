@@ -5,17 +5,39 @@ import {
   FaTelegram,
 } from 'react-icons/fa6';
 import { useParams } from 'react-router-dom';
-
-import { projects } from '../data';
+import { fetchProject } from '../utils/fetchProject';
+import { useQuery } from '@tanstack/react-query';
+import Spinner from '../components/Spinner';
 
 const ProjectPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const project = projects.find((project) => project.id === Number(id));
-  const { label, title, tags, points, teamStart, projectStart } = project || {};
+  const {
+    data: project,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ['project'],
+    queryFn: () => fetchProject(Number(id)),
+  });
+
+  if (isPending) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return (
+      <section className="flex w-full gap-5 px-8 py-5 bg-light-blue-bg height-100">
+        <h2 className="text-2xl text-center mt-[10%]">
+          Виникла помилка при завантаженні проєкта. Спробуйте пізніше.
+        </h2>
+      </section>
+    );
+  }
+
   const borderColor =
-    label === 'Завершені'
+    project?.projectStatus === 'Завершені'
       ? '#14B541'
-      : label === 'В розробці'
+      : project?.projectStatus === 'В розробці'
         ? '#2e57db'
         : '#f16600';
 
@@ -23,38 +45,38 @@ const ProjectPage: React.FC = () => {
     <main className="flex flex-col w-full min-h-screen gap-5 px-8 py-5 bg-light-blue-bg text-text-black">
       {/* TITLE */}
       <div className="h-[60px] flex justify-between items-center font-bold text-text-black bg-white rounded-xl border-card-border border px-8 w-[845px] mb-10">
-        <h1 className="text-2xl">{title}</h1>
+        <h1 className="text-2xl">{project?.name}</h1>
         <div
           style={{ backgroundColor: borderColor }}
           className="px-5 py-2 text-white rounded-[10px]"
         >
-          {label}
+          {project?.projectStatus}
         </div>
       </div>
       {/* DESCRIPTION */}
       <h3 className="mb-3 ml-8 text-xl font-bold">Опис проєкту</h3>
       <div className="flex flex-wrap gap-5 mb-10">
         <div className="w-[845px] bg-white rounded-[10px] px-8 py-5 border-card-border border h-[220px] flex flex-col justify-between">
-          <p className="text-xl">
-            Багатосторінковий сайт з адмін панеллю для підбору досвідчених
-            спеціалістів у сфері IT.
-          </p>
+          <p className="text-xl">{project?.description}</p>
           <p className="flex justify-between gap-5 font-bold max-w-[440px]">
             Дата старту формування команди{' '}
-            <span className="ml-14">{teamStart}</span>
+            <span className="ml-14">{project?.dateTeam}</span>
           </p>
           <p className="flex justify-between gap-5 font-bold max-w-[440px]">
-            Дата старту розробки <span className="ml-14">{projectStart}</span>
+            Дата старту розробки{' '}
+            <span className="ml-14">{project?.dateStart}</span>
           </p>
         </div>
         <div className="w-[412px] flex flex-col justify-between">
           <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border justify-between flex items-end">
             <p className="text-xl">Бали за участь</p>
-            <p className="font-semibold">{points} Балів</p>
+            <p className="font-semibold">{project.projectPoints} Балів</p>
           </div>
           <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border justify-between flex items-end">
             <p className="text-xl">Формат участі</p>
-            <p className="font-semibold text-primary-blue">LIGHT</p>
+            <p className="font-semibold text-primary-blue">
+              {project.projectType}
+            </p>
           </div>
           <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border justify-between flex items-center">
             <p className="text-xl">Документація</p>
@@ -94,19 +116,19 @@ const ProjectPage: React.FC = () => {
       {/* TEAM */}
       <h3 className="mb-3 ml-8 text-xl font-bold">Склад команди</h3>
       <div className="flex flex-wrap gap-5">
-        {tags?.map((tag) => (
+        {project.projectRequirments.map((tag) => (
           <div className="w-[268px] bg-white rounded-[10px] px-8 py-5 border-card-border border h-[282px] flex flex-col justify-start gap-3">
             <div className="flex items-center justify-between">
               <div className="px-8 py-2 text-white rounded-r-[10px] -ml-8 self-start bg-primary-blue">
-                {tag.label}
+                {tag.tagId}
               </div>
               <p>
-                {tag.number === tag.all ? (
-                  <span className="text-primary-blue">{tag.number}</span>
+                {tag.count === 5 ? (
+                  <span className="text-primary-blue">{tag.count}</span>
                 ) : (
-                  <span>{tag.number}</span>
+                  <span>{tag.count}</span>
                 )}
-                <span className="text-primary-blue">/{tag.all}</span>
+                <span className="text-primary-blue">/{tag.tagId}</span>
               </p>
             </div>
             <div>
@@ -120,7 +142,7 @@ const ProjectPage: React.FC = () => {
         ))}
       </div>
       {/* BUTTON */}
-      {label === 'Формується команда' && (
+      {project.projectStatus === 'Формується команда' && (
         <button className="text-white hover:bg-light-blue bg-primary-blue w-[268px] h-[40px] rounded-[10px] flex justify-center items-center duration-500">
           Подати заявку
         </button>

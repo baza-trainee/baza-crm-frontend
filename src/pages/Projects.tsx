@@ -3,7 +3,9 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import Project from '../components/Projects/Project';
 import ProjectsHeader from '../components/Projects/ProjectsHeader';
 import ProjectsTabs from '../components/Projects/ProjectsTabs';
-import { projects } from '../data';
+import { useQuery } from '@tanstack/react-query';
+import { fetchProjects } from '../utils/fetchProjects';
+import Spinner from '../components/Spinner';
 
 const Projects = () => {
   const [selectedOption, setSelectedOption] = useState({
@@ -12,10 +14,40 @@ const Projects = () => {
   });
   const [parent] = useAutoAnimate();
 
+  const {
+    data: projects,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ['projects'],
+    queryFn: () => fetchProjects(),
+  });
+
   const filteredProjects =
     selectedOption.value === 'all'
       ? projects
-      : projects.filter((project) => project.label === selectedOption.label);
+      : projects?.filter(
+          (project) => project.projectStatus === selectedOption.label,
+        );
+
+  if (isPending) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return (
+      <section className="flex flex-col w-full gap-5 px-8 py-5 bg-light-blue-bg height-100">
+        <ProjectsHeader />
+        <ProjectsTabs
+          selectedOption={selectedOption}
+          setSelectedOption={setSelectedOption}
+        />
+        <h2 className="text-2xl text-center mt-[10%]">
+          Виникла помилка при завантаженні проєктів. Спробуйте пізніше.
+        </h2>
+      </section>
+    );
+  }
 
   return (
     <section className="flex flex-col w-full min-h-screen gap-5 px-8 py-5 bg-light-blue-bg">
@@ -34,13 +66,13 @@ const Projects = () => {
           <p>Слідкуйте за повідомленнями на нашому Discord каналі.</p>
         </div>
       )}
-      {projects.length > 0 && (
+      {filteredProjects && filteredProjects.length > 0 && (
         <div
           className="grid grid-cols-3 gap-5 lg:grid-cols-4 xl:grid-cols-5 place-items-center"
           ref={parent}
         >
           {filteredProjects.map((project) => (
-            <Project key={project.id} {...project} />
+            <Project key={project.id} project={project} />
           ))}
         </div>
       )}
