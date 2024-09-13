@@ -23,12 +23,12 @@ const Projects = () => {
     queryFn: () => fetchProjects(),
   });
 
-  // const filteredProjects =
-  //   selectedOption.value === 'all'
-  //     ? projects
-  //     : projects?.filter(
-  //         (project) => project.projectStatus === selectedOption.label,
-  //       );
+  const filteredProjects =
+    selectedOption.value === 'all'
+      ? projects
+      : projects?.filter(
+          (project) => project.projectStatus === selectedOption.label,
+        );
 
   if (isPending) {
     return <Spinner />;
@@ -49,8 +49,6 @@ const Projects = () => {
     );
   }
 
-  console.log(projects);
-
   return (
     <section className="flex flex-col w-full min-h-screen gap-5 px-8 py-5 bg-light-blue-bg">
       <ProjectsHeader />
@@ -68,12 +66,12 @@ const Projects = () => {
           <p>Слідкуйте за повідомленнями на нашому Discord каналі.</p>
         </div>
       )}
-      {projects.length > 0 && (
+      {filteredProjects && filteredProjects.length > 0 && (
         <div
           className="grid grid-cols-3 gap-5 lg:grid-cols-4 xl:grid-cols-5 place-items-center"
           ref={parent}
         >
-          {projects.map((project) => (
+          {filteredProjects.map((project) => (
             <Project key={project.id} project={project} />
           ))}
         </div>
