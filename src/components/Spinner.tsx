@@ -1,6 +1,6 @@
 import HashLoader from 'react-spinners/HashLoader';
 
-const Spinner = () => {
+const Spinner: React.FC = () => {
   return (
     <section className="flex items-center justify-center w-full height-100">
       <HashLoader
