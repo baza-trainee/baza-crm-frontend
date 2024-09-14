@@ -5,7 +5,7 @@ import Communication from './pages/Communication';
 import Email from './pages/Email';
 import Error from './pages/Error';
 import Evaluating from './pages/Evaluating';
-import Events from './pages/Events';
+import Analytics from './pages/Analytics';
 import ForgottenPassword from './pages/ForgottenPassword';
 import HomeLayout from './components/HomeLayout';
 import Knowledge from './pages/Knowledge';
@@ -86,8 +86,8 @@ const router = createBrowserRouter([
         element: <Loyalty />,
       },
       {
-        path: 'events',
-        element: <Events />,
+        path: 'analytics',
+        element: <Analytics />,
       },
     ],
   },

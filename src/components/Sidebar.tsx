@@ -43,14 +43,14 @@ const Sidebar = () => {
             </div>
           </li>
         </Link>
-        {/* <Link to="events">
+        <Link to="analytics">
           <li className="opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100 duration-500 rounded-lg p-1">
             <div className="flex flex-col items-center">
-              <img src={events} width={50} height={50}></img>
-              <h2>Події та заходи</h2>
+              <img src={logo} width={50} height={50}></img>
+              <h2>Аналітика</h2>
             </div>
           </li>
-        </Link> */}
+        </Link>
         <Link to="questionnaires">
           <li className="opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100 duration-500 rounded-lg p-1">
             <div className="flex flex-col items-center">
