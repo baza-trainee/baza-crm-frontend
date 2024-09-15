@@ -6,14 +6,14 @@ import Project from '../components/Projects/Project';
 import ProjectsHeader from '../components/Projects/ProjectsHeader';
 import ProjectsTabs from '../components/Projects/ProjectsTabs';
 import Spinner from '../components/Spinner';
-import { countProjectsByStatus } from '../utils/projects/projectStatusOptions';
+import {
+  countProjectsByStatus,
+  projectStatusOptions,
+} from '../utils/projects/projectStatusOptions';
 import { fetchProjects } from '../utils/projects/fetchProjects';
 
 const Projects = () => {
-  const [selectedOption, setSelectedOption] = useState({
-    value: 'all',
-    label: 'Всі',
-  });
+  const [selectedOption, setSelectedOption] = useState(projectStatusOptions);
   const [parent] = useAutoAnimate();
 
   const {
@@ -31,12 +31,16 @@ const Projects = () => {
     projectNumber = countProjectsByStatus(projects);
   }
 
-  const filteredProjects =
-    selectedOption.value === 'all'
-      ? projects
-      : projects?.filter(
-          (project) => project.projectStatus === selectedOption.value,
-        );
+  // const filteredProjects =
+  //   selectedOption.value === 'all'
+  //     ? projects
+  //     : projects?.filter(
+  //         (project) => project.projectStatus === selectedOption.value,
+  //       );
+
+  const filteredProjects = projects?.filter((project) =>
+    selectedOption.some((option) => option.value === project.projectStatus),
+  );
 
   if (isPending) {
     return <Spinner />;
@@ -73,7 +77,17 @@ const Projects = () => {
       )}
       {filteredProjects && filteredProjects.length === 0 && (
         <h2 className="text-2xl text-center mt-[10%]">
-          На даний момент немає проєктів зі статусом "{selectedOption.label}"
+          {selectedOption.length > 0
+            ? 'Немає проєктів зі ' +
+              (selectedOption.length === 1 ? 'статусом' : 'статусами') +
+              ' "' +
+              selectedOption
+                .slice(0, 3)
+                .map((option) => option.label)
+                .join(', ') +
+              '"' +
+              (selectedOption.length > 3 ? ' та інших' : '')
+            : 'Оберіть статус проєкту'}
         </h2>
       )}
       {filteredProjects && filteredProjects.length > 0 && (

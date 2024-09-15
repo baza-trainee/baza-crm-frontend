@@ -1,7 +1,6 @@
 import { OptionType, Project, StatusCount } from '../../types';
 
 export const projectStatusOptions: OptionType[] = [
-  { value: 'all', label: 'Всі' },
   { value: 'searching', label: 'Формується команда' },
   { value: 'working', label: 'В розробці' },
   { value: 'ended', label: 'Завершені' },

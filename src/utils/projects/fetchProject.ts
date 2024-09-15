@@ -1,6 +1,5 @@
 import axios from 'axios';
-
-import { Project } from '../../types';
+import { type Project } from '../../types';
 
 export const fetchProject = async (id: number): Promise<Project> => {
   const url = `${import.meta.env.VITE_API_URL}/project/${id}`;
