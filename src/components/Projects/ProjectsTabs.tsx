@@ -39,13 +39,22 @@ const ProjectsTabs: React.FC<ProjectsTabsProps> = ({
     <div className="h-[60px] flex items-center text-text-black bg-white rounded-[10px] border-card-border border px-8 gap-6">
       <span className="font-semibold">Загалом:</span>
       <div className="px-3 py-2 border-2 rounded-[10px] border-orange">
-        {projectStatusOptions[0].label} {projectNumber.searching || 0}
+        {projectStatusOptions[0].label}{' '}
+        <span className="text-lg font-semibold">
+          {projectNumber.searching || 0}
+        </span>
       </div>
       <div className="px-3 py-2 border-2 rounded-[10px] border-light-blue">
-        {projectStatusOptions[1].label} {projectNumber.working || 0}
+        {projectStatusOptions[1].label}{' '}
+        <span className="text-lg font-semibold">
+          {projectNumber.working || 0}
+        </span>
       </div>
       <div className="px-3 py-2 border-2 rounded-[10px] border-dark-green">
-        {projectStatusOptions[2].label} {projectNumber.ended || 0}
+        {projectStatusOptions[2].label}{' '}
+        <span className="text-lg font-semibold">
+          {projectNumber.ended || 0}
+        </span>
       </div>
       <Select
         // components={{

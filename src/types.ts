@@ -37,3 +37,10 @@ export type Project = {
   projectRequirments: ProjectRequirement[];
   projectMember: ProjectMember[];
 };
+
+export type Tag = {
+  id: number;
+  name: string;
+  color: string;
+  isSpecialization: boolean;
+};
