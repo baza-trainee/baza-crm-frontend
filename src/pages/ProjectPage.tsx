@@ -5,9 +5,10 @@ import {
   FaTelegram,
 } from 'react-icons/fa6';
 import { useParams } from 'react-router-dom';
-import { fetchProject } from '../utils/fetchProject';
 import { useQuery } from '@tanstack/react-query';
+
 import Spinner from '../components/Spinner';
+import { getProjectById } from '../utils/projectApi';
 
 const ProjectPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -17,7 +18,7 @@ const ProjectPage: React.FC = () => {
     isError,
   } = useQuery({
     queryKey: ['project'],
-    queryFn: () => fetchProject(Number(id)),
+    queryFn: () => getProjectById(Number(id)),
   });
 
   if (isPending) {
