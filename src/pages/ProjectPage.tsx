@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import {
   FaChevronDown,
   FaLinkedin,
@@ -5,9 +6,9 @@ import {
   FaTelegram,
 } from 'react-icons/fa6';
 import { useParams } from 'react-router-dom';
-import { fetchProject } from '../utils/fetchProject';
-import { useQuery } from '@tanstack/react-query';
+
 import Spinner from '../components/Spinner';
+import { fetchProject } from '../utils/projects/fetchProject';
 
 const ProjectPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();

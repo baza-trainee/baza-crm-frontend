@@ -1,11 +1,12 @@
-import { useState } from 'react';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+
 import Project from '../components/Projects/Project';
 import ProjectsHeader from '../components/Projects/ProjectsHeader';
 import ProjectsTabs from '../components/Projects/ProjectsTabs';
-import { useQuery } from '@tanstack/react-query';
-import { fetchProjects } from '../utils/fetchProjects';
 import Spinner from '../components/Spinner';
+import { fetchProjects } from '../utils/projects/fetchProjects';
 
 const Projects = () => {
   const [selectedOption, setSelectedOption] = useState({
@@ -27,7 +28,7 @@ const Projects = () => {
     selectedOption.value === 'all'
       ? projects
       : projects?.filter(
-          (project) => project.projectStatus === selectedOption.label,
+          (project) => project.projectStatus === selectedOption.value,
         );
 
   if (isPending) {
@@ -65,6 +66,11 @@ const Projects = () => {
           <p>Зараз ми активно шукаємо нові проєкти.</p>
           <p>Слідкуйте за повідомленнями на нашому Discord каналі.</p>
         </div>
+      )}
+      {filteredProjects && filteredProjects.length === 0 && (
+        <h2 className="text-2xl text-center mt-[10%]">
+          На даний момент немає проєктів зі статусом "{selectedOption.label}"
+        </h2>
       )}
       {filteredProjects && filteredProjects.length > 0 && (
         <div

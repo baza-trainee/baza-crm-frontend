@@ -1,17 +1,8 @@
-import Select, { OptionProps } from 'react-select';
 import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
+import Select, { OptionProps } from 'react-select';
 
-type OptionType = {
-  value: string;
-  label: string;
-};
-
-const options: OptionType[] = [
-  { value: 'all', label: 'Всі' },
-  { value: 'team', label: 'Формується команда' },
-  { value: 'development', label: 'В розробці' },
-  { value: 'completed', label: 'Завершені' },
-];
+import { OptionType } from '../../types';
+import { options } from '../../utils/projects/options';
 
 const CustomOption = (props: OptionProps<OptionType>) => (
   <div

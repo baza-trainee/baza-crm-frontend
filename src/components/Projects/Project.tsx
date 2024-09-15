@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { type Project } from '../../utils/fetchProject';
+import { type Project } from '../../utils/projects/fetchProject';
 
 interface ProjectProps {
   project: Project;
