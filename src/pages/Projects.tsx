@@ -9,8 +9,9 @@ import Spinner from '../components/Spinner';
 import {
   countProjectsByStatus,
   projectStatusOptions,
-} from '../utils/projects/projectStatusOptions';
-import { fetchProjects } from '../utils/projects/fetchProjects';
+} from '../utils/projectStatusOptions';
+import { getProjects } from '../utils/projectApi';
+import { getTags } from '../utils/tagApi';
 
 const Projects = () => {
   const [selectedOption, setSelectedOption] = useState(projectStatusOptions);
@@ -22,8 +23,17 @@ const Projects = () => {
     isError,
   } = useQuery({
     queryKey: ['projects'],
-    queryFn: () => fetchProjects(),
+    queryFn: () => getProjects(),
   });
+
+  const { data: tags, isError: isTagsError } = useQuery({
+    queryKey: ['tags'],
+    queryFn: () => getTags(),
+  });
+
+  if (isTagsError) {
+    console.log(isTagsError);
+  }
 
   let projectNumber = {};
 
@@ -96,7 +106,7 @@ const Projects = () => {
           ref={parent}
         >
           {filteredProjects.map((project) => (
-            <Project key={project.id} project={project} />
+            <Project key={project.id} project={project} tags={tags} />
           ))}
         </div>
       )}

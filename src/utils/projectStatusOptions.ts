@@ -1,4 +1,4 @@
-import { OptionType, Project, StatusCount } from '../../types';
+import { OptionType, Project, StatusCount } from '../types';
 
 export const projectStatusOptions: OptionType[] = [
   { value: 'searching', label: 'Формується команда' },

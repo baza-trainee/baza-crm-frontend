@@ -1,18 +1,42 @@
 import { Link } from 'react-router-dom';
-import { type Project } from '../../types';
-import { getProjectStatusLabel } from '../../utils/projects/projectStatusOptions';
+import { Tag, type Project } from '../../types';
+import { getProjectStatusLabel } from '../../utils/projectStatusOptions';
 
 interface ProjectProps {
   project: Project;
+  tags?: Tag[];
 }
 
-const Project: React.FC<ProjectProps> = ({ project }) => {
+const Project: React.FC<ProjectProps> = ({ project, tags = [] }) => {
   const borderColor =
     project.projectStatus === 'ended'
       ? '#14B541'
       : project.projectStatus === 'working'
         ? '#2e57db'
         : '#f16600';
+
+  const filteredTags = tags
+    .filter((tag) =>
+      project.projectRequirments.some(
+        (req) => req.tagId === tag.id && tag.isSpecialization,
+      ),
+    )
+    .map((tag) => {
+      const req = project.projectRequirments.find(
+        (req) => req.tagId === tag.id,
+      );
+      const memberCount = project.projectMember.filter(
+        (member) => member.tagId === tag.id,
+      ).length;
+
+      return {
+        id: tag.id,
+        name: tag.name,
+        color: tag.color,
+        count: memberCount,
+        maxCount: req ? req.count : 5,
+      };
+    });
 
   return (
     <div
@@ -28,19 +52,20 @@ const Project: React.FC<ProjectProps> = ({ project }) => {
       <h2 className="text-2xl font-bold">{project.name}</h2>
       <p className="font-semibold">Склад команди</p>
       <div className="flex flex-wrap gap-3">
-        {project.projectRequirments.map((tag) => {
+        {filteredTags.map((tag) => {
           return (
             <div
-              key={tag.tagId}
-              className="text-text-gray rounded-[10px] px-2 py-1 border-2 border-card-border"
+              key={tag.id}
+              style={{ borderColor: tag.color }}
+              className="text-text-gray rounded-[10px] px-2 py-1 border-2"
             >
-              {tag.tagId}{' '}
-              {tag.count === 5 ? (
+              {tag.name}{' '}
+              {tag.count === tag.maxCount ? (
                 <span className="text-primary-blue">{tag.count}</span>
               ) : (
                 <span>{tag.count}</span>
               )}
-              <span className="text-primary-blue">/5</span>
+              <span className="text-primary-blue">/{tag.maxCount}</span>
             </div>
           );
         })}

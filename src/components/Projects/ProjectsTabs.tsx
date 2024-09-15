@@ -3,7 +3,7 @@ import makeAnimated from 'react-select/animated';
 
 // import Select, { OptionProps } from 'react-select';
 import { OptionType, StatusCount } from '../../types';
-import { projectStatusOptions } from '../../utils/projects/projectStatusOptions';
+import { projectStatusOptions } from '../../utils/projectStatusOptions';
 
 // import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
 

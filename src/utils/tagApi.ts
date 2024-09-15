@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { type Tag } from '../../types';
+import { type Tag } from '../types';
 
-export const fetchTags = async (): Promise<Tag[]> => {
+export const getTags = async (): Promise<Tag[]> => {
   const url = `${import.meta.env.VITE_API_URL}/tag`;
   const token = import.meta.env.VITE_TOKEN;
 
