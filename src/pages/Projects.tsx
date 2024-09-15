@@ -6,6 +6,7 @@ import Project from '../components/Projects/Project';
 import ProjectsHeader from '../components/Projects/ProjectsHeader';
 import ProjectsTabs from '../components/Projects/ProjectsTabs';
 import Spinner from '../components/Spinner';
+import { countProjectsByStatus } from '../utils/projects/projectStatusOptions';
 import { fetchProjects } from '../utils/projects/fetchProjects';
 
 const Projects = () => {
@@ -24,6 +25,12 @@ const Projects = () => {
     queryFn: () => fetchProjects(),
   });
 
+  let projectNumber = {};
+
+  if (projects) {
+    projectNumber = countProjectsByStatus(projects);
+  }
+
   const filteredProjects =
     selectedOption.value === 'all'
       ? projects
@@ -39,10 +46,6 @@ const Projects = () => {
     return (
       <section className="flex flex-col w-full gap-5 px-8 py-5 bg-light-blue-bg height-100">
         <ProjectsHeader />
-        <ProjectsTabs
-          selectedOption={selectedOption}
-          setSelectedOption={setSelectedOption}
-        />
         <h2 className="text-2xl text-center mt-[10%]">
           Виникла помилка при завантаженні проєктів. Спробуйте пізніше.
         </h2>
@@ -54,6 +57,7 @@ const Projects = () => {
     <section className="flex flex-col w-full min-h-screen gap-5 px-8 py-5 bg-light-blue-bg">
       <ProjectsHeader />
       <ProjectsTabs
+        projectNumber={projectNumber}
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
       />

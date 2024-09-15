@@ -1,8 +1,8 @@
-import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
 import Select, { OptionProps } from 'react-select';
+import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
 
-import { OptionType } from '../../types';
-import { options } from '../../utils/projects/options';
+import { OptionType, StatusCount } from '../../types';
+import { projectStatusOptions } from '../../utils/projects/projectStatusOptions';
 
 const CustomOption = (props: OptionProps<OptionType>) => (
   <div
@@ -21,30 +21,30 @@ const CustomOption = (props: OptionProps<OptionType>) => (
 );
 
 type ProjectsTabsProps = {
+  projectNumber: StatusCount;
   selectedOption: OptionType;
   setSelectedOption: (option: OptionType) => void;
 };
 
 const ProjectsTabs: React.FC<ProjectsTabsProps> = ({
+  projectNumber,
   selectedOption,
   setSelectedOption,
 }) => {
-  const tabs = [14, 10, 32];
-
   return (
-    <div className="h-[60px] flex items-center text-2xl font-bold text-text-black bg-white rounded-[10px] border-card-border border px-8 gap-6">
-      <span>Загалом:</span>
+    <div className="h-[60px] flex items-center text-text-black bg-white rounded-[10px] border-card-border border px-8 gap-6">
+      <span className="font-semibold">Загалом:</span>
       <div className="px-3 py-2 border-2 rounded-[10px] border-orange">
-        {options[1].label} {tabs[0]}
+        {projectStatusOptions[1].label} {projectNumber.searching || 0}
       </div>
       <div className="px-3 py-2 border-2 rounded-[10px] border-light-blue">
-        {options[2].label} {tabs[1]}
+        {projectStatusOptions[2].label} {projectNumber.working || 0}
       </div>
       <div className="px-3 py-2 border-2 rounded-[10px] border-dark-green">
-        {options[3].label} {tabs[2]}
+        {projectStatusOptions[3].label} {projectNumber.ended || 0}
       </div>
       <Select
-        options={options}
+        options={projectStatusOptions}
         onChange={(option) => setSelectedOption(option as OptionType)}
         value={selectedOption}
         components={{

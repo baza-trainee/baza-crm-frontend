@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { type Project } from '../../utils/projects/fetchProject';
+import { type Project } from '../../types';
+import { getProjectStatusLabel } from '../../utils/projects/projectStatusOptions';
 
 interface ProjectProps {
   project: Project;
@@ -7,9 +8,9 @@ interface ProjectProps {
 
 const Project: React.FC<ProjectProps> = ({ project }) => {
   const borderColor =
-    project.projectStatus === 'Завершені'
+    project.projectStatus === 'ended'
       ? '#14B541'
-      : project.projectStatus === 'В розробці'
+      : project.projectStatus === 'working'
         ? '#2e57db'
         : '#f16600';
 
@@ -22,7 +23,7 @@ const Project: React.FC<ProjectProps> = ({ project }) => {
         style={{ backgroundColor: borderColor }}
         className="px-5 py-2 text-white rounded-r-[10px] -ml-5 self-start"
       >
-        {project.projectStatus}
+        {getProjectStatusLabel(project.projectStatus)}
       </div>
       <h2 className="text-2xl font-bold">{project.name}</h2>
       <p className="font-semibold">Склад команди</p>
