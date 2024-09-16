@@ -1,11 +1,12 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
-import { registerUser } from '../components/LoginRegister/Auth';
+import { registerUser } from '../utils/Auth';
 import { useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import Spinner from '../components/Spinner';
 
 type Inputs = {
   login: string;
@@ -18,6 +19,7 @@ const Register = () => {
   const {
     register,
     formState: { errors, isValid },
+    setError,
     handleSubmit,
     watch,
     reset,
@@ -25,9 +27,10 @@ const Register = () => {
     mode: 'onBlur',
   });
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   type RegisterResponse = {
     message: string;
@@ -35,13 +38,26 @@ const Register = () => {
 
   const mutation = useMutation({
     mutationFn: registerUser,
+    onMutate: () => {
+      setIsLoading(true);
+    },
     onSuccess: (data: RegisterResponse) => {
       console.log('Registration successful:', data);
-      navigate('/crm');
+      // navigate('/crm');
       reset();
     },
-    onError: (error: Error) => {
+    onError: (error: any) => {
       console.error('Registration error:', error);
+
+      if (error?.response?.data?.message) {
+        setError('login', {
+          type: 'server',
+          message: error.response.data.message,
+        });
+      }
+    },
+    onSettled: () => {
+      setIsLoading(false);
     },
   });
 
@@ -68,9 +84,20 @@ const Register = () => {
           </label>
           <input
             placeholder="Evgen.ga@gmail.com"
-            {...register('login')}
-            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
+            {...register('login', {
+              required: "обов'язкове поле",
+            })}
+            className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px] ${errors?.login ? 'border border-red-500' : ''}`}
           />
+          <div className="relative">
+            <div className="absolute bottom-[-2px]">
+              {errors?.login && (
+                <p className="font-Open Sans font-sans text-[12px] text-red">
+                  {errors.login.message}
+                </p>
+              )}
+            </div>
+          </div>
         </div>
         <div className="flex flex-col relative">
           <label className="font-Open Sans font-sans text-[20px] font-normal leading-[1.5] text-white mb-[2.5px]">
@@ -173,11 +200,13 @@ const Register = () => {
             .
           </label>
         </div>
-        <ButtonLogin
-          label="Зареєструватися"
-          type="submit"
-          disabled={!isValid}
-        />
+        {isLoading ? (
+          <div className="flex justify-center mt-4">
+            <Spinner />
+          </div>
+        ) : (
+          <ButtonLogin label="Увійти" type="submit" disabled={!isValid} />
+        )}
       </form>
     </div>
   );
