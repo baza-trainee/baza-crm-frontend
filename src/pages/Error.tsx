@@ -22,8 +22,8 @@ const Error: React.FC = () => {
           >
             <img
               src={logo}
-              alt="logo"
-              className="duration-500 rounded-full place-items-center hover:bg-primary-blue"
+              alt="Baza Trainee logo"
+              className="duration-500 rounded-full hover:bg-primary-blue"
             />
           </a>
         </div>

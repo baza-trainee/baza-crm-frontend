@@ -4,6 +4,7 @@ import makeAnimated from 'react-select/animated';
 // import Select, { OptionProps } from 'react-select';
 import { OptionType, StatusCount } from '../../types';
 import { projectStatusOptions } from '../../utils/projectStatusOptions';
+import { Link } from 'react-router-dom';
 
 // import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
 
@@ -34,6 +35,7 @@ const ProjectsTabs: React.FC<ProjectsTabsProps> = ({
   selectedOption,
   setSelectedOption,
 }) => {
+  const isAdmin = true;
   const animatedComponents = makeAnimated();
   return (
     <div className="h-[60px] flex items-center text-text-black bg-white rounded-[10px] border-card-border border px-8 gap-6">
@@ -69,6 +71,14 @@ const ProjectsTabs: React.FC<ProjectsTabsProps> = ({
         className="min-w-80"
         classNamePrefix="react-select"
       />
+      {isAdmin && (
+        <Link
+          to="/crm/projects/create"
+          className="text-white hover:bg-white bg-primary-blue h-[40px] rounded-[10px] flex justify-center items-center duration-500 w-[268px] border-2 border-primary-blue hover:text-black font-semibold"
+        >
+          + Створити проєкт
+        </Link>
+      )}
     </div>
   );
 };

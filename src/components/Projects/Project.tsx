@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Tag, type Project } from '../../types';
+import { type Tag, type Project } from '../../types';
 import { getProjectStatusLabel } from '../../utils/projectStatusOptions';
 
 interface ProjectProps {
@@ -8,6 +8,7 @@ interface ProjectProps {
 }
 
 const Project: React.FC<ProjectProps> = ({ project, tags = [] }) => {
+  const isAdmin = false;
   const borderColor =
     project.projectStatus === 'ended'
       ? '#14B541'
@@ -84,12 +85,21 @@ const Project: React.FC<ProjectProps> = ({ project, tags = [] }) => {
         <p className="font-semibold max-w-48">Дата старту розробки</p>
         <p>{project.dateStart}</p>
       </div>
-      <Link
-        to={`${project.id}`}
-        className="border-2 border-primary-blue rounded-[10px] duration-500 hover:bg-primary-blue hover:text-white font-semibold flex justify-center items-center w-[268px] h-10 self-center"
-      >
-        Детальніше
-      </Link>
+      {isAdmin && project.projectStatus !== 'ended' ? (
+        <Link
+          to={`${project.id}/edit`}
+          className="border-2 border-primary-blue rounded-[10px] duration-500 hover:bg-primary-blue hover:text-white font-semibold flex justify-center items-center w-[268px] h-10 self-center"
+        >
+          Редагувати
+        </Link>
+      ) : (
+        <Link
+          to={`${project.id}`}
+          className="border-2 border-primary-blue rounded-[10px] duration-500 hover:bg-primary-blue hover:text-white font-semibold flex justify-center items-center w-[268px] h-10 self-center"
+        >
+          Детальніше
+        </Link>
+      )}
     </div>
   );
 };

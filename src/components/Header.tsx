@@ -1,28 +1,29 @@
 import { Link } from 'react-router-dom';
-import logoheader from '../assets/common/logo-header.svg';
+
+import logoHeader from '../assets/common/logo-header.svg';
 
 const Header = () => {
   return (
-    <div className="h-[70px] w-screen z-50 bg-[#0A1321] text-[#888888] top-0 fixed px-10">
-      <ul className="flex flex-row justify-between items-center font-['Open_Sans'] text-base">
-        <Link to="https://baza-trainee.tech/ua">
-          <li className="hover:text-[#E4F1FF] hover:bg-[#788AA0] duration-500 my-2.5">
-            <img src={logoheader} width={50} height={50}></img>
-          </li>
-        </Link>
-        <Link to="/">
-          <li>
-            {/* <div className="flex flex-col items-center">
-              <img src={projects} width={50} height={50}></img>
-              <h2>Проєкти</h2>
-            </div> */}
-            <button className="w-[100px] h-[40px] bg-[#1E70EB] text-white rounded-lg">
-              Вийти
-            </button>
-          </li>
-        </Link>
-      </ul>
-    </div>
+    <header className="h-[70px] w-full z-50 bg-top-menu-dark top-0 fixed px-10 flex justify-between items-center">
+      <a
+        href="http://baza-trainee.tech"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center justify-center"
+      >
+        <img
+          src={logoHeader}
+          alt="Baza Trainee logo"
+          className="duration-500 rounded-full hover:bg-primary-blue"
+        />
+      </a>
+      <Link
+        to="/"
+        className="w-[100px] h-[40px] border-2 border-primary-blue rounded-[10px] duration-500 hover:bg-white hover:text-black font-semibold flex justify-center items-center bg-primary-blue text-white"
+      >
+        Вийти
+      </Link>
+    </header>
   );
 };
 
