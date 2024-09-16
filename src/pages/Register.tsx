@@ -19,6 +19,7 @@ const Register = () => {
   const {
     register,
     formState: { errors, isValid },
+    setError,
     handleSubmit,
     watch,
     reset,
@@ -45,8 +46,15 @@ const Register = () => {
       // navigate('/crm');
       reset();
     },
-    onError: (error: Error) => {
+    onError: (error: any) => {
       console.error('Registration error:', error);
+
+      if (error?.response?.data?.message) {
+        setError('login', {
+          type: 'server',
+          message: error.response.data.message,
+        });
+      }
     },
     onSettled: () => {
       setIsLoading(false);
@@ -76,9 +84,20 @@ const Register = () => {
           </label>
           <input
             placeholder="Evgen.ga@gmail.com"
-            {...register('login')}
-            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
+            {...register('login', {
+              required: "обов'язкове поле",
+            })}
+            className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px] ${errors?.login ? 'border border-red-500' : ''}`}
           />
+          <div className="relative">
+            <div className="absolute bottom-[-2px]">
+              {errors?.login && (
+                <p className="font-Open Sans font-sans text-[12px] text-red">
+                  {errors.login.message}
+                </p>
+              )}
+            </div>
+          </div>
         </div>
         <div className="flex flex-col relative">
           <label className="font-Open Sans font-sans text-[20px] font-normal leading-[1.5] text-white mb-[2.5px]">
