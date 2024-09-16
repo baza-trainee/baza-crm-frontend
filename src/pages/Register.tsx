@@ -1,12 +1,14 @@
-import { useForm, SubmitHandler } from 'react-hook-form';
-// import { useNavigate } from 'react-router-dom';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { AxiosError } from 'axios';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
-import { registerUser } from '../utils/Auth';
-import { useState } from 'react';
-import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import Spinner from '../components/Spinner';
+import { registerUser } from '../utils/auth';
 
 type Inputs = {
   login: string;
@@ -27,7 +29,7 @@ const Register = () => {
     mode: 'onBlur',
   });
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,10 +45,10 @@ const Register = () => {
     },
     onSuccess: (data: RegisterResponse) => {
       console.log('Registration successful:', data);
-      // navigate('/crm');
+      navigate('/crm');
       reset();
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<{ message: string }>) => {
       console.error('Registration error:', error);
 
       if (error?.response?.data?.message) {
@@ -99,7 +101,7 @@ const Register = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col relative">
+        <div className="relative flex flex-col">
           <label className="font-Open Sans font-sans text-[20px] font-normal leading-[1.5] text-white mb-[2.5px]">
             Пароль <span className="text-red">*</span>
           </label>
@@ -136,7 +138,7 @@ const Register = () => {
             <p>Пароль має містити від 8 до 30 символів</p>
           </div>
         </div>
-        <div className="flex flex-col relative">
+        <div className="relative flex flex-col">
           <label className="font-Open Sans font-sans text-[20px] font-normal leading-[1.5] text-white mb-[2.5px]">
             Підтвердити пароль <span className="text-red">*</span>
           </label>
