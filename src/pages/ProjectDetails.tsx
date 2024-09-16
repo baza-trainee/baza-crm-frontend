@@ -4,13 +4,17 @@ import {
   FaSquareFacebook,
   FaTelegram,
 } from 'react-icons/fa6';
+import { Tooltip } from 'react-tooltip';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
+import ProjectFormat from '../components/Projects/ProjectFormat';
 import Spinner from '../components/Spinner';
 import { getProjectById } from '../utils/projectApi';
+import { getProjectStatusLabel } from '../utils/projectStatusOptions';
 
 const ProjectDetails: React.FC = () => {
+  const isAdmin = false;
   const { id } = useParams<{ id: string }>();
   const {
     data: project,
@@ -36,9 +40,9 @@ const ProjectDetails: React.FC = () => {
   }
 
   const borderColor =
-    project?.projectStatus === 'Завершені'
+    project.projectStatus === 'ended'
       ? '#14B541'
-      : project?.projectStatus === 'В розробці'
+      : project.projectStatus === 'working'
         ? '#2e57db'
         : '#f16600';
 
@@ -51,7 +55,7 @@ const ProjectDetails: React.FC = () => {
           style={{ backgroundColor: borderColor }}
           className="px-5 py-2 text-white rounded-[10px]"
         >
-          {project?.projectStatus}
+          {getProjectStatusLabel(project.projectStatus)}
         </div>
       </div>
       {/* DESCRIPTION */}
@@ -75,9 +79,19 @@ const ProjectDetails: React.FC = () => {
           </div>
           <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border justify-between flex items-end">
             <p className="text-xl">Формат участі</p>
-            <p className="font-semibold text-primary-blue">
+            <p
+              className="font-semibold uppercase cursor-default text-primary-blue"
+              data-tooltip-id="my-tooltip"
+            >
               {project.projectType}
             </p>
+            <Tooltip
+              id="my-tooltip"
+              place="bottom"
+              style={{ backgroundColor: 'transparent' }}
+            >
+              <ProjectFormat projectType={project.projectType} />
+            </Tooltip>
           </div>
           <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border justify-between flex items-center">
             <p className="text-xl">Документація</p>
@@ -143,8 +157,8 @@ const ProjectDetails: React.FC = () => {
         ))}
       </div>
       {/* BUTTON */}
-      {project.projectStatus === 'Формується команда' && (
-        <button className="text-white hover:bg-light-blue bg-primary-blue w-[268px] h-[40px] rounded-[10px] flex justify-center items-center duration-500">
+      {project.projectStatus === 'searching' && !isAdmin && (
+        <button className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-white hover:text-primary-blue font-semibold flex justify-center items-center w-[268px] h-10">
           Подати заявку
         </button>
       )}

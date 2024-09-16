@@ -13,9 +13,7 @@ export const loginUser = async (data: {
   email: string;
   password: string;
 }): Promise<LoginResponse> => {
-  const response = await axios.post<LoginResponse>(
-    'http://185.161.208.63:5000/api/v1/auth/login',
-    data,
-  );
+  const url = `${import.meta.env.VITE_API_URL}/auth/login`;
+  const response = await axios.post<LoginResponse>(url, data);
   return response.data;
 };

@@ -1,13 +1,15 @@
-import { useForm, SubmitHandler } from 'react-hook-form';
-// import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
-import { loginUser } from '../utils/LoginRequest';
-import { Link } from 'react-router-dom';
-import LogoSection from '../components/LoginRegister/LogoSection';
-import ButtonLogin from '../components/LoginRegister/ButtonLogin';
-import { useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { AxiosError } from 'axios';
+import { Link } from 'react-router-dom';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useMutation } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+
+import ButtonLogin from '../components/LoginRegister/ButtonLogin';
+import LogoSection from '../components/LoginRegister/LogoSection';
 import Spinner from '../components/Spinner';
+import { loginUser } from '../utils/loginRequest';
 
 type Inputs = {
   login: string;
@@ -26,7 +28,7 @@ const Login = () => {
     mode: 'onBlur',
   });
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,10 +43,10 @@ const Login = () => {
     },
     onSuccess: (data: LoginResponse) => {
       console.log('Login successful:', data);
-      // navigate('/crm');
+      navigate('/crm');
       reset();
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<{ message: string }>) => {
       console.error('Login error:', error);
 
       if (error?.response?.data?.message) {
@@ -83,6 +85,7 @@ const Login = () => {
             <input
               {...register('login')}
               placeholder="example@gmail.com"
+              defaultValue="admin@gmail.com"
               className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
             />
             <div className="relative">
@@ -95,13 +98,14 @@ const Login = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col relative">
+          <div className="relative flex flex-col">
             <label className="font-Open Sans font-sans text-[20px] font-normal leading-[1.5] text-white mb-[2.5px]">
               Пароль <span className="text-red">*</span>
             </label>
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="Пароль"
+              defaultValue="adminTestPass"
               {...register('password', {
                 required: "обов'язкове поле",
                 minLength: {
