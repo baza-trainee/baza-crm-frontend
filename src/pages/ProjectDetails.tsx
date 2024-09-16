@@ -10,7 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 import Spinner from '../components/Spinner';
 import { getProjectById } from '../utils/projectApi';
 
-const ProjectPage: React.FC = () => {
+const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const {
     data: project,
@@ -152,4 +152,4 @@ const ProjectPage: React.FC = () => {
   );
 };
 
-export default ProjectPage;
+export default ProjectDetails;

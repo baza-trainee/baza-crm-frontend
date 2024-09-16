@@ -13,10 +13,12 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Loyalty from './pages/Loyalty';
 import Portal from './pages/Portal';
-import ProjectPage from './pages/ProjectPage';
+import ProjectDetails from './pages/ProjectDetails';
 import Projects from './pages/Projects';
 import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
+import { ProjectCreate } from './pages/ProjectCreate';
+import { ProjectEdit } from './pages/ProjectEdit';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -71,7 +73,15 @@ const router = createBrowserRouter([
       },
       {
         path: 'projects/:id',
-        element: <ProjectPage />,
+        element: <ProjectDetails />,
+      },
+      {
+        path: 'projects/:id/edit',
+        element: <ProjectEdit />,
+      },
+      {
+        path: 'projects/create',
+        element: <ProjectCreate />,
       },
       {
         path: 'knowledge',
