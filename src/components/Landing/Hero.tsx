@@ -11,8 +11,6 @@ const Hero: React.FC = () => {
         <Link
           to="/login"
           className="flex justify-center items-center bg-primary-blue border-4 border-primary-blue hover:bg-transparent hover:border-4 w-[254px] duration-500 h-10 text-white rounded hover:border-primary-blue"
-          target="_blank"
-          rel="noopener noreferrer"
         >
           Увійти
         </Link>

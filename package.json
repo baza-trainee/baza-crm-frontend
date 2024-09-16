@@ -31,12 +31,14 @@
     "react-select": "^5.8.0",
     "react-spinners": "^0.14.1",
     "react-toastify": "^10.0.5",
+    "react-tooltip": "^5.28.0",
     "swiper": "^11.1.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@types/react-select": "^5.0.1",
+    "@types/react-tooltip": "^3.11.0",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
