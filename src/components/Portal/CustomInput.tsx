@@ -29,13 +29,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
       <div className="relative">
         <input
           type={type}
-          className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px] hover:outline-none focus:outline-none"
+          className="mt-2 mb-2 rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px] hover:outline-none focus:outline-none"
           id={id}
           placeholder={placeholder}
           {...register(id)}
         />
         {icon && (
-          <button type="button" className="absolute right-4 bottom top-2">
+          <button type="button" className="absolute right-4 bottom top-4">
             <img src={icon} alt={icon} width={24} height={24} />
           </button>
         )}
