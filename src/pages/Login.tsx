@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import { loginUser } from '../components/LoginRegister/LoginRequest';
+import { loginUser } from '../utils/LoginRequest';
 import { Link } from 'react-router-dom';
 import LogoSection from '../components/LoginRegister/LogoSection';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
