@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { loginUser } from '../utils/LoginRequest';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,7 @@ import LogoSection from '../components/LoginRegister/LogoSection';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import { useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import Spinner from '../components/Spinner';
 
 type Inputs = {
   login: string;
@@ -24,8 +25,9 @@ const Login = () => {
     mode: 'onBlur',
   });
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   type LoginResponse = {
     message: string;
@@ -33,13 +35,19 @@ const Login = () => {
 
   const mutation = useMutation({
     mutationFn: loginUser,
+    onMutate: () => {
+      setIsLoading(true);
+    },
     onSuccess: (data: LoginResponse) => {
       console.log('Login successful:', data);
-      navigate('/crm');
+      // navigate('/crm');
       reset();
     },
     onError: (error: Error) => {
       console.error('Login error:', error);
+    },
+    onSettled: () => {
+      setIsLoading(false);
     },
   });
 
@@ -109,7 +117,13 @@ const Login = () => {
               )}
             </div>
           </div>
-          <ButtonLogin label="Увійти" type="submit" disabled={!isValid} />
+          {isLoading ? (
+            <div className="flex justify-center mt-4">
+              <Spinner />
+            </div>
+          ) : (
+            <ButtonLogin label="Увійти" type="submit" disabled={!isValid} />
+          )}
         </form>
         <div className="w-[216px] mx-auto pt-[50px] text-center">
           <p className="font-Open Sans font-sans text-[16px] leading-[1.5] text-light-grey">

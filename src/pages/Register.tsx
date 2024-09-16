@@ -1,11 +1,12 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
 import { registerUser } from '../utils/Auth';
 import { useState } from 'react';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import Spinner from '../components/Spinner';
 
 type Inputs = {
   login: string;
@@ -25,9 +26,10 @@ const Register = () => {
     mode: 'onBlur',
   });
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   type RegisterResponse = {
     message: string;
@@ -35,13 +37,19 @@ const Register = () => {
 
   const mutation = useMutation({
     mutationFn: registerUser,
+    onMutate: () => {
+      setIsLoading(true);
+    },
     onSuccess: (data: RegisterResponse) => {
       console.log('Registration successful:', data);
-      navigate('/crm');
+      // navigate('/crm');
       reset();
     },
     onError: (error: Error) => {
       console.error('Registration error:', error);
+    },
+    onSettled: () => {
+      setIsLoading(false);
     },
   });
 
@@ -173,11 +181,13 @@ const Register = () => {
             .
           </label>
         </div>
-        <ButtonLogin
-          label="Зареєструватися"
-          type="submit"
-          disabled={!isValid}
-        />
+        {isLoading ? (
+          <div className="flex justify-center mt-4">
+            <Spinner />
+          </div>
+        ) : (
+          <ButtonLogin label="Увійти" type="submit" disabled={!isValid} />
+        )}
       </form>
     </div>
   );
