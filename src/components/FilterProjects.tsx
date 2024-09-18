@@ -38,6 +38,7 @@ const customStyles: StylesConfig<OptionType, true> = {
     height: '124px',
     fontSize: '16px',
     lineHeight: '24px',
+    position: 'relative',
   }),
   option: (base, state) => ({
     ...base,
@@ -76,7 +77,7 @@ const FilterProjects: React.FC = () => {
   };
 
   return (
-    <Wrapper isMenuOpen={isMenuOpen}>
+    <Wrapper isMenuOpen={isMenuOpen} height="432px" width="268px">
       <Select
         options={filterOptions}
         controlShouldRenderValue={false}
@@ -91,7 +92,7 @@ const FilterProjects: React.FC = () => {
         }}
         className="w-[228px] mb-4"
         // classNamePrefix="react-select"
-        // menuIsOpen={isMenuOpen}
+        menuIsOpen={isMenuOpen}
         onMenuOpen={handleMenuOpen}
         onMenuClose={handleMenuClose}
         styles={customStyles}
@@ -110,7 +111,7 @@ const FilterProjects: React.FC = () => {
         }}
         className="w-[228px] hover:border-card-border"
         // classNamePrefix="react-select"
-        // menuIsOpen={isMenuOpen}
+        menuIsOpen={isMenuOpen}
         onMenuOpen={handleMenuOpen}
         onMenuClose={handleMenuClose}
       />

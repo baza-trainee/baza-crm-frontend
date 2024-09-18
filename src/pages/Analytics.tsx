@@ -1,78 +1,72 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FiFilter } from 'react-icons/fi';
 import { RiFilter3Line } from 'react-icons/ri';
-// import Button from '../components/Button';
-import FilterProjects from '../components/FilterProjects';
-import SortProjects from '../components/SortProjects';
-// import { ButtonProps } from '../components/Button';
+import Button from '../components/Button';
+import ActionChoice from '../components/ActionChoice';
+// import AnalyticsTable from '../components/AnalyticsTable';
+import SubjectOption from '../components/SubjectOption';
+import ActionOption from '../components/ActionOption';
 
 const Analytics: React.FC = () => {
+  const [action, setAction] = useState<string>('');
+  const [infoType, setInfoType] = useState<string>('');
+  // const data = [];
   return (
     <section className="p-8 font-lato font-normal text-[20px] leading-[30px]">
-      <div className="flex flex-row ">
+      <div className="flex flex-row mb-[30px]">
         <div className="flex flex-row">
-          <div className="mr-4 flex flex-row items-center has-[:checked]:text-primary-blue">
-            <label className="w-full  text-center flex items-center">
-              <input
-                type="radio"
-                id="filter"
-                name="action"
-                value="Фільтр"
-                className="invisible"
-              />
-              <FiFilter className="w-6 h-6 mr-2.5" />
-              Фільтри
-            </label>
-          </div>
-          <div className="mr-4 flex flex-row items-center has-[:checked]:text-primary-blue">
-            <label className="w-full flex text-center items-center">
-              <input
-                type="radio"
-                id="sorting"
-                name="action"
-                value="Сортування"
-                className="invisible"
-              />
-              <RiFilter3Line className="w-6 h-6 mr-2.5" />
-              Сортування
-            </label>
-          </div>
+          <ActionOption
+            id={'filter'}
+            text="Фільтр"
+            action="Фільтр"
+            setAction={setAction}
+            infoType={infoType}
+          >
+            <FiFilter className="w-6 h-6 mr-2.5" />
+          </ActionOption>
+          <ActionOption
+            id={'sorting'}
+            text="Сортування"
+            action="Сортування"
+            setAction={setAction}
+            infoType={infoType}
+          >
+            <RiFilter3Line className="w-6 h-6 mr-2.5" />
+          </ActionOption>
         </div>
         <div className="flex flex-row ">
-          <div className="mr-4 flex items-center justify-center h-14 w-64 rounded-xl border-2 border-solid border-primary-blue  has-[:checked]:text-primary-blue">
-            {/* <div className="justify-center before:hidden has-[:checked]:before:block  before:absolute  before:bottom-[-12px]	 before:rounded-b-lg before:bg-primary-blue before:h-5 before:w-64 relative  mr-4 flex items-center h-14 w-64 rounded-xl border-2 border-solid border-primary-blue has-[:checked]:text-primary-blue"> */}
-            <input
-              type="radio"
-              id="users"
-              name="info"
-              value="Учасники"
-              className="invisible"
-            />
-            {/* <img src={blueLine} alt="blue line" /> */}
-            <label htmlFor="users" className="w-full inline-block text-center">
-              Учасники
-            </label>
-          </div>
-          <div className="mr-4 flex items-center justify-center h-14 w-64 rounded-xl border-2 border-solid border-primary-blue  has-[:checked]:text-primary-blue">
-            <input
-              type="radio"
-              id="projects"
-              name="info"
-              value="Проєкти"
-              className="invisible"
-            />
-            <label
-              htmlFor="projects"
-              className="w-full inline-block text-center"
-            >
-              Проєкти
-            </label>
-          </div>
+          <SubjectOption
+            infoType="Учасники"
+            id="users"
+            text="Учасники"
+            setInfoType={setInfoType}
+          />
+
+          <SubjectOption
+            infoType="Проєкти"
+            id="projects"
+            text="Проєкти"
+            setInfoType={setInfoType}
+          />
         </div>
       </div>
-      <FilterProjects />
-      <SortProjects />
-      {/* <Button label={'Застосувати'} /> */}
+      <div className="flex gap-5">
+        <div className="">
+          <ActionChoice action={action} infoType={infoType} />
+          <div>
+            {action === 'Фільтр' && (
+              <div>
+                <Button label={'Застосувати'} /> <Button label={'Скинути'} />{' '}
+              </div>
+            )}
+          </div>
+        </div>
+        {/* {data.length > 0 ? (
+          <AnalyticsTable />
+        ) : (
+          <div>За обраними параметрами дані не знайдено </div>
+        )} */}
+      </div>
     </section>
   );
 };

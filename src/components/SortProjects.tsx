@@ -58,7 +58,7 @@ const SortProjects: React.FC = () => {
     setSelectedOptions(option);
 
   return (
-    <Wrapper isMenuOpen={isMenuOpen}>
+    <Wrapper isMenuOpen={isMenuOpen} height={'258px'} width={'268px'}>
       <Select
         options={sortOptions}
         closeMenuOnSelect={false}
