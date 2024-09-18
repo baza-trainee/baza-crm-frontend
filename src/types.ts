@@ -44,3 +44,38 @@ export type Tag = {
   color: string;
   isSpecialization: boolean;
 };
+
+// export type User = {
+//   username: string;
+//   jwt: string;
+//   isAdmin: boolean;
+// };
+
+export type User = {
+  message: string;
+  token?: string;
+  user?: {
+    id: string;
+    email: string;
+  };
+};
+
+export type UserState = {
+  user: User | null;
+};
+
+export type RegisterResponse = {
+  message: string;
+  stack: string;
+  token?: string;
+  user?: {
+    id: number;
+    email: string;
+    isAdmin: boolean;
+  };
+};
+
+export type Inputs = {
+  login: string;
+  password: string;
+};

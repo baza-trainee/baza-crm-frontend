@@ -2,6 +2,8 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -9,12 +11,9 @@ import { useState } from 'react';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
 import Spinner from '../components/Spinner';
-import { loginUser } from '../utils/loginRequest';
-
-type Inputs = {
-  login: string;
-  password: string;
-};
+import { Inputs } from '../types';
+import { loginUser } from '../features/userSlice';
+import { loginUserApi } from '../utils/authApi';
 
 const Login = () => {
   const {
@@ -28,27 +27,30 @@ const Login = () => {
     mode: 'onBlur',
   });
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
 
-  type LoginResponse = {
-    message: string;
-  };
+  // type LoginResponse = {
+  //   message: string;
+  // };
 
   const mutation = useMutation({
-    mutationFn: loginUser,
-    onMutate: () => {
-      setIsLoading(true);
-    },
-    onSuccess: (data: LoginResponse) => {
-      console.log('Login successful:', data);
+    mutationFn: loginUserApi,
+    // onMutate: () => {
+    //   setIsLoading(true);
+    // },
+    // onSuccess: (data: LoginResponse) => {
+    onSuccess: (data) => {
+      // console.log('Login successful:', data);
+      dispatch(loginUser(data));
       navigate('/crm');
       reset();
     },
     onError: (error: AxiosError<{ message: string }>) => {
-      console.error('Login error:', error);
-
+      // console.error('Login error:', error);
+      toast.error('Не вдалося увійти');
       if (error?.response?.data?.message) {
         setError('login', {
           type: 'server',
@@ -56,9 +58,9 @@ const Login = () => {
         });
       }
     },
-    onSettled: () => {
-      setIsLoading(false);
-    },
+    // onSettled: () => {
+    //   setIsLoading(false);
+    // },
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -67,8 +69,16 @@ const Login = () => {
 
   const password = watch('password', '');
 
+  if (mutation.isPending) {
+    return (
+      <div className="min-h-screen bg-text-black">
+        <Spinner />
+      </div>
+    );
+  }
+
   return (
-    <div className="grid min-h-screen place-items-center w-full bg-text-black pb-[280px]">
+    <div className="grid w-full min-h-screen pb-20 place-items-center bg-text-black">
       <div className="">
         <LogoSection
           width="469px"
@@ -138,13 +148,14 @@ const Login = () => {
               )}
             </div>
           </div>
-          {isLoading ? (
+          {/* {isLoading ? (
             <div className="flex justify-center mt-4">
               <Spinner />
             </div>
           ) : (
             <ButtonLogin label="Увійти" type="submit" disabled={!isValid} />
-          )}
+          )} */}
+          <ButtonLogin label="Увійти" type="submit" disabled={!isValid} />
         </form>
         <div className="w-[216px] mx-auto pt-[50px] text-center">
           <p className="font-Open Sans font-sans text-[16px] leading-[1.5] text-light-grey">

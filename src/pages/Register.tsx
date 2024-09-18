@@ -8,7 +8,7 @@ import { useState } from 'react';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
 import Spinner from '../components/Spinner';
-import { registerUser } from '../utils/auth';
+import { registerUserApi } from '../utils/authApi';
 
 type Inputs = {
   login: string;
@@ -39,7 +39,7 @@ const Register = () => {
   };
 
   const mutation = useMutation({
-    mutationFn: registerUser,
+    mutationFn: registerUserApi,
     onMutate: () => {
       setIsLoading(true);
     },
