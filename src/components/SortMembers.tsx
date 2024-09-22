@@ -2,13 +2,9 @@ import Select, { StylesConfig, SingleValue } from 'react-select';
 import { useState } from 'react';
 import Wrapper from './Wrapper';
 import useMenuState from '../hooks';
+import { SelectOptionType } from '../types';
 
-type OptionType = {
-  value: string;
-  label: string;
-};
-
-const sortOptions: OptionType[] = [
+const sortOptions: SelectOptionType[] = [
   { value: 'specialization from А to Z', label: 'Спеціалізація від A до Z' },
   { value: 'specialization from Z to А', label: 'Спеціалізація від Z до A' },
   { value: 'country from А to Z', label: 'Країна від А до Z' },
@@ -43,7 +39,7 @@ const sortOptions: OptionType[] = [
   },
 ];
 
-const customStyles: StylesConfig<OptionType, false> = {
+const customStyles: StylesConfig<SelectOptionType, false> = {
   control: (base) => ({
     ...base,
     border: '2px solid #579DFF',
@@ -71,12 +67,11 @@ const customStyles: StylesConfig<OptionType, false> = {
 };
 
 const SortMembers: React.FC = () => {
-  const [selectedOptions, setSelectedOptions] = useState<OptionType | null>(
-    null,
-  );
+  const [selectedOptions, setSelectedOptions] =
+    useState<SelectOptionType | null>();
   const { isMenuOpen, handleMenuOpen, handleMenuClose } = useMenuState();
 
-  const handleChange = (option: SingleValue<OptionType>) =>
+  const handleChange = (option: SingleValue<SelectOptionType>) =>
     setSelectedOptions(option);
 
   return (

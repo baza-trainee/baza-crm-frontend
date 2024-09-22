@@ -1,15 +1,15 @@
-import React from 'react';
-
 type SubjectOptionProps = {
-  infoType: string;
+  // infoType: string;
   setInfoType: (info: string) => void;
   text: string;
   id: string;
+  setAction: (info: string) => void;
+  action: string;
 };
 
 const SubjectOption: React.FC<SubjectOptionProps> = ({
   setInfoType,
-  infoType,
+  // infoType,
   text,
   id,
 }) => {
@@ -23,27 +23,23 @@ const SubjectOption: React.FC<SubjectOptionProps> = ({
         viewBox="0 0 267 39"
       >
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M10 0C4.47715 0 0 4.47715 0 10V29C0 34.5228 4.47716 39 10 39H258C263.523 39 268 34.5228 268 29V10C268 4.47715 263.523 0 258 0H10Z"
           fill="1E70EB"
         />
       </svg>
-      <div
-        onClick={() => setInfoType(text)}
-        className="absolute z-10  bg-white mr-4  h-[52px] w-[268px] rounded-xl border-2 border-solid border-primary-blue has-[:checked]:text-primary-blue hover:text-primary-blue "
-      >
+      <div className="absolute z-10  bg-white mr-4  h-[52px] w-[268px] rounded-xl border-2 border-solid border-primary-blue has-[:checked]:text-primary-blue hover:text-primary-blue ">
         <label
           htmlFor={id}
           className="w-full  h-full  text-center cursor-pointer flex items-center justify-center"
         >
           <input
             type="radio"
-            id="projects"
+            id={id}
             name="info"
             value={text}
             className="invisible"
-            checked={infoType === text}
             onChange={() => setInfoType(text)}
           />
           {text}

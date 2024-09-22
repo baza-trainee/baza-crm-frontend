@@ -1,21 +1,16 @@
-import Select, { MultiValue, StylesConfig } from 'react-select';
-import { useState } from 'react';
-import { CustomOption } from './CustomOption';
+import AnalyticsForm from './AnalyticsForm';
+import MultiSelect from './MultiSelect';
 import Wrapper from './Wrapper';
 import useMenuState from '../hooks';
+import { SelectOptionType } from '../types';
 
-type OptionType = {
-  value: string;
-  label: string;
-};
-
-const statusOptions: OptionType[] = [
+const statusOptions: SelectOptionType[] = [
   { value: 'active', label: 'Активний' },
   { value: 'in project', label: 'На проєкті' },
   { value: 'paused', label: 'На паузі' },
 ];
 
-const specsOptions: OptionType[] = [
+const specsOptions: SelectOptionType[] = [
   { value: 'Design', label: 'Design' },
   { value: 'Frontend', label: 'Frontend' },
   { value: 'Backend', label: 'Backend' },
@@ -24,7 +19,7 @@ const specsOptions: OptionType[] = [
   { value: 'PM', label: 'PM' },
 ];
 
-const technologyOptions: OptionType[] = [
+const technologyOptions: SelectOptionType[] = [
   { value: 'Figma', label: 'Figma' },
   { value: 'UI/UX', label: 'UI/UX' },
   { value: 'Canva', label: 'Canva' },
@@ -39,130 +34,37 @@ const technologyOptions: OptionType[] = [
   { value: 'Postman', label: 'Postman' },
 ];
 
-const customStyles: StylesConfig<OptionType, true> = {
-  control: (base) => ({
-    ...base,
-    border: '2px solid #579DFF',
-    cursor: 'pointer',
-    '&:hover': {
-      cursor: 'pointer',
-      borderColor: '#007bff',
-    },
-  }),
-  menu: (base) => ({
-    ...base,
-    border: '2px solid #BCD7FF',
-    borderRadius: '10px',
-    // height: '124px',
-    height: 'auto',
-    fontSize: '16px',
-    lineHeight: '24px',
-    position: 'relative',
-  }),
-  option: (base, state) => ({
-    ...base,
-    cursor: 'pointer',
-    height: '40px',
-    display: 'flex',
-    alignItems: 'center',
-    paddingBottom: '10px',
-    // cursor: state.isDisabled ? 'not-allowed' : 'pointer',
-    backgroundColor: state.isSelected ? '#D2E4FF' : 'white',
-    color: 'black',
-    '&:hover': {
-      backgroundColor: '#D2E4FF',
-      borderColor: 'card-border',
-    },
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    cursor: 'default',
-  }),
-};
-
 const FilterMembers: React.FC = () => {
-  const [selectedStatus, setSelectedStatus] = useState<MultiValue<OptionType>>(
-    [],
-  );
-  const [selectedSpec, setSelectedSpec] = useState<MultiValue<OptionType>>([]);
-  const [selectedTechnology, setSelectedTechnology] = useState<
-    MultiValue<OptionType>
-  >([]);
-  const { isMenuOpen, handleMenuOpen, handleMenuClose } = useMenuState();
-
-  const handleStatusChange = (selected: MultiValue<OptionType>) => {
-    setSelectedStatus(selected);
-  };
-  const handleSpecChange = (selected: MultiValue<OptionType>) => {
-    setSelectedSpec(selected);
-  };
-  const handleTechnologyChange = (selected: MultiValue<OptionType>) => {
-    setSelectedTechnology(selected);
-  };
+  const { isMenuOpen } = useMenuState();
 
   return (
-    <div>
-      <Wrapper isMenuOpen={isMenuOpen} height="1182px" width="268px">
-        <Select
-          options={statusOptions}
-          controlShouldRenderValue={false}
-          hideSelectedOptions={false}
-          isMulti
-          closeMenuOnSelect={false}
-          onChange={handleStatusChange}
-          value={selectedStatus}
-          placeholder="Статус"
-          components={{
-            Option: CustomOption,
-          }}
-          className="w-[228px] mb-4"
-          // classNamePrefix="react-select"
-          menuIsOpen={isMenuOpen}
-          onMenuOpen={handleMenuOpen}
-          onMenuClose={handleMenuClose}
-          styles={customStyles}
-        />
-        <Select
-          options={specsOptions}
-          isMulti
-          controlShouldRenderValue={false}
-          hideSelectedOptions={false}
-          closeMenuOnSelect={false}
-          onChange={handleSpecChange}
-          value={selectedSpec}
-          placeholder="Спеціалізація"
-          components={{
-            Option: CustomOption,
-          }}
-          className="w-[228px] mb-4 "
-          // classNamePrefix="react-select"
-          menuIsOpen={isMenuOpen}
-          onMenuOpen={handleMenuOpen}
-          onMenuClose={handleMenuClose}
-          styles={customStyles}
-        />
-        <Select
-          options={technologyOptions}
-          isMulti
-          controlShouldRenderValue={false}
-          hideSelectedOptions={false}
-          closeMenuOnSelect={false}
-          onChange={handleTechnologyChange}
-          value={selectedTechnology}
-          placeholder="Технології"
-          components={{
-            Option: CustomOption,
-          }}
-          className="w-[228px] mb-[24px]"
-          // classNamePrefix="react-select"
-          menuIsOpen={isMenuOpen}
-          onMenuOpen={handleMenuOpen}
-          onMenuClose={handleMenuClose}
-          styles={customStyles}
-        />
-        {/* // datepicker */}
-      </Wrapper>
-    </div>
+    <AnalyticsForm>
+      {(control) => (
+        <Wrapper isMenuOpen={isMenuOpen} height="432px" width="268px">
+          <MultiSelect
+            options={statusOptions}
+            placeholder={'Статус'}
+            control={control}
+            className={'w-[228px] mb-4'}
+            name="status"
+          />
+          <MultiSelect
+            options={specsOptions}
+            placeholder={'Спеціалізація'}
+            control={control}
+            className={'w-[228px] mb-4'}
+            name="specialization"
+          />
+          <MultiSelect
+            options={technologyOptions}
+            placeholder={'Технології'}
+            control={control}
+            className={'w-[228px] mb-24'}
+            name="technology"
+          />
+        </Wrapper>
+      )}
+    </AnalyticsForm>
   );
 };
 export default FilterMembers;

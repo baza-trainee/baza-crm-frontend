@@ -10,10 +10,19 @@ type ActionChoiceProps = {
 };
 
 const ActionChoice: React.FC<ActionChoiceProps> = ({ action, infoType }) => {
-  if (infoType === 'Учасники') console.log(infoType);
-  return action === 'Фільтр' ? <FilterMembers /> : <SortMembers />;
-  if (infoType === 'Проєкти')
-    return action === 'Фільтр' ? <FilterProjects /> : <SortProjects />;
-};
+  if (infoType === 'Учасники' && action === 'Сортування') {
+    return <SortMembers />;
+  }
+  if (infoType === 'Учасники' && action === 'Фільтр') {
+    return <FilterMembers />;
+  }
+  if (infoType === 'Проєкти' && action === 'Сортування') {
+    return <SortProjects />;
+  }
+  if (infoType === 'Проєкти' && action === 'Фільтр') {
+    return <FilterProjects />;
+  }
 
+  return null;
+};
 export default ActionChoice;

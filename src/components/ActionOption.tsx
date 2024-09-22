@@ -16,27 +16,25 @@ const ActionOption: React.FC<ActionOptionProps> = ({
   id,
   text,
   action,
-  // icon,
   children,
   setAction,
   infoType,
 }) => {
+  console.log(action);
+  console.log(text);
   return (
-    <div className="mr-4 flex flex-row items-center has-[:checked]:text-primary-blue hover:text-primary-blue has-[:disabled]:text-tertiary-text has-[:disabled]:pointer-events-none">
+    <div className="mr-4 flex flex-row items-center has-[:checked]:text-primary-blue hover:text-primary-blue has-[:disabled]:text-tertiary-text has-[:disabled]:pointer-events-none  `${action === text ? 'text-primary-blue' : ''} ${!infoType ? 'text-tertiary-text pointer-events-none' : ''}`">
       <label className="w-full  text-center flex items-center cursor-pointer">
         <input
           type="radio"
           id={id}
           name="action"
           value={text}
-          className="invisible"
-          checked={action === action}
-          onChange={() => setAction(action)}
+          className="invisible peer"
+          onChange={() => setAction(text)}
           disabled={!infoType}
         />
         {children}
-        {/* {icon} */}
-        {/* <FiFilter className="w-6 h-6 mr-2.5" /> */}
         {text}
       </label>
     </div>

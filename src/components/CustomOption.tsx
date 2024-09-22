@@ -1,12 +1,8 @@
 import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
 import { OptionProps } from 'react-select';
+import { SelectOptionType } from '../types';
 
-export type OptionType = {
-  value: string;
-  label: string;
-};
-
-export const CustomOption = (props: OptionProps<OptionType>) => (
+export const CustomOption = (props: OptionProps<SelectOptionType>) => (
   <div
     {...props.innerProps}
     className="flex items-center p-2 cursor-pointer hover:bg-gray-100"
