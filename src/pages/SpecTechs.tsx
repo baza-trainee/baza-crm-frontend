@@ -52,7 +52,7 @@ const SpecTechs = () => {
                 style={{ backgroundColor: selectedColor }}
               ></div>
               {/* Colors selector */}
-              <div className="flex space-x-4 border border-card-border rounded-lg px-[28px] py-[20px] mb-[20px]">
+              <div className="flex gap-[4px] border border-card-border rounded-lg px-[28px] py-[20px] mb-[20px]">
                 {/* full stack */}
                 <label className="cursor-pointer">
                   <input
@@ -63,7 +63,7 @@ const SpecTechs = () => {
                     onChange={() => handleColorChange('#fea362')}
                   />
                   <div
-                    className={`w-[30px] h-[30px] rounded-lg ${selectedColor === '#fea362' ? 'border-2 border-black' : ''}`}
+                    className={`w-[30px] h-[30px] rounded-lg box-border ${selectedColor === '#fea362' ? 'border-2 border-black' : ''}`}
                     style={{ backgroundColor: '#fea362' }}
                   ></div>
                 </label>
@@ -77,7 +77,7 @@ const SpecTechs = () => {
                     onChange={() => handleColorChange('#579dff')}
                   />
                   <div
-                    className={`w-[30px] h-[30px] rounded-lg ${selectedColor === '#579dff' ? 'border-2 border-black' : ''}`}
+                    className={`w-[30px] h-[30px] rounded-lg box-border ${selectedColor === '#579dff' ? 'border-2 border-black' : ''}`}
                     style={{ backgroundColor: '#579dff' }}
                   ></div>
                 </label>
