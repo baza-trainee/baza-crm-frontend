@@ -44,6 +44,12 @@ export default {
         orange: '#f16600',
         'light-green': '#84e78d',
         'dark-green': '#14B541',
+        'color-designer': '#94c748',
+        'color-front-end': '#f5cd47',
+        'color-back-end': '#9f8fef',
+        'color-qa': '#f87168',
+        'color-full-stack': '#fea362',
+        'color-pm': '#579dff'
       },
     },
     screens: {

@@ -4,6 +4,7 @@ import projects from '../assets/common/projects.svg';
 import knowledge from '../assets/common/knowledge.svg';
 import news from '../assets/common/news.svg';
 import loyalty from '../assets/common/loyalty_programs.svg';
+import spectechs from '../assets/common/spectechs.svg';
 // import events from '../assets/common/events.svg';
 
 const Sidebar = () => {
@@ -24,6 +25,14 @@ const Sidebar = () => {
             <div className="flex flex-col items-center">
               <img src={projects} width={50} height={50}></img>
               <h2>Проєкти</h2>
+            </div>
+          </li>
+        </Link>
+        <Link to="spectechs">
+          <li className="opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100 duration-500 rounded-lg p-1">
+            <div className="flex flex-col items-center">
+              <img src={spectechs} width={50} height={50}></img>
+              <h2>Спеціалізації та технології</h2>
             </div>
           </li>
         </Link>

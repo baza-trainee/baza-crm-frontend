@@ -17,6 +17,7 @@ import ProjectDetails from './pages/ProjectDetails';
 import Projects from './pages/Projects';
 import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
+import SpecTechs from './pages/SpecTechs';
 import { ProjectCreate } from './pages/ProjectCreate';
 import { ProjectEdit } from './pages/ProjectEdit';
 
@@ -98,6 +99,10 @@ const router = createBrowserRouter([
       {
         path: 'analytics',
         element: <Analytics />,
+      },
+      {
+        path: 'spectechs',
+        element: <SpecTechs />,
       },
     ],
   },
