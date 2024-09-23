@@ -1,4 +1,4 @@
-import Card from '../../components/Card';
+import Card from '../Card';
 
 const About: React.FC = () => {
   return (

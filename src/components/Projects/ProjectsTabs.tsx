@@ -1,67 +1,84 @@
-import Select, { OptionProps } from 'react-select';
-import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
+import Select from 'react-select';
+import makeAnimated from 'react-select/animated';
 
-type OptionType = {
-  value: string;
-  label: string;
-};
+// import Select, { OptionProps } from 'react-select';
+import { OptionType, StatusCount } from '../../types';
+import { projectStatusOptions } from '../../utils/projectStatusOptions';
+import { Link } from 'react-router-dom';
 
-const options: OptionType[] = [
-  { value: 'all', label: 'Всі' },
-  { value: 'team', label: 'Формується команда' },
-  { value: 'development', label: 'В розробці' },
-  { value: 'completed', label: 'Завершені' },
-];
+// import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
 
-const CustomOption = (props: OptionProps<OptionType>) => (
-  <div
-    {...props.innerProps}
-    className="flex items-center p-2 cursor-pointer hover:bg-gray-100"
-  >
-    <span className="mr-2">
-      {props.isSelected ? (
-        <FaCheckSquare size={20} color="#1E70EB" />
-      ) : (
-        <FaRegSquare size={20} fill="#1E70EB" />
-      )}
-    </span>
-    {props.label}
-  </div>
-);
+// const CustomOption = (props: OptionProps<OptionType>) => (
+//   <div
+//     {...props.innerProps}
+//     className="flex items-center p-2 cursor-pointer hover:bg-gray-100"
+//   >
+//     <span className="mr-2">
+//       {props.isSelected ? (
+//         <FaCheckSquare size={20} color="#1E70EB" />
+//       ) : (
+//         <FaRegSquare size={20} fill="#1E70EB" />
+//       )}
+//     </span>
+//     {props.label}
+//   </div>
+// );
 
 type ProjectsTabsProps = {
-  selectedOption: OptionType;
-  setSelectedOption: (option: OptionType) => void;
+  projectNumber: StatusCount;
+  selectedOption: OptionType[];
+  setSelectedOption: (options: OptionType[]) => void;
 };
 
 const ProjectsTabs: React.FC<ProjectsTabsProps> = ({
+  projectNumber,
   selectedOption,
   setSelectedOption,
 }) => {
-  const tabs = [14, 10, 32];
-
+  const isAdmin = true;
+  const animatedComponents = makeAnimated();
   return (
-    <div className="h-[60px] flex items-center text-2xl font-bold text-text-black bg-white rounded-[10px] border-card-border border px-8 gap-6">
-      <span>Загалом:</span>
+    <div className="h-[60px] flex items-center text-text-black bg-white rounded-[10px] border-card-border border px-8 gap-6">
+      <span className="font-semibold">Загалом:</span>
       <div className="px-3 py-2 border-2 rounded-[10px] border-orange">
-        {options[1].label} {tabs[0]}
+        {projectStatusOptions[0].label}{' '}
+        <span className="text-lg font-semibold">
+          {projectNumber.searching || 0}
+        </span>
       </div>
       <div className="px-3 py-2 border-2 rounded-[10px] border-light-blue">
-        {options[2].label} {tabs[1]}
+        {projectStatusOptions[1].label}{' '}
+        <span className="text-lg font-semibold">
+          {projectNumber.working || 0}
+        </span>
       </div>
       <div className="px-3 py-2 border-2 rounded-[10px] border-dark-green">
-        {options[3].label} {tabs[2]}
+        {projectStatusOptions[2].label}{' '}
+        <span className="text-lg font-semibold">
+          {projectNumber.ended || 0}
+        </span>
       </div>
       <Select
-        options={options}
-        onChange={(option) => setSelectedOption(option as OptionType)}
+        // components={{
+        //   Option: CustomOption,
+        // }}
+        closeMenuOnSelect={false}
+        options={projectStatusOptions}
+        components={animatedComponents}
+        onChange={(options) => setSelectedOption(options as OptionType[])}
         value={selectedOption}
-        components={{
-          Option: CustomOption,
-        }}
-        className="w-80 "
+        isMulti
+        className="min-w-80"
         classNamePrefix="react-select"
       />
+      {isAdmin && (
+        <Link
+          to="/crm/projects/create"
+          className="text-white hover:bg-white bg-primary-blue h-[40px] rounded-[10px] flex justify-center items-center duration-500 w-[268px] border-2 border-primary-blue hover:text-black font-semibold"
+        >
+          + Створити проєкт
+        </Link>
+      )}
     </div>
   );
 };

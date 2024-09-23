@@ -1,37 +1,43 @@
 import { Link } from 'react-router-dom';
+import { type Tag, type Project } from '../../types';
+import { getProjectStatusLabel } from '../../utils/projectStatusOptions';
 
-type Tag = {
-  id: number;
-  label: string;
-  number: number;
-  all: number;
-};
+interface ProjectProps {
+  project: Project;
+  tags?: Tag[];
+}
 
-type ProjectProps = {
-  id: number;
-  label: string;
-  title: string;
-  tags: Tag[];
-  points: number;
-  teamStart: string;
-  projectStart: string;
-};
-
-const Project: React.FC<ProjectProps> = ({
-  id,
-  label,
-  title,
-  tags,
-  points,
-  teamStart,
-  projectStart,
-}) => {
+const Project: React.FC<ProjectProps> = ({ project, tags = [] }) => {
+  const isAdmin = false;
   const borderColor =
-    label === 'Завершені'
+    project.projectStatus === 'ended'
       ? '#14B541'
-      : label === 'В розробці'
+      : project.projectStatus === 'working'
         ? '#2e57db'
         : '#f16600';
+
+  const filteredTags = tags
+    .filter((tag) =>
+      project.projectRequirments.some(
+        (req) => req.tagId === tag.id && tag.isSpecialization,
+      ),
+    )
+    .map((tag) => {
+      const req = project.projectRequirments.find(
+        (req) => req.tagId === tag.id,
+      );
+      const memberCount = project.projectMember.filter(
+        (member) => member.tagId === tag.id,
+      ).length;
+
+      return {
+        id: tag.id,
+        name: tag.name,
+        color: tag.color,
+        count: memberCount,
+        maxCount: req ? req.count : 5,
+      };
+    });
 
   return (
     <div
@@ -42,46 +48,58 @@ const Project: React.FC<ProjectProps> = ({
         style={{ backgroundColor: borderColor }}
         className="px-5 py-2 text-white rounded-r-[10px] -ml-5 self-start"
       >
-        {label}
+        {getProjectStatusLabel(project.projectStatus)}
       </div>
-      <h2 className="text-2xl font-bold">{title}</h2>
+      <h2 className="text-2xl font-bold">{project.name}</h2>
       <p className="font-semibold">Склад команди</p>
       <div className="flex flex-wrap gap-3">
-        {tags.map((tag) => {
+        {filteredTags.map((tag) => {
           return (
             <div
               key={tag.id}
-              className="text-text-gray rounded-[10px] px-2 py-1 border-2 border-card-border"
+              style={{ borderColor: tag.color }}
+              className="text-text-gray rounded-[10px] px-2 py-1 border-2"
             >
-              {tag.label}{' '}
-              {tag.number === tag.all ? (
-                <span className="text-primary-blue">{tag.number}</span>
+              {tag.name}{' '}
+              {tag.count === tag.maxCount ? (
+                <span className="text-primary-blue">{tag.count}</span>
               ) : (
-                <span>{tag.number}</span>
+                <span>{tag.count}</span>
               )}
-              <span className="text-primary-blue">/{tag.all}</span>
+              <span className="text-primary-blue">/{tag.maxCount}</span>
             </div>
           );
         })}
       </div>
       <div className="flex justify-between gap-3">
-        <p className="font-semibold">Бали за участь в проєкту</p>
-        <p>{points} Бали</p>
+        <p className="font-semibold max-w-48">
+          Бали за участь в розробці проєкту
+        </p>
+        <p>{project.projectPoints} Бали</p>
       </div>
       <div className="flex justify-between gap-3">
-        <p className="font-semibold">Період формування проєкту</p>
-        <p>{teamStart}</p>
+        <p className="font-semibold max-w-48">Дата старту формування команди</p>
+        <p>{project.dateTeam}</p>
       </div>
       <div className="flex justify-between gap-3">
-        <p className="font-semibold">Період розробки</p>
-        <p>{projectStart}</p>
+        <p className="font-semibold max-w-48">Дата старту розробки</p>
+        <p>{project.dateStart}</p>
       </div>
-      <Link
-        to={`${id}`}
-        className="border-2 border-primary-blue rounded-[10px] duration-500 hover:bg-primary-blue hover:text-white font-semibold flex justify-center items-center w-[268px] h-10 self-center"
-      >
-        Детальніше
-      </Link>
+      {isAdmin && project.projectStatus !== 'ended' ? (
+        <Link
+          to={`${project.id}/edit`}
+          className="border-2 border-primary-blue rounded-[10px] duration-500 hover:bg-primary-blue hover:text-white font-semibold flex justify-center items-center w-[268px] h-10 self-center"
+        >
+          Редагувати
+        </Link>
+      ) : (
+        <Link
+          to={`${project.id}`}
+          className="border-2 border-primary-blue rounded-[10px] duration-500 hover:bg-primary-blue hover:text-white font-semibold flex justify-center items-center w-[268px] h-10 self-center"
+        >
+          Детальніше
+        </Link>
+      )}
     </div>
   );
 };
