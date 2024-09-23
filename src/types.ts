@@ -3,6 +3,11 @@ export type Link = {
   label: string;
 };
 
+export type SelectOptionType = {
+  value: string;
+  label: string;
+};
+
 export type OptionType = {
   value: string;
   label: string;
