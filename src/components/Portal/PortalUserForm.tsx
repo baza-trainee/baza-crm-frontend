@@ -69,7 +69,7 @@ const PortalUserForm: React.FC = () => {
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5 p-5">
       <div className="flex gap-5">
-        <div className="w-full">
+        <div className="w-full flex flex-col gap-[9px] ">
           <CustomInput
             id="firstName"
             label="Ім'я"
@@ -116,14 +116,17 @@ const PortalUserForm: React.FC = () => {
             value={Array.from(selectedSpecializations)}
             onChange={(newValue) => setSelectedSpecializations(newValue)}
           />
+          {selectedSpecializations.length > 0 && (
+            <div>
+              <ul>
+                {selectedSpecializations.map((specialization) => (
+                  <li key={specialization.value}>{specialization.label}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-          <label
-            className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]"
-            htmlFor="technologies"
-          >
-            Технології
-          </label>
-          <div className="relative">
+          {/* <div className="relative">
             <select
               className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px]"
               id="technologies"
@@ -141,7 +144,7 @@ const PortalUserForm: React.FC = () => {
               <option value="Swagger">Swagger</option>
               <option value="Postman">Postman</option>
             </select>
-          </div>
+          </div> */}
           <CustomInput id="email" label="Email" register={register} />
           <CustomInput
             id="linkedin"

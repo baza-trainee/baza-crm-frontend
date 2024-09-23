@@ -4,6 +4,7 @@ import Select, {
   MultiValue,
   DropdownIndicatorProps,
   ActionMeta,
+  StylesConfig,
 } from 'react-select';
 import chevronDown from '../../assets/common/chevron-down.svg';
 
@@ -32,53 +33,40 @@ interface CustomSelectProps {
   label: string;
 }
 
+const customStyles: StylesConfig<SelectOption, true> = {
+  control: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isFocused ? '#E8F2FF' : '#F8F9FD',
+    borderRadius: '10px',
+    borderWidth: '2px',
+    borderStyle: 'solid',
+    borderColor: 'lightgray',
+    boxShadow: 'none',
+    '&:hover': {
+      borderColor: 'gray',
+    },
+    minHeight: '40px',
+  }),
+  multiValue: () => ({
+    display: 'none',
+  }),
+  multiValueLabel: () => ({
+    display: 'none',
+  }),
+  multiValueRemove: () => ({
+    display: 'none',
+  }),
+  indicatorSeparator: () => ({
+    display: 'none',
+  }),
+};
+
 const CustomSelect: React.FC<CustomSelectProps> = ({
   options,
   value,
   onChange,
   label,
 }) => {
-  const customStyles = {
-    //     control: (provided: any, state: any) => ({
-    //       ...provided,
-    //       backgroundColor: 'transparent',
-    //       borderColor: 'lightgray',
-    //       borderWidth: '2px',
-    //       borderRadius: '10px',
-    //       boxShadow: 'none',
-    //       '&:hover': {
-    //         borderColor: 'gray',
-    //       },
-    //       minHeight: '40px',
-    //     }),
-    //     multiValue: (provided: any) => ({
-    //       ...provided,
-    //       backgroundColor: '#f0f0f0',
-    //       borderRadius: '5px',
-    //     }),
-    //     multiValueLabel: (provided: any) => ({
-    //       ...provided,
-    //       color: '#333',
-    //     }),
-    //     multiValueRemove: (provided: any) => ({
-    //       ...provided,
-    //       color: '#999',
-    //       ':hover': {
-    //         backgroundColor: '#eee',
-    //         color: '#666',
-    //       },
-    //     }),
-    //     dropdownIndicator: (provided: any) => ({
-    //       ...provided,
-    //       padding: '0',
-    //     }),
-    indicatorSeparator: () => ({
-      display: 'none',
-    }),
-    //     placeholder: () => ({
-    //       display: 'none',
-    //     }),
-  };
   return (
     <div>
       <label className="text-text-black font-open-sans text-[20px] font-normal leading-[28px] tracking-[0.4px]">
@@ -95,6 +83,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         classNamePrefix="select"
         placeholder=""
         styles={customStyles}
+        hideSelectedOptions={false}
       />
     </div>
   );
