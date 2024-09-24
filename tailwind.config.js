@@ -49,7 +49,8 @@ export default {
         'color-back-end': '#9f8fef',
         'color-qa': '#f87168',
         'color-full-stack': '#fea362',
-        'color-pm': '#579dff'
+        'color-pm': '#579dff',
+        'blue-hover': '#f0f2fb'
       },
     },
     screens: {
