@@ -8,6 +8,12 @@ interface FormValues {
   technologyName: string;
 }
 
+interface ColorRadioProps {
+  value: string;
+  selectedColor: string;
+  onChange: (value: string) => void;
+}
+
 const SpecTechs = () => {
   const [selectedColor, setSelectedColor] = useState<string>('#f87168');
   const [specializations, setSpecializations] = useState<
@@ -38,14 +44,14 @@ const SpecTechs = () => {
         ...specializations,
         { name: data.specializationName, color: selectedColor },
       ]);
-      resetSpecialization(); // Скидаємо тільки форму спеціалізації
+      resetSpecialization();
     }
   };
 
   const onSubmitTechnology: SubmitHandler<FormValues> = (data) => {
     if (data.technologyName) {
       setTechnologies([...technologies, data.technologyName]);
-      resetTechnology(); // Скидаємо тільки форму технологій
+      resetTechnology();
     }
   };
 
@@ -56,6 +62,27 @@ const SpecTechs = () => {
   const handleAddClickTechnology = () => {
     setIsFormTechVisible(true);
   };
+
+  // color-choose radios
+  const ColorRadio: React.FC<ColorRadioProps> = ({
+    value,
+    selectedColor,
+    onChange,
+  }) => (
+    <label className="cursor-pointer">
+      <input
+        type="radio"
+        name="color"
+        value={value}
+        className="hidden"
+        onChange={() => onChange(value)}
+      />
+      <div
+        className={`w-[30px] h-[30px] rounded-lg box-border ${selectedColor === value ? 'border-2 border-black' : ''}`}
+        style={{ backgroundColor: value }}
+      ></div>
+    </label>
+  );
 
   const handleRemoveSpec = (index: number) => {
     setSpecializations((prev) => prev.filter((_, i) => i !== index));
@@ -110,7 +137,7 @@ const SpecTechs = () => {
                 <input
                   {...register('specializationName', { required: true })}
                   maxLength={15}
-                  className="h-[40px] px-[10px] rounded-lg mb-[20px]"
+                  className="h-[40px] font-normal px-[10px] rounded-lg mb-[20px] border-2 focus:border-primary-blue focus:outline-none"
                 />
               </div>
               <div className="flex flex-col">
@@ -121,33 +148,103 @@ const SpecTechs = () => {
                   className="w-[107px] h-[30px] rounded-lg border border-card-border mb-[10px]"
                   style={{ backgroundColor: selectedColor }}
                 ></div>
-                <div className="flex gap-[4px] border border-card-border rounded-lg px-[28px] py-[20px] mb-[20px]">
-                  <label className="cursor-pointer">
-                    <input
-                      type="radio"
-                      name="color"
-                      value="#fea362"
-                      className="hidden"
-                      onChange={() => handleColorChange('#fea362')}
-                    />
-                    <div
-                      className={`w-[30px] h-[30px] rounded-lg box-border ${selectedColor === '#fea362' ? 'border-2 border-black' : ''}`}
-                      style={{ backgroundColor: '#fea362' }}
-                    ></div>
-                  </label>
-                  <label className="cursor-pointer">
-                    <input
-                      type="radio"
-                      name="color"
-                      value="#579dff"
-                      className="hidden"
-                      onChange={() => handleColorChange('#579dff')}
-                    />
-                    <div
-                      className={`w-[30px] h-[30px] rounded-lg box-border ${selectedColor === '#579dff' ? 'border-2 border-black' : ''}`}
-                      style={{ backgroundColor: '#579dff' }}
-                    ></div>
-                  </label>
+                <div className="flex gap-[4px] flex-wrap justify-center w-[392px] border border-card-border rounded-lg px-[26px] py-[20px] mb-[20px]">
+                  {/* Full stack */}
+                  <ColorRadio
+                    value="#fea362"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* PM */}
+                  <ColorRadio
+                    value="#579dff"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Designer */}
+                  <ColorRadio
+                    value="#94c748"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Frontend */}
+                  <ColorRadio
+                    value="#f5cd47"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Backend */}
+                  <ColorRadio
+                    value="#9f8fef"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* QA */}
+                  <ColorRadio
+                    value="#f87168"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Green */}
+                  <ColorRadio
+                    value="#84e78d"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Blue-dark */}
+                  <ColorRadio
+                    value="#2a4875"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Light-blue */}
+                  <ColorRadio
+                    value="#a1caff"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Blue */}
+                  <ColorRadio
+                    value="#1e70eb"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Pink */}
+                  <ColorRadio
+                    value="#f868e7"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Yellow */}
+                  <ColorRadio
+                    value="#f8f368"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Acid-green */}
+                  <ColorRadio
+                    value="#93f868"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Baltic */}
+                  <ColorRadio
+                    value="#68f8ee"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Dark-green */}
+                  <ColorRadio
+                    value="#1c8e44"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
+                  {/* Leela */}
+                  <ColorRadio
+                    value="#7c3d96"
+                    selectedColor={selectedColor}
+                    onChange={handleColorChange}
+                  />
                 </div>
               </div>
               <div className="flex justify-center">
@@ -199,7 +296,7 @@ const SpecTechs = () => {
                 <input
                   {...registerTechnology('technologyName', { required: true })}
                   maxLength={20}
-                  className="h-[40px] px-[10px] rounded-lg mb-[20px]"
+                  className="h-[40px] font-normal px-[10px] rounded-lg mb-[20px] border-2 focus:border-primary-blue focus:outline-none"
                 />
               </div>
               <div className="flex justify-center">
