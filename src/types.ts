@@ -57,16 +57,21 @@ export type Tag = {
 // };
 
 export type User = {
-  message: string;
-  token?: string;
-  user?: {
+  // message: string;
+  token: string;
+  user: {
     id: string;
     email: string;
+    isAdmin: boolean;
   };
 };
 
 export type UserState = {
   user: User | null;
+};
+
+export type RootState = {
+  userState: UserState;
 };
 
 export type RegisterResponse = {

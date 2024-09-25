@@ -30,26 +30,16 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  // const [isLoading, setIsLoading] = useState(false);
-
-  // type LoginResponse = {
-  //   message: string;
-  // };
 
   const mutation = useMutation({
     mutationFn: loginUserApi,
-    // onMutate: () => {
-    //   setIsLoading(true);
-    // },
-    // onSuccess: (data: LoginResponse) => {
     onSuccess: (data) => {
-      // console.log('Login successful:', data);
       dispatch(loginUser(data));
+      console.log('Login successful:', data);
       navigate('/crm');
       reset();
     },
     onError: (error: AxiosError<{ message: string }>) => {
-      // console.error('Login error:', error);
       toast.error('Не вдалося увійти');
       if (error?.response?.data?.message) {
         setError('login', {
@@ -58,9 +48,6 @@ const Login = () => {
         });
       }
     },
-    // onSettled: () => {
-    //   setIsLoading(false);
-    // },
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -148,13 +135,6 @@ const Login = () => {
               )}
             </div>
           </div>
-          {/* {isLoading ? (
-            <div className="flex justify-center mt-4">
-              <Spinner />
-            </div>
-          ) : (
-            <ButtonLogin label="Увійти" type="submit" disabled={!isValid} />
-          )} */}
           <ButtonLogin label="Увійти" type="submit" disabled={!isValid} />
         </form>
         <div className="w-[216px] mx-auto pt-[50px] text-center">
