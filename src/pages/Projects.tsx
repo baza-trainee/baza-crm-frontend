@@ -12,18 +12,22 @@ import {
 } from '../utils/projectStatusOptions';
 import { getProjects } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
+import { useSelector } from 'react-redux';
+import { RootState } from '../types';
 
 const Projects = () => {
   const [selectedOption, setSelectedOption] = useState(projectStatusOptions);
   const [parent] = useAutoAnimate();
+  const user = useSelector((state: RootState) => state.userState.user);
 
   const {
     data: projects,
     isPending,
     isError,
   } = useQuery({
-    queryKey: ['projects'],
-    queryFn: () => getProjects(),
+    queryKey: ['projects', user?.token],
+    queryFn: () => getProjects(user!.token),
+    enabled: !!user?.token,
   });
 
   const { data: tags, isError: isTagsError } = useQuery({

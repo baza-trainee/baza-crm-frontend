@@ -8,7 +8,7 @@ interface FormValues {
   technologyName: string;
 }
 
-const SpecTechs = () => {
+const Technologies = () => {
   const [selectedColor, setSelectedColor] = useState<string>('#f87168');
   const [specializations, setSpecializations] = useState<
     { name: string; color: string }[]
@@ -216,4 +216,4 @@ const SpecTechs = () => {
   );
 };
 
-export default SpecTechs;
+export default Technologies;

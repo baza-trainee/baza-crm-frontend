@@ -12,17 +12,21 @@ import ProjectFormat from '../components/Projects/ProjectFormat';
 import Spinner from '../components/Spinner';
 import { getProjectById } from '../utils/projectApi';
 import { getProjectStatusLabel } from '../utils/projectStatusOptions';
+import { useSelector } from 'react-redux';
+import { RootState } from '../types';
 
 const ProjectDetails: React.FC = () => {
-  const isAdmin = false;
   const { id } = useParams<{ id: string }>();
+  const user = useSelector((state: RootState) => state.userState.user);
+
   const {
     data: project,
     isPending,
     isError,
   } = useQuery({
     queryKey: ['project'],
-    queryFn: () => getProjectById(Number(id)),
+    queryFn: () => getProjectById(Number(id), user!.token),
+    enabled: !!user?.token,
   });
 
   if (isPending) {
@@ -157,7 +161,7 @@ const ProjectDetails: React.FC = () => {
         ))}
       </div>
       {/* BUTTON */}
-      {project.projectStatus === 'searching' && !isAdmin && (
+      {project.projectStatus === 'searching' && !user?.user.isAdmin && (
         <button className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-white hover:text-primary-blue font-semibold flex justify-center items-center w-[268px] h-10">
           Подати заявку
         </button>

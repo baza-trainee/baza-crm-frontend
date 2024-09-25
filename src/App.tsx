@@ -1,25 +1,23 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import Communication from './pages/Communication';
+import Analytics from './pages/Analytics';
 import Email from './pages/Email';
 import Error from './pages/Error';
 import Evaluating from './pages/Evaluating';
-import Analytics from './pages/Analytics';
 import ForgottenPassword from './pages/ForgottenPassword';
 import HomeLayout from './components/HomeLayout';
-import Knowledge from './pages/Knowledge';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
-import Loyalty from './pages/Loyalty';
 import Portal from './pages/Portal';
 import ProjectDetails from './pages/ProjectDetails';
 import Projects from './pages/Projects';
 import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
-import SpecTechs from './pages/SpecTechs';
+import Technologies from './pages/Technologies';
 import { ProjectCreate } from './pages/ProjectCreate';
 import { ProjectEdit } from './pages/ProjectEdit';
+import { Questionnaires } from './pages/Questionnaires';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -85,24 +83,16 @@ const router = createBrowserRouter([
         element: <ProjectCreate />,
       },
       {
-        path: 'knowledge',
-        element: <Knowledge />,
-      },
-      {
-        path: 'communication',
-        element: <Communication />,
-      },
-      {
-        path: 'loyalty',
-        element: <Loyalty />,
+        path: 'questionnaires',
+        element: <Questionnaires />,
       },
       {
         path: 'analytics',
         element: <Analytics />,
       },
       {
-        path: 'spectechs',
-        element: <SpecTechs />,
+        path: 'technologies',
+        element: <Technologies />,
       },
     ],
   },
