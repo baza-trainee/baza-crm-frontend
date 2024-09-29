@@ -14,6 +14,7 @@ import ProjectDetails from './pages/ProjectDetails';
 import Projects from './pages/Projects';
 import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
+import RouteWrapper from './components/RouteWrapper';
 import Technologies from './pages/Technologies';
 import { ProjectCreate } from './pages/ProjectCreate';
 import { ProjectEdit } from './pages/ProjectEdit';
@@ -64,6 +65,10 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <RouteWrapper />,
+      },
+      {
+        path: 'portal',
         element: <Portal />,
       },
       {
