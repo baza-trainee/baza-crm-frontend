@@ -50,7 +50,7 @@ export default {
         'color-qa': '#f87168',
         'color-full-stack': '#fea362',
         'color-pm': '#579dff',
-        'blue-hover': '#f0f2fb'
+        'blue-hover': '#f0f2fb',
       },
     },
     screens: {
@@ -62,5 +62,5 @@ export default {
       'custom-position': 'center top 30px',
     },
   },
-  plugins: ['daisyui'],
+  plugins: [],
 };
