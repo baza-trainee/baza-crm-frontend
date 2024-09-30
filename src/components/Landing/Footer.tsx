@@ -24,7 +24,7 @@ const Footer: React.FC = () => {
           </Link>
         </div>
         <Link
-          to="/"
+          to="/rules.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="text-light-grey text-sm font-open-sans font-normal leading-[22px] underline duration-500 hover:text-primary-blue"
@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
           Правила користування сайтом
         </Link>
         <Link
-          to="/"
+          to="/privacy-policy.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="text-light-grey text-base font-open-sans font-normal leading-[26px] underline duration-500 hover:text-primary-blue"
