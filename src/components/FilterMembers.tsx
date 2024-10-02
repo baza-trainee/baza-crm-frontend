@@ -1,8 +1,10 @@
+import { Controller } from 'react-hook-form';
 import AnalyticsForm from './AnalyticsForm';
 import MultiSelect from './MultiSelect';
 import Wrapper from './Wrapper';
 import useMenuState from '../hooks';
 import { SelectOptionType } from '../types';
+import Calendar from './Calendar';
 
 const statusOptions: SelectOptionType[] = [
   { value: 'active', label: 'Активний' },
@@ -61,6 +63,31 @@ const FilterMembers: React.FC = () => {
             control={control}
             className={'w-[228px] mb-24'}
             name="technology"
+          />
+          <Controller
+            name="selectedDateFrom"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Calendar
+                text={'з'}
+                selectedDate={value}
+                onDateChange={(date) => {
+                  console.log(date);
+                  onChange(date);
+                }}
+              />
+            )}
+          />
+          <Controller
+            name="selectedDateTo"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <Calendar
+                text={'по'}
+                selectedDate={value}
+                onDateChange={onChange}
+              />
+            )}
           />
         </Wrapper>
       )}

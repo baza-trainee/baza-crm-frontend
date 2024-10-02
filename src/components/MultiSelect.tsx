@@ -79,7 +79,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             onChange={(selectedValue: MultiValue<SelectOptionType>) => {
               field.onChange(selectedValue);
             }}
-            value={field.value}
+            value={field.value as MultiValue<SelectOptionType>}
             placeholder={placeholder}
             components={{
               Option: CustomOption,
