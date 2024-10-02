@@ -1,6 +1,6 @@
-import { FaDiscord, FaLinkedinIn } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';
 
+import Socials from '../components/Socials';
 import errorImage from '../assets/images/error.webp';
 import logo from '../assets/common/logo.svg';
 
@@ -27,30 +27,11 @@ const Error: React.FC = () => {
             />
           </a>
         </div>
-        <div className="flex gap-8">
-          <div className="grid duration-500 border-2 rounded-md border-primary-blue size-8 bg-primary-blue place-items-center hover:border-white">
-            <a
-              href="http://discord.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FaDiscord size={24} className="text-white" />
-            </a>
-          </div>
-          <div className="grid duration-500 border-2 rounded-md border-primary-blue size-8 bg-primary-blue place-items-center hover:border-white">
-            <a
-              href="https://www.linkedin.com/company/baza-trainee/"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <FaLinkedinIn size={24} className="text-white" />
-            </a>
-          </div>
-        </div>
+        <Socials />
       </div>
       <Link
         to="/"
-        className="border-4 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-white hover:text-primary-blue font-semibold flex justify-center items-center w-[268px] h-10 mx-auto mb-5 lg:mt-10"
+        className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-transparent font-semibold flex justify-center items-center w-[268px] h-10 mx-auto mb-5 lg:mt-10"
       >
         На головну
       </Link>

@@ -19,7 +19,7 @@ const Header = () => {
       </a>
       <Link
         to="/"
-        className="w-[100px] h-[40px] border-2 border-primary-blue rounded-[10px] duration-500 hover:bg-white hover:text-black font-semibold flex justify-center items-center bg-primary-blue text-white"
+        className="flex justify-center items-center bg-primary-blue border-2 border-primary-blue hover:bg-transparent w-[100px] duration-500 h-10 text-white rounded-[10px]"
       >
         Вийти
       </Link>
