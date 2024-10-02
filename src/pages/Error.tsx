@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 
+import Logo from '../components/Logo';
 import Socials from '../components/Socials';
 import errorImage from '../assets/images/error.webp';
-import logo from '../assets/common/logo.svg';
 
 const Error: React.FC = () => {
   return (
@@ -14,19 +14,7 @@ const Error: React.FC = () => {
       className="flex flex-col justify-between h-screen bg-cover"
     >
       <div className="flex items-center justify-between px-32 py-8">
-        <div>
-          <a
-            href="http://baza-trainee.tech"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src={logo}
-              alt="Baza Trainee logo"
-              className="duration-500 rounded-full hover:bg-primary-blue"
-            />
-          </a>
-        </div>
+        <Logo size={100} />
         <Socials />
       </div>
       <Link
