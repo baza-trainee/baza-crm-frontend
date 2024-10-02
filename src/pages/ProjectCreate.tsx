@@ -1,5 +1,9 @@
+import 'react-datepicker/dist/react-datepicker.css';
+
+import DatePicker from 'react-datepicker';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { FaCalendarDay } from 'react-icons/fa6';
 import { FaLinkedin, FaSquareFacebook, FaTelegram } from 'react-icons/fa6';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { Tooltip } from 'react-tooltip';
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
@@ -11,14 +15,20 @@ import { CreateProjectRequest, RootState } from '../types';
 import { createProject } from '../utils/projectApi';
 import { specializations } from '../utils/specializations';
 
+// import { useState } from 'react';
+
 const ProjectCreate: React.FC = () => {
   const user = useSelector((state: RootState) => state.userState.user);
 
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<CreateProjectRequest>();
+
+  // const [dateStart, setDateStart] = useState<Date | null>(null);
+  // const [dateTeam, setDateTeam] = useState<Date | null>(null);
 
   const mutation = useMutation({
     mutationFn: createProject,
@@ -34,6 +44,7 @@ const ProjectCreate: React.FC = () => {
     const token = user?.token;
     if (token) {
       mutation.mutate({ projectData: data, token });
+      console.log(data);
     }
   };
 
@@ -47,7 +58,7 @@ const ProjectCreate: React.FC = () => {
         <input
           className="duration-500 outline-none w-96"
           placeholder="Ввести назву проєкту"
-          type="email"
+          type="text"
           {...register('name', {
             required: "Назва проєкту обов'язкова для заповнення",
             minLength: {
@@ -70,10 +81,29 @@ const ProjectCreate: React.FC = () => {
       <div className="flex flex-wrap gap-5 mb-10">
         <div className="w-[845px] bg-white rounded-[10px] px-8 py-5 border-card-border border flex flex-col justify-between">
           <p>Ввести опис проєкту</p>
-          <p className="flex justify-between gap-5 font-bold max-w-[440px]">
+          {/* <p className="flex justify-between gap-5 font-bold max-w-[440px]">
             Дата старту формування команди{' '}
             <span className="ml-14">08/17/2023</span>
-          </p>
+          </p> */}
+          <div>
+            <label htmlFor="dateTeam">Дата формування команди</label>
+            <Controller
+              control={control}
+              name="dateTeam"
+              rules={{ required: "Дата формування команди є обов'язковою" }}
+              render={({ field }) => (
+                <DatePicker
+                  selected={field.value ? new Date(field.value) : null}
+                  showIcon
+                  onChange={(date) => field.onChange(date)}
+                  dateFormat="MM/dd/yyyy"
+                  className="flex flex-row-reverse items-center justify-between w-full ml-5 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                />
+              )}
+            />
+            <FaCalendarDay className="text-primary-blue" />
+            {errors.dateTeam && <p>{errors.dateTeam.message}</p>}
+          </div>
           <p className="flex justify-between gap-5 font-bold max-w-[440px]">
             Дата старту розробки <span className="ml-14">08/17/2023</span>
           </p>
