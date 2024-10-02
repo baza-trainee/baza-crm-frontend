@@ -11,12 +11,12 @@ const Sidebar = () => {
   const user = useSelector((state: RootState) => state.userState.user);
 
   return (
-    <div className="w-[150px] h-screen bg-[#3B3E57] text-[#888888] p-6 fixed">
+    <div className="w-[150px] h-screen bg-[#1E252F] text-[#888888] p-6 fixed">
       {/* <h1>Sidebar</h1> */}
-      <ul className="flex flex-col gap-5 place-content-center text-center font-['Open_Sans'] text-base">
+      <ul className="flex flex-col gap-5 place-content-center text-center bg-[#1E252F] font-['Open_Sans'] text-base">
         {!user?.user.isAdmin && (
           <Link to="/crm">
-            <li className="opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100 duration-500 rounded-lg p-1">
+            <li className="w-[100px] h-[100px] opacity-50 active:text-[#E4F1FF] active:bg-[#2F4865] active:opacity-100 hover:text-[#E4F1FF] hover:bg-[#1F3145] hover:text-[#FFFFFF] hover:opacity-100 duration-500 rounded-lg p-1">
               <div className="flex flex-col items-center">
                 <img src={logo} width={50} height={50}></img>
                 <h2>Портал учасника</h2>
@@ -25,7 +25,7 @@ const Sidebar = () => {
           </Link>
         )}
         <Link to="projects">
-          <li className="opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100 duration-500 rounded-lg p-1">
+          <li className="w-[100px] h-[100px] opacity-50 active:text-[#E4F1FF] active:bg-[#2F4865] active:opacity-100 hover:text-[#E4F1FF] hover:bg-[#1F3145] hover:text-[#FFFFFF] hover:opacity-100 duration-500 rounded-lg p-1">
             <div className="flex flex-col items-center">
               <img src={projects} width={50} height={50}></img>
               <h2>Проєкти</h2>
@@ -34,7 +34,7 @@ const Sidebar = () => {
         </Link>
         {user?.user.isAdmin && (
           <Link to="questionnaires">
-            <li className="opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100 duration-500 rounded-lg p-1">
+            <li className="w-[100px] h-[100px] opacity-50 active:text-[#E4F1FF] active:bg-[#2F4865] active:opacity-100 hover:text-[#E4F1FF] hover:bg-[#1F3145] hover:text-[#FFFFFF] hover:opacity-100 duration-500 rounded-lg p-1">
               <div className="flex flex-col items-center">
                 <img src={questionnaires} width={50} height={50}></img>
                 <h2>Анкети</h2>
@@ -44,7 +44,7 @@ const Sidebar = () => {
         )}
         {user?.user.isAdmin && (
           <Link to="analytics">
-            <li className="opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100 duration-500 rounded-lg p-1">
+            <li className="w-[100px] h-[100px] opacity-50 active:text-[#E4F1FF] active:bg-[#2F4865] active:opacity-100 hover:text-[#E4F1FF] hover:bg-[#1F3145] hover:text-[#FFFFFF] hover:opacity-100 duration-500 rounded-lg p-1">
               <div className="flex flex-col items-center">
                 <img src={analytics} width={50} height={50}></img>
                 <h2>Аналітика</h2>
@@ -54,7 +54,7 @@ const Sidebar = () => {
         )}
         {user?.user.isAdmin && (
           <Link to="technologies">
-            <li className="opacity-50 hover:text-[#E4F1FF] hover:bg-[#788AA0] hover:opacity-100 duration-500 rounded-lg p-1">
+            <li className="w-[100px] h-[100px] opacity-50 active:text-[#E4F1FF] active:bg-[#2F4865] active:opacity-100 hover:text-[#E4F1FF] hover:bg-[#1F3145] hover:text-[#FFFFFF] hover:opacity-100 duration-500 rounded-lg p-1">
               <div className="flex flex-col items-center">
                 <img src={technologies} width={50} height={50}></img>
                 <h2>Спеціалізації та технології</h2>
