@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import {
-  CreateProjectRequest,
+  CreateProjectMutationVariables,
   CreateProjectResponse,
   type Project,
 } from '../types';
@@ -30,10 +30,10 @@ export const getProjectById = async (
   return data;
 };
 
-export const createProject = async (
-  projectData: CreateProjectRequest,
-  token: string,
-): Promise<CreateProjectResponse> => {
+export const createProject = async ({
+  projectData,
+  token,
+}: CreateProjectMutationVariables): Promise<CreateProjectResponse> => {
   const url = `${import.meta.env.VITE_API_URL}/project`;
 
   const { data }: AxiosResponse<CreateProjectResponse> = await axios.post(

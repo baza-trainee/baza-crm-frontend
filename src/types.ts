@@ -93,6 +93,11 @@ export type CreateProjectRequest = {
   dateTeam: string;
 };
 
+export type CreateProjectMutationVariables = {
+  projectData: CreateProjectRequest;
+  token: string;
+};
+
 export type CreateProjectResponse = {
   id: string;
 };

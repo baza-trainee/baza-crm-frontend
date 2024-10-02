@@ -1,41 +1,69 @@
 import { FaLinkedin, FaSquareFacebook, FaTelegram } from 'react-icons/fa6';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Tooltip } from 'react-tooltip';
+import { toast } from 'react-toastify';
+import { useMutation } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
 
 import ProjectDropdown from '../components/Projects/ProjectDropdown';
 import ProjectFormat from '../components/Projects/ProjectFormat';
-// import Spinner from '../components/Spinner';
-// import { RootState } from '../types';
-// import { getProjectById } from '../utils/projectApi';
-// import { getProjectStatusLabel } from '../utils/projectStatusOptions';
+import { CreateProjectRequest, RootState } from '../types';
+import { createProject } from '../utils/projectApi';
 import { specializations } from '../utils/specializations';
 
-// import { useParams } from 'react-router-dom';
-// import { useQuery } from '@tanstack/react-query';
-// import { useSelector } from 'react-redux';
-
 const ProjectCreate: React.FC = () => {
-  // if (isPending) {
-  //   return <Spinner />;
-  // }
+  const user = useSelector((state: RootState) => state.userState.user);
 
-  // if (isError) {
-  //   return (
-  //     <section className="flex w-full gap-5 px-8 py-5 bg-light-blue-bg height-100">
-  //       <h2 className="text-2xl text-center mt-[10%]">
-  //         Виникла помилка при завантаженні проєкта. Спробуйте пізніше.
-  //       </h2>
-  //     </section>
-  //   );
-  // }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<CreateProjectRequest>();
+
+  const mutation = useMutation({
+    mutationFn: createProject,
+    onSuccess: () => {
+      toast.success('Проєкт успішно створено');
+    },
+    onError: () => {
+      toast.error('Не вдалося створити проєкт');
+    },
+  });
+
+  const onSubmit: SubmitHandler<CreateProjectRequest> = (data) => {
+    const token = user?.token;
+    if (token) {
+      mutation.mutate({ projectData: data, token });
+    }
+  };
 
   return (
-    <main className="flex flex-col w-full gap-5 px-8 py-5 height-100 bg-light-blue-bg text-text-black">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col w-full gap-5 px-8 py-5 height-100 bg-light-blue-bg text-text-black"
+    >
       {/* TITLE */}
-      <div className="h-[60px] flex justify-between items-center font-bold text-text-black bg-white rounded-xl border-card-border border px-8 w-[845px] mb-10">
-        <h1 className="text-2xl">Ввести назву проєкту</h1>
+      <div className="h-[60px] flex justify-between items-center font-bold text-text-black bg-white rounded-xl border-card-border border px-8 w-[845px]">
+        <input
+          className="duration-500 outline-none w-96"
+          placeholder="Ввести назву проєкту"
+          type="email"
+          {...register('name', {
+            required: "Назва проєкту обов'язкова для заповнення",
+            minLength: {
+              value: 3,
+              message: 'Назва повинна містити щонайменше 3 символи',
+            },
+          })}
+        />
         <div className="px-5 py-2 text-white rounded-[10px] bg-orange">
           Формується команда
         </div>
+      </div>
+      <div className="h-5 px-8 mb-5">
+        {errors.name && (
+          <span className="text-rose-500">{errors.name.message}</span>
+        )}
       </div>
       {/* DESCRIPTION */}
       <h3 className="mb-3 ml-8 text-xl font-bold">Опис проєкту</h3>
@@ -131,10 +159,13 @@ const ProjectCreate: React.FC = () => {
         ))}
       </div>
       {/* BUTTON */}
-      <button className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-transparent hover:text-black font-semibold flex justify-center items-center w-[268px] h-10">
+      <button
+        type="submit"
+        className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-transparent hover:text-black font-semibold flex justify-center items-center w-[268px] h-10"
+      >
         Створити проєкт
       </button>
-    </main>
+    </form>
   );
 };
 
