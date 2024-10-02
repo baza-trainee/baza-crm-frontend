@@ -10,13 +10,13 @@ const Hero: React.FC = () => {
       <div className="flex justify-center gap-8 mb-[50px]">
         <Link
           to="/login"
-          className="flex justify-center items-center bg-primary-blue border-4 border-primary-blue hover:bg-transparent hover:border-4 w-[254px] duration-500 h-10 text-white rounded hover:border-primary-blue"
+          className="flex justify-center items-center bg-primary-blue border-2 border-primary-blue hover:bg-transparent w-[254px] duration-500 h-10 text-white rounded-[10px]"
         >
           Увійти
         </Link>
         <Link
           to="/register"
-          className="flex justify-center items-center bg-transparent border-4 border-primary-blue hover:bg-primary-blue w-[254px] duration-500 h-10 text-white rounded"
+          className="flex justify-center items-center hover:bg-primary-blue border-2 border-primary-blue w-[254px] duration-500 h-10 text-white rounded-[10px]"
         >
           Заповнити анкету
         </Link>

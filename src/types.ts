@@ -50,14 +50,7 @@ export type Tag = {
   isSpecialization: boolean;
 };
 
-// export type User = {
-//   username: string;
-//   jwt: string;
-//   isAdmin: boolean;
-// };
-
 export type User = {
-  // message: string;
   token: string;
   user: {
     id: string;
@@ -88,4 +81,23 @@ export type RegisterResponse = {
 export type Inputs = {
   login: string;
   password: string;
+};
+
+export type CreateProjectRequest = {
+  description: string;
+  name: string;
+  projectPoints: number;
+  projectType: 'free' | 'light' | 'strong';
+  price: number;
+  dateStart: string;
+  dateTeam: string;
+};
+
+export type CreateProjectMutationVariables = {
+  projectData: CreateProjectRequest;
+  token: string;
+};
+
+export type CreateProjectResponse = {
+  id: string;
 };

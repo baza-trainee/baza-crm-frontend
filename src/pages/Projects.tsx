@@ -1,19 +1,19 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
 import { useState } from 'react';
 
 import Project from '../components/Projects/Project';
 import ProjectsHeader from '../components/Projects/ProjectsHeader';
 import ProjectsTabs from '../components/Projects/ProjectsTabs';
 import Spinner from '../components/Spinner';
+import { RootState } from '../types';
 import {
   countProjectsByStatus,
   projectStatusOptions,
 } from '../utils/projectStatusOptions';
 import { getProjects } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
-import { useSelector } from 'react-redux';
-import { RootState } from '../types';
 
 const Projects = () => {
   const [selectedOption, setSelectedOption] = useState(projectStatusOptions);
