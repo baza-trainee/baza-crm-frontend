@@ -83,6 +83,11 @@ export type Inputs = {
   password: string;
 };
 
+type Specialization = {
+  id: string;
+  count: number;
+};
+
 export type CreateProjectRequest = {
   description: string;
   name: string;
@@ -91,6 +96,7 @@ export type CreateProjectRequest = {
   price: number;
   dateStart: string;
   dateTeam: string;
+  specializations: Specialization[];
 };
 
 export type CreateProjectMutationVariables = {
