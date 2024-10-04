@@ -1,3 +1,4 @@
+import PortalUserForm from '../components/Portal/PortalUserForm';
 import TitleHeader from '../components/Portal/TitleHeader';
 import UserProfileHeader from '../components/Portal/UserProfileHeader';
 import UserRating from '../components/Portal/UserRating';
@@ -8,7 +9,9 @@ const Portal = () => {
       <UserProfileHeader />
       <TitleHeader title="Інформація учасника" />
       <div className="flex w-full gap-5">
-        <div className="flex-1 border rounded-xl border-card-border bg-white"></div>
+        <div className="flex-1 bg-white border rounded-xl border-card-border">
+          <PortalUserForm />
+        </div>
         <UserRating />
       </div>
     </section>

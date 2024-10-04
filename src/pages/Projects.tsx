@@ -1,11 +1,13 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
 import { useState } from 'react';
 
 import Project from '../components/Projects/Project';
 import ProjectsHeader from '../components/Projects/ProjectsHeader';
 import ProjectsTabs from '../components/Projects/ProjectsTabs';
 import Spinner from '../components/Spinner';
+import { RootState } from '../types';
 import {
   countProjectsByStatus,
   projectStatusOptions,
@@ -16,14 +18,16 @@ import { getTags } from '../utils/tagApi';
 const Projects = () => {
   const [selectedOption, setSelectedOption] = useState(projectStatusOptions);
   const [parent] = useAutoAnimate();
+  const user = useSelector((state: RootState) => state.userState.user);
 
   const {
     data: projects,
     isPending,
     isError,
   } = useQuery({
-    queryKey: ['projects'],
-    queryFn: () => getProjects(),
+    queryKey: ['projects', user?.token],
+    queryFn: () => getProjects(user!.token),
+    enabled: !!user?.token,
   });
 
   const { data: tags, isError: isTagsError } = useQuery({

@@ -18,5 +18,14 @@ h6 {
 }
 
 .height-100 {
-  height: calc(100vh - 70px);
+  min-height: calc(100vh - 70px);
+}
+
+#sidebar a.active {
+  color: #e4f1ff;
+  background: #2f4865;
+}
+
+#sidebar a.active img {
+  opacity: 1;
 }

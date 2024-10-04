@@ -1,25 +1,24 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import Communication from './pages/Communication';
+import Analytics from './pages/Analytics';
 import Email from './pages/Email';
 import Error from './pages/Error';
 import Evaluating from './pages/Evaluating';
-import Analytics from './pages/Analytics';
 import ForgottenPassword from './pages/ForgottenPassword';
 import HomeLayout from './components/HomeLayout';
-import Knowledge from './pages/Knowledge';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
-import Loyalty from './pages/Loyalty';
 import Portal from './pages/Portal';
+import ProjectCreate from './pages/ProjectCreate';
 import ProjectDetails from './pages/ProjectDetails';
+import ProjectEdit from './pages/ProjectEdit';
 import Projects from './pages/Projects';
+import Questionnaires from './pages/Questionnaires';
 import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
+import RouteWrapper from './components/RouteWrapper';
 import Technologies from './pages/Technologies';
-import { ProjectCreate } from './pages/ProjectCreate';
-import { ProjectEdit } from './pages/ProjectEdit';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,6 +65,10 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
+        element: <RouteWrapper />,
+      },
+      {
+        path: 'portal',
         element: <Portal />,
       },
       {
@@ -85,16 +88,8 @@ const router = createBrowserRouter([
         element: <ProjectCreate />,
       },
       {
-        path: 'knowledge',
-        element: <Knowledge />,
-      },
-      {
-        path: 'communication',
-        element: <Communication />,
-      },
-      {
-        path: 'loyalty',
-        element: <Loyalty />,
+        path: 'questionnaires',
+        element: <Questionnaires />,
       },
       {
         path: 'analytics',
