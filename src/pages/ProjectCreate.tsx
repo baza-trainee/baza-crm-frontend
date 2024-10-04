@@ -333,12 +333,11 @@ const ProjectCreate: React.FC = () => {
               />
             </div>
             <div className="absolute left-0 h-5 -bottom-5">
-              {errors.specializations &&
-                errors.specializations[index]?.count && (
-                  <span className="text-red">
-                    {errors.specializations[index]?.count.message}
-                  </span>
-                )}
+              {errors.specializations?.[index]?.count?.message && (
+                <span className="text-red">
+                  {errors.specializations[index]?.count?.message}
+                </span>
+              )}
             </div>
           </div>
         ))}
