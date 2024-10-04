@@ -1,7 +1,9 @@
 import Button from '../components/Button';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MdClose } from 'react-icons/md';
+import { getTags } from '../utils/tagApi';
+import axios from 'axios';
 
 interface FormValues {
   specializationName: string;
@@ -27,6 +29,53 @@ const Technologies = () => {
     setSelectedColor(color);
   };
 
+  useEffect(() => {
+    const fetchTechnologies = async () => {
+      try {
+        const tags = await getTags();
+        setTechnologies(tags.map((tag) => tag.name));
+      } catch (error) {
+        console.error('Error fetching technologies:', error);
+      }
+    };
+
+    fetchTechnologies();
+  }, []);
+
+  const addTechnologyToServer = async (technologyName: string) => {
+    try {
+      const url = `${import.meta.env.VITE_API_URL}/tag`;
+      const token = import.meta.env.VITE_TOKEN;
+
+      await axios.post(
+        url,
+        { name: technologyName },
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        },
+      );
+    } catch (error) {
+      console.error('Error adding technology:', error);
+    }
+  };
+
+  const removeTechnologyFromServer = async (technologyName: string) => {
+    try {
+      const url = `${import.meta.env.VITE_API_URL}/tag/${technologyName}`;
+      const token = import.meta.env.VITE_TOKEN;
+
+      await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ` + token,
+        },
+      });
+    } catch (error) {
+      console.error('Error deleting technology:', error);
+    }
+  };
+
   const {
     register,
     handleSubmit: handleSubmitSpecialization,
@@ -48,9 +97,10 @@ const Technologies = () => {
     }
   };
 
-  const onSubmitTechnology: SubmitHandler<FormValues> = (data) => {
+  const onSubmitTechnology: SubmitHandler<FormValues> = async (data) => {
     if (data.technologyName) {
       setTechnologies([...technologies, data.technologyName]);
+      await addTechnologyToServer(data.technologyName);
       resetTechnology();
     }
   };
@@ -88,8 +138,10 @@ const Technologies = () => {
     setSpecializations((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleRemoveTech = (index: number) => {
+  const handleRemoveTech = async (index: number) => {
+    const techToRemove = technologies[index];
     setTechnologies((prev) => prev.filter((_, i) => i !== index));
+    await removeTechnologyFromServer(techToRemove);
   };
 
   return (
