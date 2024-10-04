@@ -14,7 +14,7 @@ interface ColorRadioProps {
   onChange: (value: string) => void;
 }
 
-const SpecTechs = () => {
+const Technologies = () => {
   const [selectedColor, setSelectedColor] = useState<string>('#f87168');
   const [specializations, setSpecializations] = useState<
     { name: string; color: string }[]
@@ -122,7 +122,7 @@ const SpecTechs = () => {
           <div className="flex justify-center">
             <Button
               label="Додати спеціалізацію"
-              className="w-[268px]"
+              className="w-[268px] duration-500"
               onClick={handleAddClick}
             />
           </div>
@@ -281,7 +281,7 @@ const SpecTechs = () => {
           <div className="flex justify-center">
             <Button
               label="Додати технологію"
-              className="w-[220px]"
+              className="w-[220px] duration-500"
               onClick={handleAddClickTechnology}
             />
           </div>
@@ -313,4 +313,4 @@ const SpecTechs = () => {
   );
 };
 
-export default SpecTechs;
+export default Technologies;
