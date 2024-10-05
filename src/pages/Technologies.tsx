@@ -22,13 +22,37 @@ const Technologies = () => {
     { name: string; color: string }[]
   >([]);
   const [technologies, setTechnologies] = useState<string[]>([]);
-  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isFormSpecVisible, setIsFormSpecVisible] = useState(false);
   const [isFormTechVisible, setIsFormTechVisible] = useState(false);
 
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
   };
 
+  // get all specialization (color+name)
+  useEffect(() => {
+    const fetchSpecializations = async () => {
+      try {
+        const token = import.meta.env.VITE_TOKEN;
+        const tags = await getTags(token);
+
+        const specializations = tags
+          .filter((tag) => tag.isSpecialization)
+          .map((specialization) => ({
+            name: specialization.name,
+            color: specialization.color,
+          }));
+
+        setSpecializations(specializations);
+      } catch (error) {
+        console.error('Помилка отримання спеціалізацій', error);
+      }
+    };
+
+    fetchSpecializations();
+  }, []);
+
+  // get all technologies
   useEffect(() => {
     const fetchTechnologies = async () => {
       try {
@@ -107,7 +131,7 @@ const Technologies = () => {
   };
 
   const handleAddClick = () => {
-    setIsFormVisible(true);
+    setIsFormSpecVisible(true);
   };
 
   const handleAddClickTechnology = () => {
@@ -180,7 +204,7 @@ const Technologies = () => {
             />
           </div>
         </div>
-        {isFormVisible && (
+        {isFormSpecVisible && (
           <div className="text-[16px] font-semibold py-[20px] px-[12px] bg-input-normal-state border border-card-border rounded-lg">
             <form onSubmit={handleSubmitSpecialization(onSubmit)}>
               <div className="flex flex-col">
