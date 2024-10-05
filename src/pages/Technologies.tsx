@@ -32,10 +32,11 @@ const Technologies = () => {
   useEffect(() => {
     const fetchTechnologies = async () => {
       try {
-        const tags = await getTags();
+        const token = import.meta.env.VITE_TOKEN;
+        const tags = await getTags(token);
         setTechnologies(tags.map((tag) => tag.name));
       } catch (error) {
-        console.error('Error fetching technologies:', error);
+        console.error('Помилка отримання технологій', error);
       }
     };
 
