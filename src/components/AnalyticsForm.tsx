@@ -7,6 +7,8 @@ export type FormData = {
   format: { value: string; label: string }[];
   technology: { value: string; label: string }[];
   specialization: { value: string; label: string }[];
+  selectedDateFrom: Date | null;
+  selectedDateTo: Date | null;
 };
 
 type FormProps = {
@@ -25,11 +27,18 @@ const AnalyticsForm: React.FC<FormProps> = ({ children }) => {
   const selectedOptions = watch('status');
 
   const handleReset = () => {
-    reset({ status: [], format: [], technology: [], specialization: [] });
+    reset({
+      status: [],
+      format: [],
+      technology: [],
+      specialization: [],
+      selectedDateFrom: null,
+      selectedDateTo: null,
+    });
   };
   const onSubmit = (data: FormData) => {
     console.log(data);
-    handleReset();
+    // handleReset();
   };
 
   useEffect(() => {
@@ -37,7 +46,7 @@ const AnalyticsForm: React.FC<FormProps> = ({ children }) => {
   }, [selectedOptions]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} id="external-form">
       {children(control)}
       <Button label={'Застосувати'} />{' '}
       <Button label={'Скинути'} onClick={handleReset} />
