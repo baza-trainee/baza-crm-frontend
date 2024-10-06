@@ -10,15 +10,15 @@ import HomeLayout from './components/HomeLayout';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Portal from './pages/Portal';
+import ProjectCreate from './pages/ProjectCreate';
 import ProjectDetails from './pages/ProjectDetails';
+import ProjectEdit from './pages/ProjectEdit';
 import Projects from './pages/Projects';
+import Questionnaires from './pages/Questionnaires';
 import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
 import RouteWrapper from './components/RouteWrapper';
 import Technologies from './pages/Technologies';
-import { ProjectCreate } from './pages/ProjectCreate';
-import { ProjectEdit } from './pages/ProjectEdit';
-import { Questionnaires } from './pages/Questionnaires';
 
 const queryClient = new QueryClient({
   defaultOptions: {

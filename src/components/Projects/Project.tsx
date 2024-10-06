@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { type Tag, type Project, RootState } from '../../types';
 import { getProjectStatusLabel } from '../../utils/projectStatusOptions';
 import { useSelector } from 'react-redux';
-
+import dayjs from 'dayjs';
 interface ProjectProps {
   project: Project;
   tags?: Tag[];
@@ -81,11 +81,11 @@ const Project: React.FC<ProjectProps> = ({ project, tags = [] }) => {
       </div>
       <div className="flex justify-between gap-3">
         <p className="font-semibold max-w-48">Дата старту формування команди</p>
-        <p>{project.dateTeam}</p>
+        <p>{dayjs(project.dateTeam).format('DD/MM/YYYY')}</p>
       </div>
       <div className="flex justify-between gap-3">
         <p className="font-semibold max-w-48">Дата старту розробки</p>
-        <p>{project.dateStart}</p>
+        <p>{dayjs(project.dateStart).format('DD/MM/YYYY')}</p>
       </div>
       {user?.user.isAdmin && project.projectStatus !== 'ended' ? (
         <Link
