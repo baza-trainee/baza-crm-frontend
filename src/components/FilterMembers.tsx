@@ -6,6 +6,10 @@ import useMenuState from '../hooks';
 import { SelectOptionType } from '../types';
 import Calendar from './Calendar';
 // import FilterMembersTable from './Analytics/FilterMembersTable';
+import { useQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
+import { RootState } from '../types';
+import { filterProjects } from '../utils/filterApi';
 
 const statusOptions: SelectOptionType[] = [
   { value: 'active', label: 'Активний' },
@@ -39,6 +43,21 @@ const technologyOptions: SelectOptionType[] = [
 
 const FilterMembers: React.FC = () => {
   const { isMenuOpen } = useMenuState();
+
+  const user = useSelector((state: RootState) => state.userState.user);
+
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzI4MDcxMDYxLCJleHAiOjE3MjgxNTc0NjF9.DJnPJedZ6rcWXPfDrlsJ4tgw9yzGwroUWubN9soGKaI';
+  const {
+    data: members,
+    // isPending,
+    // isError,
+  } = useQuery({
+    queryKey: ['members', token],
+    queryFn: () => filterProjects(token),
+    enabled: !!user?.token,
+  });
+  console.log(members);
 
   return (
     <div>
@@ -98,7 +117,7 @@ const FilterMembers: React.FC = () => {
           </Wrapper>
         )}
       </AnalyticsForm>
-      {/* <FilterMembersTable /> */}
+      {/* <FilterMembersTable info={members} /> */}
     </div>
   );
 };

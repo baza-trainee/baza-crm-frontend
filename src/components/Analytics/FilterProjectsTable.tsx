@@ -1,6 +1,14 @@
 import React from 'react';
 import { RiFilter3Line } from 'react-icons/ri';
 import { Project } from '../../types';
+// import { useQuery } from '@tanstack/react-query';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../types';
+// import { filterMembers } from '../utils/membersApi';
+// import {
+//   countProjectsByStatus,
+//   projectStatusOptions,
+// } from '../utils/projectStatusOptions';
 
 type ProjectsTableProps = {
   tableHeaders?: string[];

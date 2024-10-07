@@ -4,6 +4,11 @@ export type Link = {
 };
 
 export type SelectOptionType = {
+  value: number | string;
+  label?: string;
+};
+
+export type SelectStatusType = {
   value: string;
   label: string;
 };
@@ -50,7 +55,14 @@ export type Tag = {
   isSpecialization: boolean;
 };
 
+// export type User = {
+//   username: string;
+//   jwt: string;
+//   isAdmin: boolean;
+// };
+
 export type User = {
+  // message: string;
   token: string;
   user: {
     id: string;
@@ -81,6 +93,40 @@ export type RegisterResponse = {
 export type Inputs = {
   login: string;
   password: string;
+};
+
+export type Member = {
+  id?: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  specializations: [];
+  technologies: [];
+  country: string;
+  city: string;
+  status: string;
+  registerAt: string;
+  scores?: number;
+  teamMark?: number;
+
+  linkedin?: string;
+  discord?: string;
+  phone?: string;
+  discordReceiving?: boolean;
+};
+
+export type DataForm = {
+  // statuses: string[];
+  // formats: string[];
+  statuses: { value: string }[];
+  formats: { value: string }[];
+  technologies: { value: string }[];
+  specializations: { value: string }[];
+};
+
+export type RequestBody = {
+  formats?: string[];
+  statuses?: string[];
 };
 
 type Specialization = {

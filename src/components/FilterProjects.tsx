@@ -3,7 +3,18 @@ import useMenuState from '../hooks';
 import AnalyticsForm from './AnalyticsForm';
 import MultiSelect from './MultiSelect';
 import { SelectOptionType } from '../types';
-// import FilterProjectsTable from './Analytics/FilterProjectsTable';
+import FilterProjectsTable from './Analytics/FilterProjectsTable';
+import { useQuery } from '@tanstack/react-query';
+import { useSelector } from 'react-redux';
+import { RootState } from '../types';
+import { filterProjects } from '../utils/filterApi';
+// import {
+//   countProjectsByStatus,
+//   projectStatusOptions,
+// } from '../utils/projectStatusOptions';
+// export const AnalyticsTable = () => {
+//   return <div>AnalyticsTable</div>;
+// };
 
 const statusOptions: SelectOptionType[] = [
   { value: 'team', label: 'Формується команда' },
@@ -18,6 +29,23 @@ const formatOptions: SelectOptionType[] = [
 ];
 
 const FilterProjects: React.FC = () => {
+  const user = useSelector((state: RootState) => state.userState.user);
+
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzI4MDcxMDYxLCJleHAiOjE3MjgxNTc0NjF9.DJnPJedZ6rcWXPfDrlsJ4tgw9yzGwroUWubN9soGKaI';
+
+  const {
+    data: projects,
+    // isPending,
+    // isError,
+  } = useQuery({
+    queryKey: ['projects', token],
+    queryFn: () => filterProjects(token),
+    enabled: !!user?.token,
+  });
+
+  console.log(projects);
+
   const { isMenuOpen } = useMenuState();
   return (
     <div>
@@ -41,7 +69,7 @@ const FilterProjects: React.FC = () => {
           </Wrapper>
         )}
       </AnalyticsForm>
-      {/* <FilterProjectsTable /> */}
+      <FilterProjectsTable info={projects} />
     </div>
   );
 };
