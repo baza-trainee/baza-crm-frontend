@@ -20,7 +20,7 @@ interface ColorRadioProps {
 const Technologies = () => {
   const [selectedColor, setSelectedColor] = useState<string>('#f87168');
   const [specializations, setSpecializations] = useState<
-    { name: string; color: string }[]
+    { name: string; color: string; tagId: number }[]
   >([]);
   const [technologies, setTechnologies] = useState<{ name: string }[]>([]);
   const [isFormSpecVisible, setIsFormSpecVisible] = useState(false);
@@ -61,7 +61,7 @@ const Technologies = () => {
       const url = `${import.meta.env.VITE_API_URL}/tag/`;
       const token = import.meta.env.VITE_TOKEN;
 
-      await axios.post(
+      const response = await axios.post(
         url,
         {
           name: specializationName,
@@ -75,9 +75,15 @@ const Technologies = () => {
         },
       );
 
+      const newSpecialization = response.data;
+
       setSpecializations([
         ...specializations,
-        { name: specializationName, color: selectedColor },
+        {
+          name: newSpecialization.name,
+          color: newSpecialization.color,
+          tagId: newSpecialization.id,
+        },
       ]);
       toast.success('Спеціалізацію успішно створено');
     } catch (error) {
@@ -95,12 +101,12 @@ const Technologies = () => {
     }
   };
 
-  console.log(specializations);
+  // console.log(specializations);
 
   // Delete Specialization
   const deleteSpecializationFromServer = async (index: number) => {
     const tagId = specializations[index].tagId;
-    console.log(tagId);
+    // console.log(tagId);
     try {
       const url = `${import.meta.env.VITE_API_URL}/tag/${tagId}`;
       const token = import.meta.env.VITE_TOKEN;
@@ -153,11 +159,8 @@ const Technologies = () => {
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    if (data.specializationName) {
-      setSpecializations([
-        ...specializations,
-        { name: data.specializationName, color: selectedColor },
-      ]);
+    if (data.technologyName) {
+      setTechnologies([...technologies, { name: data.technologyName }]);
       resetSpecialization();
     }
   };
