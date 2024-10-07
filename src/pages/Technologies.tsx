@@ -86,7 +86,7 @@ const Technologies = () => {
     }
   };
 
-  const handleSave = () => {
+  const handleSaveSpecialization = () => {
     if (specializationName.trim()) {
       addSpecializationToServer(specializationName);
       setSpecializationName('');
@@ -94,6 +94,8 @@ const Technologies = () => {
       console.error('Назва спеціалізації не може бути пустою');
     }
   };
+
+  console.log(specializations);
 
   // Delete Specialization
   const deleteSpecializationFromServer = async (index: number) => {
@@ -349,7 +351,7 @@ const Technologies = () => {
                 <Button
                   label="Зберегти"
                   className="w-[268px] text-white bg-[#1e70eb]"
-                  onClick={handleSave}
+                  onClick={handleSaveSpecialization}
                 />
               </div>
             </form>
