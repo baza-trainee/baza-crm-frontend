@@ -2,6 +2,7 @@ import Button from '../components/Button';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { MdClose } from 'react-icons/md';
+import { toast } from 'react-toastify';
 import { getTags } from '../utils/tagApi';
 import axios from 'axios';
 
@@ -42,6 +43,7 @@ const Technologies = () => {
           .map((specialization) => ({
             name: specialization.name,
             color: specialization.color,
+            tagId: specialization.id,
           }));
 
         setSpecializations(specializations);
@@ -77,8 +79,10 @@ const Technologies = () => {
         ...specializations,
         { name: specializationName, color: selectedColor },
       ]);
+      toast.success('Спеціалізацію успішно створено');
     } catch (error) {
       console.error('Помилка додавання спеціалізації:', error);
+      toast.error('Не вдалося створити спеціалізацію');
     }
   };
 
@@ -88,6 +92,28 @@ const Technologies = () => {
       setSpecializationName('');
     } else {
       console.error('Назва спеціалізації не може бути пустою');
+    }
+  };
+
+  // Delete Specialization
+  const deleteSpecializationFromServer = async (index: number) => {
+    const tagId = specializations[index].tagId;
+    console.log(tagId);
+    try {
+      const url = `${import.meta.env.VITE_API_URL}/tag/${tagId}`;
+      const token = import.meta.env.VITE_TOKEN;
+
+      await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setSpecializations((prev) => prev.filter((_, i) => i !== index));
+      toast.success('Спеціалізацію успішно видалено');
+    } catch (error) {
+      console.error('Помилка видалення спеціалізації:', error);
+      toast.error('Не вдалося видалити спеціалізацію');
     }
   };
 
@@ -163,10 +189,6 @@ const Technologies = () => {
     </label>
   );
 
-  const handleRemoveSpec = (index: number) => {
-    setSpecializations((prev) => prev.filter((_, i) => i !== index));
-  };
-
   return (
     <div className="flex gap-[165px] min-h-screen font-lato font-bold text-[20px] leading-[30px] px-[30px] py-[40px] bg-light-blue-bg">
       <div>
@@ -186,7 +208,7 @@ const Technologies = () => {
                   {specialization.name}
                   <button
                     className="mr-[5px]"
-                    onClick={() => handleRemoveSpec(index)}
+                    onClick={() => deleteSpecializationFromServer(index)}
                   >
                     <MdClose size={18} style={{ color: '#91A2B6' }} />
                   </button>
