@@ -51,10 +51,6 @@ const router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: 'evaluating',
-    element: <Evaluating />,
-  },
-  {
     path: 'email',
     element: <Email />,
   },
@@ -98,6 +94,10 @@ const router = createBrowserRouter([
       {
         path: 'technologies',
         element: <Technologies />,
+      },
+      {
+        path: 'evaluating',
+        element: <Evaluating />,
       },
     ],
   },
