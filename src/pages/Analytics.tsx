@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FiFilter } from 'react-icons/fi';
 import { RiFilter3Line } from 'react-icons/ri';
 import ActionChoice from '../components/ActionChoice';
-import AnalyticsTable from '../components/AnalyticsTable';
+// import AnalyticsTable from '../components/AnalyticsTable';
 import SubjectOption from '../components/SubjectOption';
 import ActionOption from '../components/ActionOption';
 
@@ -14,7 +14,7 @@ const Analytics: React.FC = () => {
   console.log(infoType);
   console.log(infoType);
   // console.log(text);
-  const data = [];
+  // const data = [];
   return (
     <section className="p-8 font-lato font-normal text-[20px] leading-[30px]">
       <div className="flex flex-row mb-[30px]">
@@ -62,11 +62,11 @@ const Analytics: React.FC = () => {
         <div className="">
           <ActionChoice action={action} infoType={infoType} />
         </div>
-        {data.length > 0 ? (
+        {/* {data.length > 0 ? (
           <AnalyticsTable />
         ) : (
           <div>За обраними параметрами дані не знайдено </div>
-        )}
+        )} */}
       </div>
     </section>
   );
