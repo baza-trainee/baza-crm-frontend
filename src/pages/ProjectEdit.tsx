@@ -4,15 +4,17 @@ import DatePicker from 'react-datepicker';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Tooltip } from 'react-tooltip';
 import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
 
 import ProjectFormat from '../components/Projects/ProjectFormat';
+import Spinner from '../components/Spinner';
 import calendar from '../assets/common/calendar.svg';
 import { CreateProjectRequest, RootState } from '../types';
-import { createProject } from '../utils/projectApi';
+import { createProject, getProjectById } from '../utils/projectApi';
+import { getProjectStatusLabel } from '../utils/projectStatusOptions';
 import { getTags } from '../utils/tagApi';
 
 const ProjectEdit = () => {
@@ -20,16 +22,69 @@ const ProjectEdit = () => {
   const user = useSelector((state: RootState) => state.userState.user);
 
   const {
+    data: project,
+    isPending,
+    isError,
+  } = useQuery({
+    queryKey: ['project', id],
+    queryFn: () => getProjectById(Number(id), user!.token),
+    enabled: !!user?.token,
+  });
+
+  const {
+    data: tags,
+    isError: isTagsError,
+    isPending: isTagsPending,
+  } = useQuery({
+    queryKey: ['tags', user?.token],
+    queryFn: () => getTags(user!.token),
+    enabled: !!user?.token,
+  });
+
+  // const specializations = tags?.filter((tag) => tag.isSpecialization === true);
+
+  const projectSpecializations = tags?.filter((tag) =>
+    project?.projectRequirments.some(
+      (req) => req.tagId === tag.id && tag.isSpecialization,
+    ),
+  );
+
+  const borderColor =
+    project?.projectStatus === 'ended'
+      ? '#14B541'
+      : project?.projectStatus === 'working'
+        ? '#2e57db'
+        : '#f16600';
+
+  const {
     register,
     watch,
     handleSubmit,
     control,
     formState: { errors },
-  } = useForm<CreateProjectRequest>({
-    defaultValues: {
-      projectType: 'free',
-    },
-  });
+    reset,
+  } = useForm<CreateProjectRequest>({});
+
+  useEffect(() => {
+    if (project && tags) {
+      const projectSpecializations = tags?.filter((tag) =>
+        project?.projectRequirments.some(
+          (req) => req.tagId === tag.id && tag.isSpecialization,
+        ),
+      );
+
+      reset({
+        name: project?.name,
+        description: project?.description,
+        projectPoints: project?.projectPoints,
+        projectType: project?.projectType,
+        price: project?.price,
+        dateStart: project?.dateStart,
+        dateTeam: project?.dateTeam,
+        specializations: projectSpecializations,
+      });
+    }
+  }, [project, tags, reset]);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -38,18 +93,6 @@ const ProjectEdit = () => {
   };
 
   const selectedFormat = watch('projectType');
-
-  const { data: tags, isError: isTagsError } = useQuery({
-    queryKey: ['tags', user?.token],
-    queryFn: () => getTags(user!.token),
-    enabled: !!user?.token,
-  });
-
-  const specializations = tags?.filter((tag) => tag.isSpecialization === true);
-
-  if (isTagsError) {
-    console.log(isTagsError);
-  }
 
   const mutation = useMutation({
     mutationFn: createProject,
@@ -69,6 +112,26 @@ const ProjectEdit = () => {
     }
   };
 
+  if (isPending || isTagsPending || !project || !tags) {
+    return <Spinner />;
+  }
+
+  if (isError) {
+    return (
+      <section className="flex w-full gap-5 px-8 py-5 bg-light-blue-bg height-100">
+        <h2 className="text-2xl text-center mt-[10%]">
+          Виникла помилка при завантаженні проєкта. Спробуйте пізніше.
+        </h2>
+      </section>
+    );
+  }
+
+  if (isTagsError) {
+    console.log(isTagsError);
+  }
+
+  console.log(project);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -76,7 +139,6 @@ const ProjectEdit = () => {
     >
       {/* TITLE */}
       <div className="h-[60px] flex justify-between items-center font-bold text-text-black bg-white rounded-xl border-card-border border px-8 w-[845px]">
-        <h1>{id}</h1>
         <input
           className="duration-500 border-b-2 outline-none w-96 focus:border-b-2 focus:border-b-primary-blue"
           placeholder="Ввести назву проєкту"
@@ -89,8 +151,11 @@ const ProjectEdit = () => {
             },
           })}
         />
-        <div className="px-5 py-2 text-white rounded-[10px] bg-orange">
-          Формується команда
+        <div
+          style={{ backgroundColor: borderColor }}
+          className="px-5 py-2 text-white rounded-[10px]"
+        >
+          {getProjectStatusLabel(project.projectStatus)}
         </div>
       </div>
       <div className="h-5 px-8 mb-5">
@@ -307,7 +372,7 @@ const ProjectEdit = () => {
       {/* TEAM */}
       <h3 className="mb-3 ml-8 text-xl font-bold">Склад команди</h3>
       <div className="flex flex-wrap gap-6">
-        {specializations?.map((specialization, index) => (
+        {projectSpecializations?.map((specialization, index) => (
           <div
             className="w-[268px] bg-white rounded-[10px] px-8 py-5 border-color-pm border flex flex-col justify-center gap-3 relative"
             key={specialization.id}
@@ -331,7 +396,7 @@ const ProjectEdit = () => {
               <input
                 type="hidden"
                 {...register(`specializations.${index}.id`, {
-                  value: String(specialization.id),
+                  value: specialization.id,
                 })}
               />
             </div>
