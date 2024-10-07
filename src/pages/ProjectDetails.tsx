@@ -20,7 +20,7 @@ const ProjectDetails: React.FC = () => {
     isPending,
     isError,
   } = useQuery({
-    queryKey: ['project'],
+    queryKey: ['project', id],
     queryFn: () => getProjectById(Number(id), user!.token),
     enabled: !!user?.token,
   });

@@ -1,7 +1,13 @@
 import Button from '../components/Button';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MdClose } from 'react-icons/md';
+import { toast } from 'react-toastify';
+import { getTags } from '../utils/tagApi';
+import { RootState } from '../types';
+import { useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 interface FormValues {
   specializationName: string;
@@ -15,17 +21,143 @@ interface ColorRadioProps {
 }
 
 const Technologies = () => {
+  const token = useSelector((state: RootState) => state.userState.user?.token);
   const [selectedColor, setSelectedColor] = useState<string>('#f87168');
   const [specializations, setSpecializations] = useState<
-    { name: string; color: string }[]
+    { name: string; color: string; tagId: number }[]
   >([]);
-  const [technologies, setTechnologies] = useState<string[]>([]);
-  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [technologies, setTechnologies] = useState<{ name: string }[]>([]);
+  const [isFormSpecVisible, setIsFormSpecVisible] = useState(false);
   const [isFormTechVisible, setIsFormTechVisible] = useState(false);
+  const [specializationName, setSpecializationName] = useState<string>('');
 
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
   };
+
+  const { isError: isTagsError } = useQuery({
+    queryKey: ['tags', token],
+    queryFn: () => (token ? getTags(token) : Promise.resolve([])),
+    enabled: !!token,
+  });
+
+  if (isTagsError) {
+    console.log(isTagsError);
+  }
+
+  // get all specialization (color + name + isSpecialization)
+  useEffect(() => {
+    const fetchSpecializations = async () => {
+      try {
+        if (token) {
+          const tags = await getTags(token);
+
+          const specializations = tags
+            .filter((tag) => tag.isSpecialization)
+            .map((specialization) => ({
+              name: specialization.name,
+              color: specialization.color,
+              tagId: specialization.id,
+            }));
+
+          setSpecializations(specializations);
+        }
+      } catch (error) {
+        console.error('Помилка отримання спеціалізацій', error);
+      }
+    };
+
+    if (token) {
+      fetchSpecializations();
+    }
+  }, [token]);
+
+  // create new Specialization (color + name + isSpecialization)
+  const addSpecializationToServer = async (specializationName: string) => {
+    try {
+      const url = `${import.meta.env.VITE_API_URL}/tag/`;
+
+      const response = await axios.post(
+        url,
+        {
+          name: specializationName,
+          color: selectedColor,
+          isSpecialization: true,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        },
+      );
+
+      const newSpecialization = response.data;
+
+      setSpecializations([
+        ...specializations,
+        {
+          name: newSpecialization.name,
+          color: newSpecialization.color,
+          tagId: newSpecialization.id,
+        },
+      ]);
+      toast.success('Спеціалізацію успішно створено');
+    } catch (error) {
+      console.error('Помилка додавання спеціалізації:', error);
+      toast.error('Не вдалося створити спеціалізацію');
+    }
+  };
+
+  const handleSaveSpecialization = () => {
+    if (specializationName.trim()) {
+      addSpecializationToServer(specializationName);
+      setSpecializationName('');
+    } else {
+      console.error('Назва спеціалізації не може бути пустою');
+    }
+  };
+
+  // Delete Specialization
+  const deleteSpecializationFromServer = async (index: number) => {
+    const tagId = specializations[index].tagId;
+    try {
+      const url = `${import.meta.env.VITE_API_URL}/tag/${tagId}`;
+
+      await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setSpecializations((prev) => prev.filter((_, i) => i !== index));
+      toast.success('Спеціалізацію успішно видалено');
+    } catch (error) {
+      console.error('Помилка видалення спеціалізації:', error);
+      toast.error('Не вдалося видалити спеціалізацію');
+    }
+  };
+  // Technologies
+  // get all technologies
+  useEffect(() => {
+    const fetchTechnologies = async () => {
+      try {
+        const token = import.meta.env.VITE_TOKEN;
+        const tags = await getTags(token);
+
+        const technologies = tags
+          .filter((tag) => !tag.isSpecialization)
+          .map((technology) => ({
+            name: technology.name,
+          }));
+
+        setTechnologies(technologies);
+      } catch (error) {
+        console.error('Помилка отримання технологій', error);
+      }
+    };
+
+    fetchTechnologies();
+  }, []);
 
   const {
     register,
@@ -35,28 +167,18 @@ const Technologies = () => {
   const {
     register: registerTechnology,
     handleSubmit: handleSubmitTechnology,
-    reset: resetTechnology,
+    // reset: resetTechnology,
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    if (data.specializationName) {
-      setSpecializations([
-        ...specializations,
-        { name: data.specializationName, color: selectedColor },
-      ]);
+    if (data.technologyName) {
+      setTechnologies([...technologies, { name: data.technologyName }]);
       resetSpecialization();
     }
   };
 
-  const onSubmitTechnology: SubmitHandler<FormValues> = (data) => {
-    if (data.technologyName) {
-      setTechnologies([...technologies, data.technologyName]);
-      resetTechnology();
-    }
-  };
-
-  const handleAddClick = () => {
-    setIsFormVisible(true);
+  const handleAddClickSpecialization = () => {
+    setIsFormSpecVisible(true);
   };
 
   const handleAddClickTechnology = () => {
@@ -84,34 +206,26 @@ const Technologies = () => {
     </label>
   );
 
-  const handleRemoveSpec = (index: number) => {
-    setSpecializations((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const handleRemoveTech = (index: number) => {
-    setTechnologies((prev) => prev.filter((_, i) => i !== index));
-  };
-
   return (
     <div className="flex gap-[165px] min-h-screen font-lato font-bold text-[20px] leading-[30px] px-[30px] py-[40px] bg-light-blue-bg">
       <div>
         <h1 className="px-[20px] mb-[10px]">Спеціалізації</h1>
         <div className="text-[16px] font-semibold p-[20px] bg-white border border-card-border rounded-lg">
           <ul className="mb-[18px]">
-            {specializations.map((spec, index) => (
+            {specializations.map((specialization, index) => (
               <li
                 key={index}
                 className="relative w-[372px] bg-blue-hover rounded-lg mb-[8px] hover:bg-hover-blue before:block before:absolute before:w-[86px] before:h-[30px] before:top-1/2 before:-translate-y-1/2 before:left-0 pl-[110px]"
               >
                 <span
                   className="absolute left-0 top-1/2 transform -translate-y-1/2 w-[86px] h-[30px] rounded-lg"
-                  style={{ backgroundColor: spec.color }}
+                  style={{ backgroundColor: specialization.color }}
                 ></span>
                 <div className="flex items-center justify-between">
-                  {spec.name}
+                  {specialization.name}
                   <button
                     className="mr-[5px]"
-                    onClick={() => handleRemoveSpec(index)}
+                    onClick={() => deleteSpecializationFromServer(index)}
                   >
                     <MdClose size={18} style={{ color: '#91A2B6' }} />
                   </button>
@@ -123,11 +237,11 @@ const Technologies = () => {
             <Button
               label="Додати спеціалізацію"
               className="w-[268px] duration-500"
-              onClick={handleAddClick}
+              onClick={handleAddClickSpecialization}
             />
           </div>
         </div>
-        {isFormVisible && (
+        {isFormSpecVisible && (
           <div className="text-[16px] font-semibold py-[20px] px-[12px] bg-input-normal-state border border-card-border rounded-lg">
             <form onSubmit={handleSubmitSpecialization(onSubmit)}>
               <div className="flex flex-col">
@@ -138,6 +252,7 @@ const Technologies = () => {
                   {...register('specializationName', { required: true })}
                   maxLength={15}
                   className="h-[40px] font-normal px-[10px] rounded-lg mb-[20px] border-2 focus:border-primary-blue focus:outline-none"
+                  onChange={(e) => setSpecializationName(e.target.value)}
                 />
               </div>
               <div className="flex flex-col">
@@ -251,6 +366,7 @@ const Technologies = () => {
                 <Button
                   label="Зберегти"
                   className="w-[268px] text-white bg-[#1e70eb]"
+                  onClick={handleSaveSpecialization}
                 />
               </div>
             </form>
@@ -267,10 +383,10 @@ const Technologies = () => {
                 className="w-[372px] px-[8px] bg-blue-hover hover:bg-hover-blue rounded-lg mb-[8px]"
               >
                 <div className="flex items-center justify-between">
-                  {tech}
+                  {tech.name}
                   <button
                     className="mr-[5px]"
-                    onClick={() => handleRemoveTech(index)}
+                    // onClick={() => handleRemoveTech(index)}
                   >
                     <MdClose size={18} style={{ color: '#91A2B6' }} />
                   </button>
@@ -288,7 +404,8 @@ const Technologies = () => {
         </div>
         {isFormTechVisible && (
           <div className="text-[16px] font-semibold py-[12px] px-[10px] bg-input-normal-state border border-card-border rounded-lg">
-            <form onSubmit={handleSubmitTechnology(onSubmitTechnology)}>
+            <form onSubmit={handleSubmitTechnology(onSubmit)}>
+              {/* <form onSubmit={handleSubmitTechnology(onSubmitTechnology)}> */}
               <div className="flex flex-col">
                 <label className="font-Open Sans font-sans text-[16px] font-normal leading-[1.75] mb-[8px]">
                   Додати технологію
