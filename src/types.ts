@@ -34,7 +34,7 @@ export type Project = {
   description: string;
   projectPoints: number;
   projectStatus: string;
-  projectType: string;
+  projectType: 'free' | 'light' | 'strong';
   price: number;
   dateStart: string;
   dateTeam: string;
@@ -48,6 +48,7 @@ export type Tag = {
   name: string;
   color: string;
   isSpecialization: boolean;
+  count?: number;
 };
 
 export type User = {
@@ -84,8 +85,11 @@ export type Inputs = {
 };
 
 type Specialization = {
-  id: string;
+  id: number;
   count: number;
+  name?: string;
+  color?: string;
+  isSpecialization?: boolean;
 };
 
 export type CreateProjectRequest = {

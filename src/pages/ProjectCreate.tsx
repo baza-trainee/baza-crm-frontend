@@ -2,17 +2,17 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import DatePicker from 'react-datepicker';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import calendar from '../assets/common/calendar.svg';
 import { Tooltip } from 'react-tooltip';
 import { toast } from 'react-toastify';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 
 import ProjectFormat from '../components/Projects/ProjectFormat';
+import calendar from '../assets/common/calendar.svg';
 import { CreateProjectRequest, RootState } from '../types';
 import { createProject } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
-import { useState } from 'react';
 
 const ProjectCreate: React.FC = () => {
   const user = useSelector((state: RootState) => state.userState.user);
@@ -328,7 +328,7 @@ const ProjectCreate: React.FC = () => {
               <input
                 type="hidden"
                 {...register(`specializations.${index}.id`, {
-                  value: String(specialization.id),
+                  value: Number(specialization.id),
                 })}
               />
             </div>
