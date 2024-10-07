@@ -41,13 +41,13 @@ const Evaluating = () => {
                     >
                       {rating && hover >= index ? (
                         <img
-                          src={`/src/assets/common/evaluating-star-${hover}.svg`}
+                          src={`/assets/common/evaluating-star-${hover}.svg`}
                           alt="star"
                         />
                       ) : (
                         <img
                           className="opacity-50"
-                          src="/src/assets/common/evaluating-default-star.svg"
+                          src="/assets/common/evaluating-default-star.svg"
                           alt="star"
                         />
                       )}
