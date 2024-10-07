@@ -4,6 +4,9 @@ import { useState, useEffect } from 'react';
 import { MdClose } from 'react-icons/md';
 import { toast } from 'react-toastify';
 import { getTags } from '../utils/tagApi';
+import { RootState } from '../types';
+import { useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
 interface FormValues {
@@ -18,6 +21,7 @@ interface ColorRadioProps {
 }
 
 const Technologies = () => {
+  const token = useSelector((state: RootState) => state.userState.user?.token);
   const [selectedColor, setSelectedColor] = useState<string>('#f87168');
   const [specializations, setSpecializations] = useState<
     { name: string; color: string; tagId: number }[]
@@ -31,35 +35,47 @@ const Technologies = () => {
     setSelectedColor(color);
   };
 
+  const { isError: isTagsError } = useQuery({
+    queryKey: ['tags', token],
+    queryFn: () => (token ? getTags(token) : Promise.resolve([])),
+    enabled: !!token,
+  });
+
+  if (isTagsError) {
+    console.log(isTagsError);
+  }
+
   // get all specialization (color + name + isSpecialization)
   useEffect(() => {
     const fetchSpecializations = async () => {
       try {
-        const token = import.meta.env.VITE_TOKEN;
-        const tags = await getTags(token);
+        if (token) {
+          const tags = await getTags(token);
 
-        const specializations = tags
-          .filter((tag) => tag.isSpecialization)
-          .map((specialization) => ({
-            name: specialization.name,
-            color: specialization.color,
-            tagId: specialization.id,
-          }));
+          const specializations = tags
+            .filter((tag) => tag.isSpecialization)
+            .map((specialization) => ({
+              name: specialization.name,
+              color: specialization.color,
+              tagId: specialization.id,
+            }));
 
-        setSpecializations(specializations);
+          setSpecializations(specializations);
+        }
       } catch (error) {
         console.error('Помилка отримання спеціалізацій', error);
       }
     };
 
-    fetchSpecializations();
-  }, []);
+    if (token) {
+      fetchSpecializations();
+    }
+  }, [token]);
 
   // create new Specialization (color + name + isSpecialization)
   const addSpecializationToServer = async (specializationName: string) => {
     try {
       const url = `${import.meta.env.VITE_API_URL}/tag/`;
-      const token = import.meta.env.VITE_TOKEN;
 
       const response = await axios.post(
         url,
@@ -101,15 +117,11 @@ const Technologies = () => {
     }
   };
 
-  // console.log(specializations);
-
   // Delete Specialization
   const deleteSpecializationFromServer = async (index: number) => {
     const tagId = specializations[index].tagId;
-    // console.log(tagId);
     try {
       const url = `${import.meta.env.VITE_API_URL}/tag/${tagId}`;
-      const token = import.meta.env.VITE_TOKEN;
 
       await axios.delete(url, {
         headers: {
@@ -124,7 +136,7 @@ const Technologies = () => {
       toast.error('Не вдалося видалити спеціалізацію');
     }
   };
-
+  // Technologies
   // get all technologies
   useEffect(() => {
     const fetchTechnologies = async () => {
