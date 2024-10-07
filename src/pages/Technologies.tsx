@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { MdClose } from 'react-icons/md';
 import { getTags } from '../utils/tagApi';
-import axios from 'axios';
+// import axios from 'axios';
 
 interface FormValues {
   specializationName: string;
@@ -21,7 +21,7 @@ const Technologies = () => {
   const [specializations, setSpecializations] = useState<
     { name: string; color: string }[]
   >([]);
-  const [technologies, setTechnologies] = useState<string[]>([]);
+  const [technologies, setTechnologies] = useState<{ name: string }[]>([]);
   const [isFormSpecVisible, setIsFormSpecVisible] = useState(false);
   const [isFormTechVisible, setIsFormTechVisible] = useState(false);
 
@@ -29,7 +29,7 @@ const Technologies = () => {
     setSelectedColor(color);
   };
 
-  // get all specialization (color+name)
+  // get all specialization (color + name)
   useEffect(() => {
     const fetchSpecializations = async () => {
       try {
@@ -52,13 +52,22 @@ const Technologies = () => {
     fetchSpecializations();
   }, []);
 
+  // create new Specialization (color + name)
+
   // get all technologies
   useEffect(() => {
     const fetchTechnologies = async () => {
       try {
         const token = import.meta.env.VITE_TOKEN;
         const tags = await getTags(token);
-        setTechnologies(tags.map((tag) => tag.name));
+
+        const technologies = tags
+          .filter((tag) => !tag.isSpecialization)
+          .map((technology) => ({
+            name: technology.name,
+          }));
+
+        setTechnologies(technologies);
       } catch (error) {
         console.error('Помилка отримання технологій', error);
       }
@@ -67,39 +76,39 @@ const Technologies = () => {
     fetchTechnologies();
   }, []);
 
-  const addTechnologyToServer = async (technologyName: string) => {
-    try {
-      const url = `${import.meta.env.VITE_API_URL}/tag`;
-      const token = import.meta.env.VITE_TOKEN;
+  // const addTechnologyToServer = async (technologyName: string) => {
+  //   try {
+  //     const url = `${import.meta.env.VITE_API_URL}/tag`;
+  //     const token = import.meta.env.VITE_TOKEN;
 
-      await axios.post(
-        url,
-        { name: technologyName },
-        {
-          headers: {
-            Authorization: `Bearer ` + token,
-          },
-        },
-      );
-    } catch (error) {
-      console.error('Error adding technology:', error);
-    }
-  };
+  //     await axios.post(
+  //       url,
+  //       { name: technologyName },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ` + token,
+  //         },
+  //       },
+  //     );
+  //   } catch (error) {
+  //     console.error('Error adding technology:', error);
+  //   }
+  // };
 
-  const removeTechnologyFromServer = async (technologyName: string) => {
-    try {
-      const url = `${import.meta.env.VITE_API_URL}/tag/${technologyName}`;
-      const token = import.meta.env.VITE_TOKEN;
+  // const removeTechnologyFromServer = async (technologyName: string) => {
+  //   try {
+  //     const url = `${import.meta.env.VITE_API_URL}/tag/${technologyName}`;
+  //     const token = import.meta.env.VITE_TOKEN;
 
-      await axios.delete(url, {
-        headers: {
-          Authorization: `Bearer ` + token,
-        },
-      });
-    } catch (error) {
-      console.error('Error deleting technology:', error);
-    }
-  };
+  //     await axios.delete(url, {
+  //       headers: {
+  //         Authorization: `Bearer ` + token,
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.error('Error deleting technology:', error);
+  //   }
+  // };
 
   const {
     register,
@@ -109,7 +118,7 @@ const Technologies = () => {
   const {
     register: registerTechnology,
     handleSubmit: handleSubmitTechnology,
-    reset: resetTechnology,
+    // reset: resetTechnology,
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
@@ -122,13 +131,13 @@ const Technologies = () => {
     }
   };
 
-  const onSubmitTechnology: SubmitHandler<FormValues> = async (data) => {
-    if (data.technologyName) {
-      setTechnologies([...technologies, data.technologyName]);
-      await addTechnologyToServer(data.technologyName);
-      resetTechnology();
-    }
-  };
+  // const onSubmitTechnology: SubmitHandler<FormValues> = async (data) => {
+  //   if (data.technologyName) {
+  //     setTechnologies([...technologies, data.technologyName]);
+  //     await addTechnologyToServer(data.technologyName);
+  //     resetTechnology();
+  //   }
+  // };
 
   const handleAddClick = () => {
     setIsFormSpecVisible(true);
@@ -163,11 +172,11 @@ const Technologies = () => {
     setSpecializations((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleRemoveTech = async (index: number) => {
-    const techToRemove = technologies[index];
-    setTechnologies((prev) => prev.filter((_, i) => i !== index));
-    await removeTechnologyFromServer(techToRemove);
-  };
+  // const handleRemoveTech = async (index: number) => {
+  //   const techToRemove = technologies[index];
+  //   setTechnologies((prev) => prev.filter((_, i) => i !== index));
+  //   await removeTechnologyFromServer(techToRemove);
+  // };
 
   return (
     <div className="flex gap-[165px] min-h-screen font-lato font-bold text-[20px] leading-[30px] px-[30px] py-[40px] bg-light-blue-bg">
@@ -344,10 +353,10 @@ const Technologies = () => {
                 className="w-[372px] px-[8px] bg-blue-hover hover:bg-hover-blue rounded-lg mb-[8px]"
               >
                 <div className="flex items-center justify-between">
-                  {tech}
+                  {tech.name}
                   <button
                     className="mr-[5px]"
-                    onClick={() => handleRemoveTech(index)}
+                    // onClick={() => handleRemoveTech(index)}
                   >
                     <MdClose size={18} style={{ color: '#91A2B6' }} />
                   </button>
@@ -365,7 +374,8 @@ const Technologies = () => {
         </div>
         {isFormTechVisible && (
           <div className="text-[16px] font-semibold py-[12px] px-[10px] bg-input-normal-state border border-card-border rounded-lg">
-            <form onSubmit={handleSubmitTechnology(onSubmitTechnology)}>
+            <form onSubmit={handleSubmitTechnology(onSubmit)}>
+              {/* <form onSubmit={handleSubmitTechnology(onSubmitTechnology)}> */}
               <div className="flex flex-col">
                 <label className="font-Open Sans font-sans text-[16px] font-normal leading-[1.75] mb-[8px]">
                   Додати технологію
