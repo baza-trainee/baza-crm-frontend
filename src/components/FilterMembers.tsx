@@ -5,7 +5,7 @@ import Wrapper from './Wrapper';
 import useMenuState from '../hooks';
 import { SelectOptionType } from '../types';
 import Calendar from './Calendar';
-import FilterMembersTable from './Analytics/FilterMembersTable';
+// import FilterMembersTable from './Analytics/FilterMembersTable';
 
 const statusOptions: SelectOptionType[] = [
   { value: 'active', label: 'Активний' },
@@ -98,7 +98,7 @@ const FilterMembers: React.FC = () => {
           </Wrapper>
         )}
       </AnalyticsForm>
-      <FilterMembersTable />
+      {/* <FilterMembersTable /> */}
     </div>
   );
 };

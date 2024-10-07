@@ -3,7 +3,7 @@ import useMenuState from '../hooks';
 import AnalyticsForm from './AnalyticsForm';
 import MultiSelect from './MultiSelect';
 import { SelectOptionType } from '../types';
-import FilterProjectsTable from './Analytics/FilterProjectsTable';
+// import FilterProjectsTable from './Analytics/FilterProjectsTable';
 
 const statusOptions: SelectOptionType[] = [
   { value: 'team', label: 'Формується команда' },
@@ -41,7 +41,7 @@ const FilterProjects: React.FC = () => {
           </Wrapper>
         )}
       </AnalyticsForm>
-      <FilterProjectsTable />
+      {/* <FilterProjectsTable /> */}
     </div>
   );
 };
