@@ -2,7 +2,9 @@ import Select, { MultiValue, StylesConfig } from 'react-select';
 import { Controller, Control } from 'react-hook-form';
 import { CustomOption } from './CustomOption';
 import useMenuState from '../hooks';
-import { FormData } from './AnalyticsForm';
+// import { DataForm } from './AnalyticsForm';
+import { DataForm } from '../types';
+
 import { SelectOptionType } from '../types';
 
 const customStyles: StylesConfig<SelectOptionType, true> = {
@@ -48,9 +50,9 @@ type MultiSelectProps = {
   options: SelectOptionType[];
   // selectedValue: MultiValue<SelectOptionType>;
   // setSelectedValue: (data: MultiValue<SelectOptionType>) => void;
-  control: Control<FormData>;
+  control: Control<DataForm>;
   className: string;
-  name: keyof FormData;
+  name: keyof DataForm;
 };
 
 const MultiSelect: React.FC<MultiSelectProps> = ({

@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import calendarIcon from './../assets/common/calendar.svg';
 
 type CalendarProps = {
-  selectedDate: Date | null;
+  selectedDate: Date | undefined;
   onDateChange: (date: Date | null) => void;
   text: string;
 };

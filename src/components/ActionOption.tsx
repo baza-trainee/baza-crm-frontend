@@ -21,7 +21,7 @@ const ActionOption: React.FC<ActionOptionProps> = ({
   infoType,
 }) => {
   console.log(action);
-  console.log(text);
+  // console.log(text);
   return (
     <div className="mr-4 flex flex-row items-center has-[:checked]:text-primary-blue hover:text-primary-blue has-[:disabled]:text-tertiary-text has-[:disabled]:pointer-events-none  `${action === text ? 'text-primary-blue' : ''} ${!infoType ? 'text-tertiary-text pointer-events-none' : ''}`">
       <label className="w-full  text-center flex items-center cursor-pointer">

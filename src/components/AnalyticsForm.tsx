@@ -1,44 +1,46 @@
 import { useForm, Control } from 'react-hook-form';
 import { useEffect } from 'react';
 import Button from './Button';
+import { DataForm } from '../types';
 
 export type FormData = {
-  status: { value: string; label: string }[];
-  format: { value: string; label: string }[];
-  technology: { value: string; label: string }[];
-  specialization: { value: string; label: string }[];
-  selectedDateFrom: Date | null;
-  selectedDateTo: Date | null;
+  status?: { value: string; label: string }[];
+  format?: { value: string; label: string }[];
+  technology?: { value: string; label: string }[];
+  specialization?: { value: string; label: string }[];
+  selectedDateFrom?: Date | null;
+  selectedDateTo?: Date | null;
 };
 
 type FormProps = {
-  children: (control: Control<FormData>) => React.ReactNode;
+  children: (control: Control<DataForm>) => React.ReactNode;
+  onFilter: (body: { formats: string[]; statuses: string[] }) => void;
 };
 
-const AnalyticsForm: React.FC<FormProps> = ({ children }) => {
+const AnalyticsForm: React.FC<FormProps> = ({ children, onFilter }) => {
   const {
     handleSubmit,
     control,
-    reset,
+    // reset,
     watch,
     // formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<DataForm>();
 
-  const selectedOptions = watch('status');
+  const selectedOptions = watch('statuses');
+  console.log(selectedOptions);
 
   const handleReset = () => {
-    reset({
-      status: [],
-      format: [],
-      technology: [],
-      specialization: [],
-      selectedDateFrom: null,
-      selectedDateTo: null,
-    });
+    // reset({ status: [], format: [], technology: [], specialization: [] });
   };
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: DataForm) => {
     console.log(data);
-    // handleReset();
+    const formatOption = data.formats.map((item) => item.value);
+    const statusOption = data.statuses.map((item) => item.value);
+    const body = { formats: [...formatOption], statuses: [...statusOption] };
+
+    onFilter(body);
+
+    handleReset();
   };
 
   useEffect(() => {
@@ -46,7 +48,7 @@ const AnalyticsForm: React.FC<FormProps> = ({ children }) => {
   }, [selectedOptions]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} id="external-form">
+    <form onSubmit={handleSubmit(onSubmit)}>
       {children(control)}
       <Button label={'Застосувати'} />{' '}
       <Button label={'Скинути'} onClick={handleReset} />

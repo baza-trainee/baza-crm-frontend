@@ -12,7 +12,7 @@ import { Project } from '../../types';
 
 type ProjectsTableProps = {
   tableHeaders?: string[];
-  info: Project[] | undefined;
+  projects: Project[] | undefined;
 };
 
 const FilterProjectsTable: React.FC<ProjectsTableProps> = ({
@@ -24,9 +24,9 @@ const FilterProjectsTable: React.FC<ProjectsTableProps> = ({
     'Статус',
     'Формат',
   ],
-  info,
+  projects,
 }) => {
-  // console.log(info);
+  console.log(projects);
   return (
     <div className="flex-1  overflow-hidden border rounded-xl border-card-border bg-white">
       <table className="m-[-1px] min-w-full text-base border border-card-border">
@@ -49,9 +49,9 @@ const FilterProjectsTable: React.FC<ProjectsTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {info &&
-            info.length > 0 &&
-            info?.map((project, index) => (
+          {projects &&
+            projects.length > 0 &&
+            projects?.map((project, index) => (
               <tr key={project?.id} className="border border-card-border">
                 <td className="py-3 px-4 border border-card-border">
                   {index + 1}

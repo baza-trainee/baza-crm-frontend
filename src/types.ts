@@ -120,8 +120,10 @@ export type DataForm = {
   // formats: string[];
   statuses: { value: string }[];
   formats: { value: string }[];
-  technologies: { value: string }[];
-  specializations: { value: string }[];
+  technologies?: { value: string }[];
+  specializations?: { value: string }[];
+  selectedDateTo?: Date;
+  selectedDateFrom?: Date;
 };
 
 export type RequestBody = {

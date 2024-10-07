@@ -2,23 +2,12 @@ import Wrapper from './Wrapper';
 import useMenuState from '../hooks';
 import AnalyticsForm from './AnalyticsForm';
 import MultiSelect from './MultiSelect';
-import { SelectOptionType } from '../types';
+import { Project, SelectOptionType } from '../types';
 import FilterProjectsTable from './Analytics/FilterProjectsTable';
-import { useQuery } from '@tanstack/react-query';
-import { useSelector } from 'react-redux';
-import { RootState } from '../types';
-import { filterProjects } from '../utils/filterApi';
-// import {
-//   countProjectsByStatus,
-//   projectStatusOptions,
-// } from '../utils/projectStatusOptions';
-// export const AnalyticsTable = () => {
-//   return <div>AnalyticsTable</div>;
-// };
 
 const statusOptions: SelectOptionType[] = [
-  { value: 'team', label: 'Формується команда' },
-  { value: 'development', label: 'В розробці' },
+  { value: 'searching', label: 'Формується команда' },
+  { value: 'working', label: 'В розробці' },
   { value: 'completed', label: 'Завершений' },
 ];
 
@@ -28,28 +17,20 @@ const formatOptions: SelectOptionType[] = [
   { value: 'strong', label: 'Strong' },
 ];
 
-const FilterProjects: React.FC = () => {
-  const user = useSelector((state: RootState) => state.userState.user);
-
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzI4MDcxMDYxLCJleHAiOjE3MjgxNTc0NjF9.DJnPJedZ6rcWXPfDrlsJ4tgw9yzGwroUWubN9soGKaI';
-
-  const {
-    data: projects,
-    // isPending,
-    // isError,
-  } = useQuery({
-    queryKey: ['projects', token],
-    queryFn: () => filterProjects(token),
-    enabled: !!user?.token,
-  });
-
+type FilterProjectsProps = {
+  projects: Project[];
+  onFilter: (body: { formats: string[]; statuses: string[] }) => void;
+};
+const FilterProjects: React.FC<FilterProjectsProps> = ({
+  projects,
+  onFilter,
+}) => {
   console.log(projects);
 
   const { isMenuOpen } = useMenuState();
   return (
-    <div>
-      <AnalyticsForm>
+    <div className={'flex'}>
+      <AnalyticsForm onFilter={onFilter}>
         {(control) => (
           <Wrapper isMenuOpen={isMenuOpen} height="432px" width="268px">
             <MultiSelect
@@ -57,19 +38,19 @@ const FilterProjects: React.FC = () => {
               placeholder={'Статус'}
               control={control}
               className={'w-[228px] mb-4'}
-              name="status"
+              name="statuses"
             />
             <MultiSelect
               options={formatOptions}
               placeholder={'Формат'}
               control={control}
               className={'w-[228px] hover:border-card-border'}
-              name="format"
+              name="formats"
             />
           </Wrapper>
         )}
       </AnalyticsForm>
-      <FilterProjectsTable info={projects} />
+      <FilterProjectsTable projects={projects} />
     </div>
   );
 };
