@@ -23,11 +23,14 @@ interface ColorRadioProps {
 const Technologies = () => {
   const token = useSelector((state: RootState) => state.userState.user?.token);
   const [selectedColor, setSelectedColor] = useState<string>('#f87168');
+  // const [specializations, setSpecializations] = useState<
+  //   { name: string; color: string; tagId: number }[]
+  // >([]);
   const [specializations, setSpecializations] = useState<
-    { name: string; color: string; tagId: number }[]
+    { name: string; color: string; id: number }[]
   >([]);
   const [technologies, setTechnologies] = useState<
-    { name: string; tagId: number }[]
+    { name: string; id: number }[]
   >([]);
   const [isFormSpecVisible, setIsFormSpecVisible] = useState(false);
   const [isFormTechVisible, setIsFormTechVisible] = useState(false);
@@ -55,13 +58,17 @@ const Technologies = () => {
         if (token) {
           const tags = await getTags(token);
 
-          const specializations = tags
-            .filter((tag) => tag.isSpecialization)
-            .map((specialization) => ({
-              name: specialization.name,
-              color: specialization.color,
-              tagId: specialization.id,
-            }));
+          const specializations = tags?.filter(
+            (tag) => tag.isSpecialization === true,
+          );
+
+          // const specializations = tags
+          //   .filter((tag) => tag.isSpecialization)
+          //   .map((specialization) => ({
+          //     name: specialization.name,
+          //     color: specialization.color,
+          //     tagId: specialization.id,
+          //   }));
 
           setSpecializations(specializations);
         }
@@ -101,7 +108,8 @@ const Technologies = () => {
         {
           name: newSpecialization.name,
           color: newSpecialization.color,
-          tagId: newSpecialization.id,
+          // tagId: newSpecialization.id,
+          id: newSpecialization.id,
         },
       ]);
       toast.success('Спеціалізацію успішно створено');
@@ -122,7 +130,8 @@ const Technologies = () => {
 
   // Delete Specialization
   const deleteSpecializationFromServer = async (index: number) => {
-    const tagId = specializations[index].tagId;
+    // const tagId = specializations[index].tagId;
+    const tagId = specializations[index].id;
     try {
       const url = `${import.meta.env.VITE_API_URL}/tag/${tagId}`;
 
@@ -155,26 +164,28 @@ const Technologies = () => {
         if (token) {
           const tags = await getTags(token);
 
-          // const technologies = tags?.filter(
-          //   (tag) => tag.isSpecialization === false,
-          // );
-          const technologies = tags
-            .filter((tag) => !tag.isSpecialization)
-            .map((technology) => ({
-              name: technology.name,
-              color: technology.color,
-              tagId: technology.id,
-            }));
+          const technologies = tags?.filter(
+            (tag) => tag.isSpecialization === false,
+          );
+          // const technologies = tags
+          //   .filter((tag) => !tag.isSpecialization)
+          //   .map((technology) => ({
+          //     name: technology.name,
+          //     tagId: technology.id,
+          //   }));
 
           setTechnologies(technologies);
+          // console.log(technologies);
         }
       } catch (error) {
         console.error('Помилка отримання технологій', error);
       }
     };
 
-    fetchTechnologies();
-  }, []);
+    if (token) {
+      fetchTechnologies();
+    }
+  }, [token]);
 
   // Create new technology
   const addTechnologyToServer = async (technologyName: string) => {
@@ -200,7 +211,7 @@ const Technologies = () => {
         ...technologies,
         {
           name: newTechnology.name,
-          tagId: newTechnology.id,
+          id: newTechnology.id,
         },
       ]);
       toast.success('Технологію успішно створено');
@@ -221,7 +232,7 @@ const Technologies = () => {
 
   // Delete Technologie
   const deleteTechnologieFromServer = async (index: number) => {
-    const tagId = technologies[index].tagId;
+    const tagId = technologies[index].id;
     try {
       const url = `${import.meta.env.VITE_API_URL}/tag/${tagId}`;
 
