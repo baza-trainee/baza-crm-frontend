@@ -1,4 +1,10 @@
 import { useState } from 'react';
+import DefaultStar from '../assets/common/evaluating-default-star.svg';
+import Star1 from '../assets/common/evaluating-star-1.svg';
+import Star2 from '../assets/common/evaluating-star-2.svg';
+import Star3 from '../assets/common/evaluating-star-3.svg';
+import Star4 from '../assets/common/evaluating-star-4.svg';
+import Star5 from '../assets/common/evaluating-star-5.svg';
 
 const Evaluating = () => {
   const [rating, setRating] = useState(0);
@@ -39,15 +45,25 @@ const Evaluating = () => {
                       onMouseEnter={() => setHover(index)}
                       onMouseLeave={() => setHover(rating)}
                     >
-                      {rating && hover >= index ? (
+                      {hover >= index ? (
                         <img
-                          src={`/assets/common/evaluating-star-${hover}.svg`}
+                          src={
+                            hover === 1
+                              ? Star1
+                              : hover === 2
+                                ? Star2
+                                : hover === 3
+                                  ? Star3
+                                  : hover === 4
+                                    ? Star4
+                                    : Star5
+                          }
                           alt="star"
                         />
                       ) : (
                         <img
                           className="opacity-50"
-                          src="/assets/common/evaluating-default-star.svg"
+                          src={DefaultStar}
                           alt="star"
                         />
                       )}
