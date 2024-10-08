@@ -26,7 +26,9 @@ const Technologies = () => {
   const [specializations, setSpecializations] = useState<
     { name: string; color: string; tagId: number }[]
   >([]);
-  const [technologies, setTechnologies] = useState<{ name: string }[]>([]);
+  const [technologies, setTechnologies] = useState<
+    { name: string; tagId: number }[]
+  >([]);
   const [isFormSpecVisible, setIsFormSpecVisible] = useState(false);
   const [isFormTechVisible, setIsFormTechVisible] = useState(false);
   const [specializationName, setSpecializationName] = useState<string>('');
@@ -153,9 +155,16 @@ const Technologies = () => {
         if (token) {
           const tags = await getTags(token);
 
-          const technologies = tags?.filter(
-            (tag) => tag.isSpecialization === false,
-          );
+          // const technologies = tags?.filter(
+          //   (tag) => tag.isSpecialization === false,
+          // );
+          const technologies = tags
+            .filter((tag) => !tag.isSpecialization)
+            .map((technology) => ({
+              name: technology.name,
+              color: technology.color,
+              tagId: technology.id,
+            }));
 
           setTechnologies(technologies);
         }
@@ -191,7 +200,7 @@ const Technologies = () => {
         ...technologies,
         {
           name: newTechnology.name,
-          // tagId: newTechnology.id,
+          tagId: newTechnology.id,
         },
       ]);
       toast.success('Технологію успішно створено');
@@ -210,6 +219,26 @@ const Technologies = () => {
     }
   };
 
+  // Delete Technologie
+  const deleteTechnologieFromServer = async (index: number) => {
+    const tagId = technologies[index].tagId;
+    try {
+      const url = `${import.meta.env.VITE_API_URL}/tag/${tagId}`;
+
+      await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setTechnologies((prev) => prev.filter((_, i) => i !== index));
+      toast.success('Технологію успішно видалено');
+    } catch (error) {
+      console.error('Помилка видалення технології:', error);
+      toast.error('Не вдалося видалити технологію');
+    }
+  };
+
   // Technologies form
   const {
     register: registerTechnology,
@@ -220,7 +249,6 @@ const Technologies = () => {
   // reset both forms after submit
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     if (data.technologyName) {
-      // setTechnologies([...technologies, { name: data.technologyName }]);   ----- this line added technology on list local
       resetTechnology();
     } else if (data.specializationName) {
       resetSpecialization();
@@ -439,7 +467,7 @@ const Technologies = () => {
                   {tech.name}
                   <button
                     className="mr-[5px]"
-                    // onClick={() => handleRemoveTech(index)}
+                    onClick={() => deleteTechnologieFromServer(index)}
                   >
                     <MdClose size={18} style={{ color: '#91A2B6' }} />
                   </button>
@@ -458,7 +486,6 @@ const Technologies = () => {
         {isFormTechVisible && (
           <div className="text-[16px] font-semibold py-[12px] px-[10px] bg-input-normal-state border border-card-border rounded-lg">
             <form onSubmit={handleSubmitTechnology(onSubmit)}>
-              {/* <form onSubmit={handleSubmitTechnology(onSubmitTechnology)}> */}
               <div className="flex flex-col">
                 <label className="font-Open Sans font-sans text-[16px] font-normal leading-[1.75] mb-[8px]">
                   Додати технологію
