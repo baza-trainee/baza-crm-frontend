@@ -136,21 +136,27 @@ const Technologies = () => {
       toast.error('Не вдалося видалити спеціалізацію');
     }
   };
+
   // Technologies
   // get all technologies
   useEffect(() => {
     const fetchTechnologies = async () => {
       try {
-        const token = import.meta.env.VITE_TOKEN;
-        const tags = await getTags(token);
+        if (token) {
+          const tags = await getTags(token);
 
-        const technologies = tags
-          .filter((tag) => !tag.isSpecialization)
-          .map((technology) => ({
-            name: technology.name,
-          }));
+          const technologies = tags?.filter(
+            (tag) => tag.isSpecialization === false,
+          );
 
-        setTechnologies(technologies);
+          // const technologies = tags
+          //   .filter((tag) => !tag.isSpecialization)
+          //   .map((technology) => ({
+          //     name: technology.name,
+          //   }));
+
+          setTechnologies(technologies);
+        }
       } catch (error) {
         console.error('Помилка отримання технологій', error);
       }
