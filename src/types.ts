@@ -4,7 +4,7 @@ export type Link = {
 };
 
 export type SelectOptionType = {
-  value: number | string;
+  value: string;
   label?: string;
 };
 

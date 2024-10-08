@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FiFilter } from 'react-icons/fi';
 import { RiFilter3Line } from 'react-icons/ri';
-import SortMembers from '../components/SortMembers'; // додай імпорт компонента
+// import SortMembers from '../components/SortMembers'; // додай імпорт компонента
 // import FilterMembers from '../components/FilterMembers'; // додай імпорт компонента
 import SortProjects from '../components/SortProjects'; // додай імпорт компонента
 import FilterProjects from '../components/FilterProjects';
@@ -99,12 +99,12 @@ const Analytics: React.FC = () => {
       </div>
       <div className="flex gap-5">
         <div className="">
-          {infoType === 'Учасники' && action === 'Сортування' && (
-            <SortMembers />
-          )}
+          {/* {infoType === 'Учасники' && action === 'Сортування' && (
+            <SortMembers members={} />
+          )} */}
           {/* {infoType === 'Учасники' && action === 'Фільтр' && <FilterMembers />} */}
           {infoType === 'Проєкти' && action === 'Сортування' && (
-            <SortProjects />
+            <SortProjects projects={filterData} />
           )}
           {infoType === 'Проєкти' && action === 'Фільтр' && (
             <FilterProjects projects={filterData} onFilter={handleFilter} />

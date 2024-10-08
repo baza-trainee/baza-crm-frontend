@@ -2,39 +2,40 @@ import Select, { StylesConfig, SingleValue } from 'react-select';
 import { useState } from 'react';
 import Wrapper from './Wrapper';
 import useMenuState from '../hooks';
-import { SelectOptionType } from '../types';
+import { SelectOptionType, Member } from '../types';
+// import FilterMembersTable from './Analytics/FilterMembersTable';
 
 const sortOptions: SelectOptionType[] = [
-  { value: 'specialization from А to Z', label: 'Спеціалізація від A до Z' },
-  { value: 'specialization from Z to А', label: 'Спеціалізація від Z до A' },
-  { value: 'country from А to Z', label: 'Країна від А до Z' },
-  { value: 'country from Z to А', label: 'Країна від Z до А' },
-  { value: 'city from А to Z', label: 'Місто від А до Z' },
-  { value: 'city from Z to А', label: 'Місто від Z до A' },
-  { value: 'status from А to Z', label: 'Статус від А до Z' },
-  { value: 'status from Z to А', label: 'Статус від Z до А' },
+  { value: 'specializationАZ', label: 'Спеціалізація від A до Z' },
+  { value: 'specializationZА', label: 'Спеціалізація від Z до A' },
+  { value: 'countryАZ', label: 'Країна від А до Z' },
+  { value: 'countryZА', label: 'Країна від Z до А' },
+  { value: 'cityАZ', label: 'Місто від А до Z' },
+  { value: 'cityZА', label: 'Місто від Z до A' },
+  { value: 'statusАZ', label: 'Статус від А до Z' },
+  { value: 'statusZА', label: 'Статус від Z до А' },
   {
-    value: 'registration date from newest to oldest',
+    value: 'dateDown',
     label: 'Дата реєстрації від найновіших до найдавніших',
   },
   {
-    value: 'registration date from oldest to newest',
+    value: 'dateUp',
     label: 'Дата реєстрації від до найдавніших найновіших',
   },
   {
-    value: 'sum from lowest to highest',
+    value: 'sumUp',
     label: 'Бали від найменших до найбільших',
   },
   {
-    value: 'sum from highest  to lowest',
+    value: 'sumDowm',
     label: 'Бали від найбільших  до найменших ',
   },
   {
-    value: 'score from lowest to highest',
+    value: 'scoreUp',
     label: 'Оцінка від найменшої до найбільшої',
   },
   {
-    value: 'score from highest to lowest',
+    value: 'scoreDown',
     label: 'Оцінка від найбільшої до найменшої ',
   },
 ];
@@ -66,30 +67,134 @@ const customStyles: StylesConfig<SelectOptionType, false> = {
   }),
 };
 
-const SortMembers: React.FC = () => {
-  const [selectedOptions, setSelectedOptions] =
-    useState<SelectOptionType | null>();
+type SortMembersProps = {
+  members: Member[];
+};
+
+const SortMembers: React.FC<SortMembersProps> = ({ members }) => {
+  console.log(members);
+
+  const [selectedOptions, setSelectedOptions] = useState<SelectOptionType>();
+  const [sortedMembers, setSortedMembers] = useState<Member[]>([...members]);
+  console.log(sortedMembers);
   const { isMenuOpen, handleMenuOpen, handleMenuClose } = useMenuState();
 
-  const handleChange = (option: SingleValue<SelectOptionType>) =>
-    setSelectedOptions(option);
+  const sortMembers = (members: Member[], option: string) => {
+    // if (option === 'specializationАZ') {
+    //   return members.sort((a, b) => {
+    //     return a.specializations.localeCompare(b.specializations, 'en', {
+    //       numeric: true,
+    //     });
+    //   });
+    // }
+    // if (option === 'specializationZA') {
+    //   return members.sort((a, b) => {
+    //     return b.specializations.localeCompare(a.specializations, 'en', {
+    //       numeric: true,
+    //     });
+    //   });
+    // }
 
+    if (option === 'countryАZ') {
+      return members.sort((a, b) => {
+        return a.country.localeCompare(b.country, 'en', {
+          numeric: true,
+        });
+      });
+    }
+    if (option === 'countryZA') {
+      return members.sort((a, b) => {
+        return b.country.localeCompare(a.country, 'en', {
+          numeric: true,
+        });
+      });
+    }
+    if (option === 'cityАZ') {
+      return members.sort((a, b) => {
+        return a.city.localeCompare(b.city, 'en', {
+          numeric: true,
+        });
+      });
+    }
+    if (option === 'cityZA') {
+      return members.sort((a, b) => {
+        return b.city.localeCompare(a.city, 'en', {
+          numeric: true,
+        });
+      });
+    }
+    if (option === 'statusAZ') {
+      return members.sort((a, b) => {
+        return a.status.localeCompare(b.status, 'en', {
+          numeric: true,
+        });
+      });
+    }
+    if (option === 'statusZA') {
+      return members.sort((a, b) => {
+        return b.status.localeCompare(a.status, 'en', {
+          numeric: true,
+        });
+      });
+    }
+
+    if (option === 'scoreUp') {
+      return members.sort((a, b) => (a.teamMark ?? 0) - (b.teamMark ?? 0));
+    }
+    if (option === 'scoreDown') {
+      return members.sort((a, b) => (b.teamMark ?? 0) - (a.teamMark ?? 0));
+    }
+    if (option === 'dateUp') {
+      return members.sort((a, b) => {
+        return a.registerAt.localeCompare(b.registerAt, 'en', {
+          numeric: true,
+        });
+      });
+    }
+    if (option === 'dateDown') {
+      return members.sort((a, b) => {
+        return b.registerAt.localeCompare(a.registerAt, 'en', {
+          numeric: true,
+        });
+      });
+    }
+    if (option === 'sumUp') {
+      return members.sort((a, b) => (a.scores ?? 0) - (b.scores ?? 0));
+    }
+    if (option === 'sumDown') {
+      return members.sort((a, b) => (b.scores ?? 0) - (a.scores ?? 0));
+    }
+  };
+  const handleChange = (option: SingleValue<SelectOptionType>) => {
+    console.log(option?.value);
+    if (option) {
+      setSelectedOptions(option);
+      const order = option.value;
+      const afterSortMembers = sortMembers(members, order);
+      setSortedMembers(afterSortMembers ?? []);
+    } else {
+      setSelectedOptions(undefined);
+    }
+  };
   return (
-    <Wrapper isMenuOpen={isMenuOpen} height={'766px'} width={'302px'}>
-      <Select
-        options={sortOptions}
-        closeMenuOnSelect={false}
-        onChange={handleChange}
-        value={selectedOptions}
-        placeholder="Оберіть порядок"
-        isSearchable={false}
-        className="w-[262px] mb-4"
-        menuIsOpen={isMenuOpen}
-        onMenuOpen={handleMenuOpen}
-        onMenuClose={handleMenuClose}
-        styles={customStyles}
-      />
-    </Wrapper>
+    <div>
+      <Wrapper isMenuOpen={isMenuOpen} height={'766px'} width={'302px'}>
+        <Select
+          options={sortOptions}
+          closeMenuOnSelect={false}
+          onChange={handleChange}
+          value={selectedOptions}
+          placeholder="Оберіть порядок"
+          isSearchable={false}
+          className="w-[262px] mb-4"
+          menuIsOpen={isMenuOpen}
+          onMenuOpen={handleMenuOpen}
+          onMenuClose={handleMenuClose}
+          styles={customStyles}
+        />
+      </Wrapper>
+      {/* <FilterMembersTable members={sortedMembers} /> */}
+    </div>
   );
 };
 
