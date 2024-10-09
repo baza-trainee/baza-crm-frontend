@@ -23,9 +23,6 @@ interface ColorRadioProps {
 const Technologies = () => {
   const token = useSelector((state: RootState) => state.userState.user?.token);
   const [selectedColor, setSelectedColor] = useState<string>('#f87168');
-  // const [specializations, setSpecializations] = useState<
-  //   { name: string; color: string; tagId: number }[]
-  // >([]);
   const [specializations, setSpecializations] = useState<
     { name: string; color: string; id: number }[]
   >([]);
@@ -61,14 +58,6 @@ const Technologies = () => {
           const specializations = tags?.filter(
             (tag) => tag.isSpecialization === true,
           );
-
-          // const specializations = tags
-          //   .filter((tag) => tag.isSpecialization)
-          //   .map((specialization) => ({
-          //     name: specialization.name,
-          //     color: specialization.color,
-          //     tagId: specialization.id,
-          //   }));
 
           setSpecializations(specializations);
         }
@@ -108,7 +97,6 @@ const Technologies = () => {
         {
           name: newSpecialization.name,
           color: newSpecialization.color,
-          // tagId: newSpecialization.id,
           id: newSpecialization.id,
         },
       ]);
@@ -130,7 +118,6 @@ const Technologies = () => {
 
   // Delete Specialization
   const deleteSpecializationFromServer = async (index: number) => {
-    // const tagId = specializations[index].tagId;
     const tagId = specializations[index].id;
     try {
       const url = `${import.meta.env.VITE_API_URL}/tag/${tagId}`;
@@ -167,15 +154,8 @@ const Technologies = () => {
           const technologies = tags?.filter(
             (tag) => tag.isSpecialization === false,
           );
-          // const technologies = tags
-          //   .filter((tag) => !tag.isSpecialization)
-          //   .map((technology) => ({
-          //     name: technology.name,
-          //     tagId: technology.id,
-          //   }));
 
           setTechnologies(technologies);
-          // console.log(technologies);
         }
       } catch (error) {
         console.error('Помилка отримання технологій', error);
@@ -230,7 +210,7 @@ const Technologies = () => {
     }
   };
 
-  // Delete Technologie
+  // Delete Technology
   const deleteTechnologieFromServer = async (index: number) => {
     const tagId = technologies[index].id;
     try {
