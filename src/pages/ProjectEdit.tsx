@@ -107,8 +107,8 @@ const ProjectEdit = () => {
   const onSubmit: SubmitHandler<CreateProjectRequest> = (data) => {
     const token = user?.token;
     if (token) {
-      mutation.mutate({ projectData: data, token });
-      // console.log(data);
+      // mutation.mutate({ projectData: data, token });
+      console.log(data);
     }
   };
 
@@ -410,13 +410,43 @@ const ProjectEdit = () => {
           </div>
         ))}
       </div>
-      {/* BUTTON */}
-      <button
-        type="submit"
-        className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-transparent hover:text-black font-semibold flex justify-center items-center w-[268px] h-10 mt-2"
-      >
-        {mutation.isPending ? 'Створення проєкту...' : 'Створити проєкт'}
-      </button>
+      {/* BUTTONS */}
+      <div className="flex gap-[316px]">
+        <div className="flex flex-col gap-3">
+          <button
+            type="submit"
+            className="border-2 border-primary-blue rounded-[10px] duration-500 text-black hover:bg-transparent hover:text-primary-blue font-semibold flex justify-center items-center w-[268px] h-10 mt-2"
+          >
+            {mutation.isPending ? 'Збереження...' : 'Зберегти зміни'}
+          </button>
+          {project.projectStatus !== 'ended' && (
+            <button
+              type="submit"
+              className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-transparent hover:text-black font-semibold flex justify-center items-center w-[268px] h-10 mt-2"
+            >
+              {mutation.isPending
+                ? 'Зміна  статусу...'
+                : project.projectStatus === 'working'
+                  ? 'Завершити проєкт'
+                  : 'Проєкт в роботу'}
+            </button>
+          )}
+          {project.projectStatus === 'ended' && (
+            <button
+              type="submit"
+              className="border-2 border-red rounded-[10px] duration-500 text-red hover:bg-transparent hover:text-black font-semibold flex justify-center items-center w-[268px] h-10 mt-2"
+            >
+              {mutation.isPending ? 'Видалення...' : 'Видалити проєкт'}
+            </button>
+          )}
+        </div>
+        <button
+          type="submit"
+          className="border-2 border-primary-blue rounded-[10px] duration-500 text-black hover:bg-transparent hover:text-primary-blue font-semibold flex justify-center items-center w-[268px] h-10 mt-2"
+        >
+          Робота с заявками
+        </button>
+      </div>
     </form>
   );
 };
