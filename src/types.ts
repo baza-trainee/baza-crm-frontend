@@ -16,6 +16,7 @@ export type OptionType = {
 export type StatusCount = {
   [key: string]: number;
 };
+
 type ProjectRequirement = {
   projectId: number;
   tagId: number;
@@ -108,6 +109,53 @@ export type CreateProjectMutationVariables = {
   token: string;
 };
 
+export type UpdateProjectRequest = {
+  description: string;
+  name: string;
+  projectPoints: number;
+  projectType: 'free' | 'light' | 'strong';
+  price: number;
+  dateStart: string;
+  dateTeam: string;
+  links: string[];
+  specializations: Specialization[];
+};
+
+export type UpdateProjectMutationVariables = {
+  projectData: UpdateProjectRequest;
+  token: string;
+  projectId: number;
+};
+
 export type CreateProjectResponse = {
   id: string;
+};
+
+export type UpdateProjectResponse = {
+  message: string;
+};
+
+export type MemberData = {
+  email: string;
+  tagId: number;
+};
+
+export type AddMemberMutationVariables = {
+  memberData: MemberData;
+  token: string;
+  projectId: number;
+};
+
+export type addMemberResponse = {
+  message: string;
+};
+
+export type DeleteMemberMutationVariables = {
+  userId: number;
+  token: string;
+  projectId: number;
+};
+
+export type deleteMemberResponse = {
+  message: string;
 };
