@@ -24,12 +24,15 @@ const Technologies = () => {
   const token = useSelector((state: RootState) => state.userState.user?.token);
   const [selectedColor, setSelectedColor] = useState<string>('#f87168');
   const [specializations, setSpecializations] = useState<
-    { name: string; color: string; tagId: number }[]
+    { name: string; color: string; id: number }[]
   >([]);
-  const [technologies, setTechnologies] = useState<{ name: string }[]>([]);
+  const [technologies, setTechnologies] = useState<
+    { name: string; id: number }[]
+  >([]);
   const [isFormSpecVisible, setIsFormSpecVisible] = useState(false);
   const [isFormTechVisible, setIsFormTechVisible] = useState(false);
   const [specializationName, setSpecializationName] = useState<string>('');
+  const [technologyName, setTechnologyName] = useState<string>('');
 
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
@@ -52,13 +55,9 @@ const Technologies = () => {
         if (token) {
           const tags = await getTags(token);
 
-          const specializations = tags
-            .filter((tag) => tag.isSpecialization)
-            .map((specialization) => ({
-              name: specialization.name,
-              color: specialization.color,
-              tagId: specialization.id,
-            }));
+          const specializations = tags?.filter(
+            (tag) => tag.isSpecialization === true,
+          );
 
           setSpecializations(specializations);
         }
@@ -98,7 +97,7 @@ const Technologies = () => {
         {
           name: newSpecialization.name,
           color: newSpecialization.color,
-          tagId: newSpecialization.id,
+          id: newSpecialization.id,
         },
       ]);
       toast.success('Спеціалізацію успішно створено');
@@ -119,7 +118,7 @@ const Technologies = () => {
 
   // Delete Specialization
   const deleteSpecializationFromServer = async (index: number) => {
-    const tagId = specializations[index].tagId;
+    const tagId = specializations[index].id;
     try {
       const url = `${import.meta.env.VITE_API_URL}/tag/${tagId}`;
 
@@ -136,47 +135,118 @@ const Technologies = () => {
       toast.error('Не вдалося видалити спеціалізацію');
     }
   };
+
+  // Specializations form
+  const {
+    register: registerSpecialization,
+    handleSubmit: handleSubmitSpecialization,
+    reset: resetSpecialization,
+  } = useForm<FormValues>();
+
   // Technologies
   // get all technologies
   useEffect(() => {
     const fetchTechnologies = async () => {
       try {
-        const token = import.meta.env.VITE_TOKEN;
-        const tags = await getTags(token);
+        if (token) {
+          const tags = await getTags(token);
 
-        const technologies = tags
-          .filter((tag) => !tag.isSpecialization)
-          .map((technology) => ({
-            name: technology.name,
-          }));
+          const technologies = tags?.filter(
+            (tag) => tag.isSpecialization === false,
+          );
 
-        setTechnologies(technologies);
+          setTechnologies(technologies);
+        }
       } catch (error) {
         console.error('Помилка отримання технологій', error);
       }
     };
 
-    fetchTechnologies();
-  }, []);
+    if (token) {
+      fetchTechnologies();
+    }
+  }, [token]);
 
-  const {
-    register,
-    handleSubmit: handleSubmitSpecialization,
-    reset: resetSpecialization,
-  } = useForm<FormValues>();
+  // Create new technology
+  const addTechnologyToServer = async (technologyName: string) => {
+    try {
+      const url = `${import.meta.env.VITE_API_URL}/tag/`;
+
+      const response = await axios.post(
+        url,
+        {
+          name: technologyName,
+          isSpecialization: false,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ` + token,
+          },
+        },
+      );
+
+      const newTechnology = response.data;
+
+      setTechnologies([
+        ...technologies,
+        {
+          name: newTechnology.name,
+          id: newTechnology.id,
+        },
+      ]);
+      toast.success('Технологію успішно створено');
+    } catch (error) {
+      console.error('Помилка додавання технології:', error);
+      toast.error('Не вдалося створити технологію');
+    }
+  };
+
+  const handleSaveTechnology = () => {
+    if (technologyName.trim()) {
+      addTechnologyToServer(technologyName);
+      setTechnologyName('');
+    } else {
+      console.error('Назва технології не може бути пустою');
+    }
+  };
+
+  // Delete Technology
+  const deleteTechnologieFromServer = async (index: number) => {
+    const tagId = technologies[index].id;
+    try {
+      const url = `${import.meta.env.VITE_API_URL}/tag/${tagId}`;
+
+      await axios.delete(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setTechnologies((prev) => prev.filter((_, i) => i !== index));
+      toast.success('Технологію успішно видалено');
+    } catch (error) {
+      console.error('Помилка видалення технології:', error);
+      toast.error('Не вдалося видалити технологію');
+    }
+  };
+
+  // Technologies form
   const {
     register: registerTechnology,
     handleSubmit: handleSubmitTechnology,
-    // reset: resetTechnology,
+    reset: resetTechnology,
   } = useForm<FormValues>();
 
+  // reset both forms after submit
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     if (data.technologyName) {
-      setTechnologies([...technologies, { name: data.technologyName }]);
+      resetTechnology();
+    } else if (data.specializationName) {
       resetSpecialization();
     }
   };
 
+  // show add-form blocks
   const handleAddClickSpecialization = () => {
     setIsFormSpecVisible(true);
   };
@@ -249,7 +319,9 @@ const Technologies = () => {
                   Додати спеціалізацію
                 </label>
                 <input
-                  {...register('specializationName', { required: true })}
+                  {...registerSpecialization('specializationName', {
+                    required: true,
+                  })}
                   maxLength={15}
                   className="h-[40px] font-normal px-[10px] rounded-lg mb-[20px] border-2 focus:border-primary-blue focus:outline-none"
                   onChange={(e) => setSpecializationName(e.target.value)}
@@ -386,7 +458,7 @@ const Technologies = () => {
                   {tech.name}
                   <button
                     className="mr-[5px]"
-                    // onClick={() => handleRemoveTech(index)}
+                    onClick={() => deleteTechnologieFromServer(index)}
                   >
                     <MdClose size={18} style={{ color: '#91A2B6' }} />
                   </button>
@@ -405,7 +477,6 @@ const Technologies = () => {
         {isFormTechVisible && (
           <div className="text-[16px] font-semibold py-[12px] px-[10px] bg-input-normal-state border border-card-border rounded-lg">
             <form onSubmit={handleSubmitTechnology(onSubmit)}>
-              {/* <form onSubmit={handleSubmitTechnology(onSubmitTechnology)}> */}
               <div className="flex flex-col">
                 <label className="font-Open Sans font-sans text-[16px] font-normal leading-[1.75] mb-[8px]">
                   Додати технологію
@@ -414,12 +485,14 @@ const Technologies = () => {
                   {...registerTechnology('technologyName', { required: true })}
                   maxLength={20}
                   className="h-[40px] font-normal px-[10px] rounded-lg mb-[20px] border-2 focus:border-primary-blue focus:outline-none"
+                  onChange={(e) => setTechnologyName(e.target.value)}
                 />
               </div>
               <div className="flex justify-center">
                 <Button
                   label="Зберегти"
                   className="w-[268px] text-white bg-[#1e70eb]"
+                  onClick={handleSaveTechnology}
                 />
               </div>
             </form>
