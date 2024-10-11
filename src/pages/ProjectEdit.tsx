@@ -16,6 +16,7 @@ import { CreateProjectRequest, RootState } from '../types';
 import { createProject, getProjectById } from '../utils/projectApi';
 import { getProjectStatusLabel } from '../utils/projectStatusOptions';
 import { getTags } from '../utils/tagApi';
+import AddParticipantsForm from '../components/Projects/AddParticipantsForm';
 
 const ProjectEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -369,6 +370,11 @@ const ProjectEdit = () => {
           </div>
         </div>
       </div>
+      {/* ADD PARTICIPANTS FORM */}
+      <AddParticipantsForm
+        project={project}
+        projectSpecializations={projectSpecializations}
+      />
       {/* TEAM */}
       <h3 className="mb-3 ml-8 text-xl font-bold">Склад команди</h3>
       <div className="flex flex-wrap gap-6">

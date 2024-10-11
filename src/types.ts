@@ -111,3 +111,18 @@ export type CreateProjectMutationVariables = {
 export type CreateProjectResponse = {
   id: string;
 };
+
+export type MemberData = {
+  email: string;
+  tagId: number;
+};
+
+export type AddMemberMutationVariables = {
+  memberData: MemberData;
+  token: string;
+  projectId: string;
+};
+
+export type addMemberResponse = {
+  message: string;
+};

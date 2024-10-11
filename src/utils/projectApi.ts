@@ -1,5 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import {
+  AddMemberMutationVariables,
+  addMemberResponse,
   CreateProjectMutationVariables,
   CreateProjectResponse,
   type Project,
@@ -65,4 +67,25 @@ export const createProject = async ({
   await Promise.all(promises);
 
   return projectResponse.data;
+};
+
+export const addMember = async ({
+  memberData,
+  token,
+  projectId,
+}: AddMemberMutationVariables): Promise<addMemberResponse> => {
+  const url = `${import.meta.env.VITE_API_URL}/project/${projectId}/member`;
+  const authHeaders = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.post<addMemberResponse>(
+    url,
+    memberData,
+    authHeaders,
+  );
+
+  return data;
 };
