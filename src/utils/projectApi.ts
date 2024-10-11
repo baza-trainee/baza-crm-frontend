@@ -4,6 +4,8 @@ import {
   addMemberResponse,
   CreateProjectMutationVariables,
   CreateProjectResponse,
+  DeleteMemberMutationVariables,
+  deleteMemberResponse,
   type Project,
 } from '../types';
 
@@ -86,6 +88,26 @@ export const addMember = async ({
     memberData,
     authHeaders,
   );
+
+  return data;
+};
+
+export const deleteMember = async ({
+  userId,
+  token,
+  projectId,
+}: DeleteMemberMutationVariables): Promise<deleteMemberResponse> => {
+  const url = `${import.meta.env.VITE_API_URL}/project/${projectId}/member`;
+  const authHeaders = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const { data } = await axios.delete<deleteMemberResponse>(url, {
+    data: { userId },
+    ...authHeaders,
+  });
 
   return data;
 };

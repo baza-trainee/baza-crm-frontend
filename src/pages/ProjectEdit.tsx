@@ -2,6 +2,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import DatePicker from 'react-datepicker';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { RiCloseLine } from 'react-icons/ri';
 import { Tooltip } from 'react-tooltip';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
@@ -9,14 +10,18 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+import AddParticipantsForm from '../components/Projects/AddParticipantsForm';
 import ProjectFormat from '../components/Projects/ProjectFormat';
 import Spinner from '../components/Spinner';
 import calendar from '../assets/common/calendar.svg';
 import { CreateProjectRequest, RootState } from '../types';
-import { createProject, getProjectById } from '../utils/projectApi';
+import {
+  createProject,
+  deleteMember,
+  getProjectById,
+} from '../utils/projectApi';
 import { getProjectStatusLabel } from '../utils/projectStatusOptions';
 import { getTags } from '../utils/tagApi';
-import AddParticipantsForm from '../components/Projects/AddParticipantsForm';
 
 const ProjectEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -95,7 +100,7 @@ const ProjectEdit = () => {
 
   const selectedFormat = watch('projectType');
 
-  const mutation = useMutation({
+  const mutationEditProject = useMutation({
     mutationFn: createProject,
     onSuccess: () => {
       toast.success('Проєкт успішно створено');
@@ -108,8 +113,26 @@ const ProjectEdit = () => {
   const onSubmit: SubmitHandler<CreateProjectRequest> = (data) => {
     const token = user?.token;
     if (token) {
-      // mutation.mutate({ projectData: data, token });
-      console.log(data);
+      mutationEditProject.mutate({ projectData: data, token });
+      // console.log(data);
+    }
+  };
+
+  const mutationDeleteMember = useMutation({
+    mutationFn: deleteMember,
+    onSuccess: () => {
+      toast.success('Учасник успішно видалений');
+    },
+    onError: () => {
+      toast.error('Не вдалося видалити учасника');
+    },
+  });
+
+  const handleDeleteMember = (userId: number) => {
+    const token = user?.token;
+    const projectId = String(project?.id);
+    if (token && userId && projectId) {
+      mutationDeleteMember.mutate({ userId, token, projectId });
     }
   };
 
@@ -370,11 +393,6 @@ const ProjectEdit = () => {
           </div>
         </div>
       </div>
-      {/* ADD PARTICIPANTS FORM */}
-      <AddParticipantsForm
-        project={project}
-        projectSpecializations={projectSpecializations}
-      />
       {/* TEAM */}
       <h3 className="mb-3 ml-8 text-xl font-bold">Склад команди</h3>
       <div className="flex flex-wrap gap-6">
@@ -413,9 +431,31 @@ const ProjectEdit = () => {
                 </span>
               )}
             </div>
+            <div className="flex flex-col gap-2">
+              {project?.projectMember.map(
+                (member) =>
+                  member.tagId === specialization.id && (
+                    <div
+                      key={member.userId}
+                      className="flex justify-between w-full rounded-[10px] bg-blue-hover px-2.5 py-1.5 items-center"
+                    >
+                      <p>Viktor Filippov</p>
+                      <RiCloseLine
+                        className="duration-500 cursor-pointer size-5 text-normal-ui hover:text-red"
+                        onClick={() => handleDeleteMember(member.userId)}
+                      />
+                    </div>
+                  ),
+              )}
+            </div>
           </div>
         ))}
       </div>
+      {/* ADD PARTICIPANTS FORM */}
+      <AddParticipantsForm
+        project={project}
+        projectSpecializations={projectSpecializations}
+      />
       {/* BUTTONS */}
       <div className="flex gap-[316px]">
         <div className="flex flex-col gap-3">
@@ -423,14 +463,14 @@ const ProjectEdit = () => {
             type="submit"
             className="border-2 border-primary-blue rounded-[10px] duration-500 text-black hover:bg-transparent hover:text-primary-blue font-semibold flex justify-center items-center w-[268px] h-10 mt-2"
           >
-            {mutation.isPending ? 'Збереження...' : 'Зберегти зміни'}
+            {mutationEditProject.isPending ? 'Збереження...' : 'Зберегти зміни'}
           </button>
           {project.projectStatus !== 'ended' && (
             <button
               type="submit"
               className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-transparent hover:text-black font-semibold flex justify-center items-center w-[268px] h-10 mt-2"
             >
-              {mutation.isPending
+              {mutationEditProject.isPending
                 ? 'Зміна  статусу...'
                 : project.projectStatus === 'working'
                   ? 'Завершити проєкт'
@@ -442,7 +482,9 @@ const ProjectEdit = () => {
               type="submit"
               className="border-2 border-red rounded-[10px] duration-500 text-red hover:bg-transparent hover:text-black font-semibold flex justify-center items-center w-[268px] h-10 mt-2"
             >
-              {mutation.isPending ? 'Видалення...' : 'Видалити проєкт'}
+              {mutationEditProject.isPending
+                ? 'Видалення...'
+                : 'Видалити проєкт'}
             </button>
           )}
         </div>

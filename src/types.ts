@@ -16,6 +16,7 @@ export type OptionType = {
 export type StatusCount = {
   [key: string]: number;
 };
+
 type ProjectRequirement = {
   projectId: number;
   tagId: number;
@@ -124,5 +125,15 @@ export type AddMemberMutationVariables = {
 };
 
 export type addMemberResponse = {
+  message: string;
+};
+
+export type DeleteMemberMutationVariables = {
+  userId: number;
+  token: string;
+  projectId: string;
+};
+
+export type deleteMemberResponse = {
   message: string;
 };
