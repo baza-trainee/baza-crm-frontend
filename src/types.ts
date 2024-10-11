@@ -153,7 +153,7 @@ export type addMemberResponse = {
 export type DeleteMemberMutationVariables = {
   userId: number;
   token: string;
-  projectId: string;
+  projectId: number;
 };
 
 export type deleteMemberResponse = {
