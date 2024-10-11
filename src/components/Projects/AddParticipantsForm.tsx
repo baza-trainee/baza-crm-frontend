@@ -52,7 +52,7 @@ const AddParticipantsForm: React.FC<AddParticipantsFormProps> = ({
     if (token) {
       mutation.mutate({
         memberData: data,
-        projectId: String(project.id),
+        projectId: project.id,
         token,
       });
     }

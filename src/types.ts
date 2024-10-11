@@ -109,8 +109,30 @@ export type CreateProjectMutationVariables = {
   token: string;
 };
 
+export type UpdateProjectRequest = {
+  description: string;
+  name: string;
+  projectPoints: number;
+  projectType: 'free' | 'light' | 'strong';
+  price: number;
+  dateStart: string;
+  dateTeam: string;
+  links: string[];
+  specializations: Specialization[];
+};
+
+export type UpdateProjectMutationVariables = {
+  projectData: UpdateProjectRequest;
+  token: string;
+  projectId: number;
+};
+
 export type CreateProjectResponse = {
   id: string;
+};
+
+export type UpdateProjectResponse = {
+  message: string;
 };
 
 export type MemberData = {
@@ -121,7 +143,7 @@ export type MemberData = {
 export type AddMemberMutationVariables = {
   memberData: MemberData;
   token: string;
-  projectId: string;
+  projectId: number;
 };
 
 export type addMemberResponse = {

@@ -398,7 +398,7 @@ const ProjectEdit = () => {
       <div className="flex flex-wrap gap-6">
         {projectSpecializations?.map((specialization, index) => (
           <div
-            className="w-[268px] bg-white rounded-[10px] px-8 py-5 border-color-pm border flex flex-col justify-center gap-3 relative"
+            className="w-[268px] bg-white rounded-[10px] px-8 py-5 border-color-pm border flex flex-col justify-start gap-3 relative"
             key={specialization.id}
           >
             <div className="flex items-center justify-between gap-5">
