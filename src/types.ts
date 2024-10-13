@@ -159,3 +159,17 @@ export type DeleteMemberMutationVariables = {
 export type deleteMemberResponse = {
   message: string;
 };
+
+export type UserRequest = {
+  id: number;
+  email: string;
+  linkedin: string;
+  specialization: string;
+  discord: string;
+  firstName: string;
+  lastName: string;
+  country: string;
+  city: string;
+  phone: string;
+  isAccepted: boolean | null;
+};
