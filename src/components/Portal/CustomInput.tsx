@@ -7,6 +7,7 @@ interface CustomInputProps {
   type?: string;
   placeholder?: string;
   icon?: string;
+  className?: string;
   register: UseFormRegister<UserData>;
 }
 

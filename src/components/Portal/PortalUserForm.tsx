@@ -4,6 +4,7 @@ import pencilIcon from '../../assets/common/pencil.svg';
 import chevronDownIcon from '../../assets/common/chevron-down.svg';
 import CustomSelect, { SelectOption } from './CustomSelect';
 import { useState } from 'react';
+import FileInput from './FileInput';
 
 export interface UserData {
   firstName: string;
@@ -101,12 +102,11 @@ const PortalUserForm: React.FC = () => {
             icon={pencilIcon}
             placeholder="+380"
           />
-          <CustomInput
+          <FileInput
             id="resume"
             label="Резюме"
             register={register}
             icon={chevronDownIcon}
-            type="file"
           />
         </div>
         <div className="w-full">
