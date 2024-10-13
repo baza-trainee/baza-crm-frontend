@@ -111,8 +111,6 @@ const ProjectEdit = () => {
     console.log(isTagsError);
   }
 
-  console.log(project);
-
   return (
     <FormProvider {...methods}>
       <form

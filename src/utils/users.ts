@@ -9,7 +9,7 @@ export const users = [
     lastName: 'Spartan',
     linkedin: 'https://linkedin.com/in/nik1',
     phone: '+380 565 454 111',
-    specialization: 'Frontend',
+    specialization: 'PM',
     status: true,
   },
   {
@@ -22,7 +22,7 @@ export const users = [
     lastName: 'Smith',
     linkedin: 'https://linkedin.com/in/kat2',
     phone: '+380 565 454 222',
-    specialization: 'Backend',
+    specialization: 'Front-end',
     status: false,
   },
   {
@@ -35,7 +35,7 @@ export const users = [
     lastName: 'Doe',
     linkedin: 'https://linkedin.com/in/john3',
     phone: '+380 565 454 333',
-    specialization: 'Fullstack',
+    specialization: 'Front-end',
     status: true,
   },
   {
@@ -48,7 +48,7 @@ export const users = [
     lastName: 'Kovalenko',
     linkedin: 'https://linkedin.com/in/anna4',
     phone: '+380 565 454 444',
-    specialization: 'DevOps',
+    specialization: 'Back-end',
     status: null,
   },
   {
@@ -61,7 +61,7 @@ export const users = [
     lastName: 'Petrol',
     linkedin: 'https://linkedin.com/in/peter5',
     phone: '+380 565 454 555',
-    specialization: 'Frontend',
+    specialization: 'Full Stack',
     status: false,
   },
 ];
