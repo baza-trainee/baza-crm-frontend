@@ -25,14 +25,16 @@ const customStyles: StylesConfig<SelectOptionType, false> = {
     height: '158px',
     fontSize: '16px',
     lineHeight: '24px',
+    paddingBottom: '10px',
+    paddingTop: '5px',
+    marginTop: '2px',
   }),
   option: (base, state) => ({
     ...base,
     cursor: 'pointer',
-    height: '40px',
+    height: '35px',
     display: 'flex',
     alignItems: 'center',
-    paddingBottom: '10px',
     backgroundColor: state.isSelected ? '#D2E4FF' : 'white',
     color: 'black',
     '&:hover': {
@@ -103,7 +105,12 @@ const SortProjects: React.FC<SortProjectsProps> = ({ projects }) => {
 
   return (
     <div className={'flex'}>
-      <Wrapper isMenuOpen={isMenuOpen} height={'258px'} width={'268px'}>
+      <Wrapper
+        isMenuOpen={isMenuOpen}
+        height={'258px'}
+        width={'268px'}
+        // maxHeight={'258px'}
+      >
         <Select
           options={sortOptions}
           closeMenuOnSelect={false}
@@ -118,7 +125,7 @@ const SortProjects: React.FC<SortProjectsProps> = ({ projects }) => {
           styles={customStyles}
         />
       </Wrapper>
-      <FilterProjectsTable projects={sortedProjects} />
+      <FilterProjectsTable projects={sortedProjects} error={'error'} />
     </div>
   );
 };

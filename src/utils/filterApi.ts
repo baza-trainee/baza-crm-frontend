@@ -1,9 +1,15 @@
 import axios from 'axios';
-import { type Member, Project, DataForm, RequestBody } from '../types';
+import {
+  type Member,
+  Project,
+  // DataForm,
+  RequestBodyProjects,
+  RequestBodyMembers,
+} from '../types';
 
 export const filterMembers = async (
   token: string,
-  body: DataForm,
+  body: RequestBodyMembers,
 ): Promise<Member[]> => {
   const url = `${import.meta.env.VITE_API_URL}/analytics/users`;
 
@@ -18,7 +24,7 @@ export const filterMembers = async (
 
 export const filterProjects = async (
   token: string,
-  body: RequestBody,
+  body: RequestBodyProjects,
 ): Promise<Project[]> => {
   const url = `${import.meta.env.VITE_API_URL}/analytics/projects`;
   console.log(body);

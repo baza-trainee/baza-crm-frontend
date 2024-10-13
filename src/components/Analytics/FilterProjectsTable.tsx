@@ -1,18 +1,11 @@
 import React from 'react';
 import { RiFilter3Line } from 'react-icons/ri';
 import { Project } from '../../types';
-// import { useQuery } from '@tanstack/react-query';
-// import { useSelector } from 'react-redux';
-// import { RootState } from '../types';
-// import { filterMembers } from '../utils/membersApi';
-// import {
-//   countProjectsByStatus,
-//   projectStatusOptions,
-// } from '../utils/projectStatusOptions';
 
 type ProjectsTableProps = {
   tableHeaders?: string[];
   projects: Project[] | undefined;
+  error?: string;
 };
 
 const FilterProjectsTable: React.FC<ProjectsTableProps> = ({
@@ -25,58 +18,81 @@ const FilterProjectsTable: React.FC<ProjectsTableProps> = ({
     'Формат',
   ],
   projects,
+  error,
 }) => {
-  console.log(projects);
-  return (
-    <div className="flex-1  overflow-hidden border rounded-xl border-card-border bg-white">
-      <table className="m-[-1px] min-w-full text-base border border-card-border">
-        <thead className="font-lato py-2 bg-[#e4f1ff]">
-          <tr>
-            {tableHeaders.map((tableHeader, i) =>
-              tableHeader === 'Статус' || tableHeader === 'Формат' ? (
-                <th className="py-3 border border-card-border" key={i}>
-                  <div>
-                    <p>{tableHeader}</p>
-                    <RiFilter3Line />
+  if (error && projects?.length === 0) {
+    return <div>За даними параметрами проєктів немає</div>;
+  } else {
+    return (
+      <div className="flex-1 ml-[30px] w-[1268px] bg-white rounded-t-[10px] overflow-hidden border-t border-card-border">
+        <table className="min-w-full text-base border-separate border-spacing-0">
+          <thead className="bg-[#E9F3FE]">
+            <tr>
+              {tableHeaders.map((tableHeader, i) => (
+                <th key={i} className="border border-card-border px-4 py-2">
+                  <div className="flex justify-center items-center">
+                    <p className="pr-[8px]">{tableHeader}</p>
+                    {(tableHeader === 'Статус' || tableHeader === 'Формат') && (
+                      <RiFilter3Line className="w-6 h-6" />
+                    )}
                   </div>
                 </th>
-              ) : (
-                <th className="py-3 border border-card-border" key={i}>
-                  {tableHeader}
-                </th>
-              ),
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {projects &&
-            projects.length > 0 &&
-            projects?.map((project, index) => (
-              <tr key={project?.id} className="border border-card-border">
-                <td className="py-3 px-4 border border-card-border">
-                  {index + 1}
-                </td>{' '}
-                <td className="py-3 px-4 border border-card-border">
-                  {project.name}
-                </td>{' '}
-                <td className="py-3 px-4 border border-card-border">
-                  {new Date(project.dateStart).toLocaleDateString()}
-                </td>
-                <td className="py-3 px-4 border border-card-border">
-                  {new Date(project.dateTeam).toLocaleDateString()}
-                </td>
-                <td className="py-3 px-4 border border-card-border">
-                  {project.projectStatus}
-                </td>
-                <td className="py-3 px-4 border border-card-border">
-                  {project.projectType}
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
-    </div>
-  );
+              ))}
+            </tr>
+          </thead>
+          <tbody className="text-base font-open-sans">
+            {projects &&
+              projects.length > 0 &&
+              projects.map((project, index) => (
+                <tr key={project.id} className="even:bg-gray-100">
+                  <td className="border border-card-border px-4 py-2 text-center">
+                    {index + 1}
+                  </td>
+                  <td className="border border-card-border px-4 py-2">
+                    {project.name}
+                  </td>
+                  <td className="border border-card-border px-4 py-2 text-center">
+                    {new Date(project.dateStart).toLocaleDateString()}
+                  </td>
+                  <td className="border border-card-border px-4 py-2 text-center">
+                    {new Date(project.dateTeam).toLocaleDateString()}
+                  </td>
+
+                  {project.projectStatus === 'searching' && (
+                    <td
+                      className="border border-card-border px-4 py-2 text-center capitalize "
+                      style={{ color: '#F16600' }}
+                    >
+                      Формується команда
+                    </td>
+                  )}
+                  {project.projectStatus === 'working' && (
+                    <td
+                      className="border border-card-border px-4 py-2 text-center capitalize "
+                      style={{ color: '##2E57DB' }}
+                    >
+                      У розробці
+                    </td>
+                  )}
+                  {project.projectStatus === 'finished' && (
+                    <td
+                      className="border border-card-border px-4 py-2 text-center capitalize "
+                      style={{ color: '#14B541' }}
+                    >
+                      Завершений
+                    </td>
+                  )}
+
+                  <td className="border border-card-border px-4 py-2 text-center capitalize">
+                    {project.projectType}
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
 };
 
 export default FilterProjectsTable;

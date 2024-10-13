@@ -4,7 +4,8 @@ import { Member } from '../../types';
 
 type MembersTableProps = {
   tableHeaders?: string[];
-  info: Member[] | undefined;
+  members: Member[] | undefined;
+  error?: string;
 };
 
 const FilterMembersTable: React.FC<MembersTableProps> = ({
@@ -20,9 +21,9 @@ const FilterMembersTable: React.FC<MembersTableProps> = ({
     'Бали  співпраці',
     'Оцінка  команди',
   ],
-  info,
+  members,
 }) => {
-  console.log(info);
+  console.log(members);
 
   return (
     <div className="flex-1  overflow-hidden border rounded-xl border-card-border bg-white">
@@ -48,9 +49,9 @@ const FilterMembersTable: React.FC<MembersTableProps> = ({
           </tr>
         </thead>
         <tbody>
-          {info &&
-            info.length > 0 &&
-            info?.map((user, index) => (
+          {members &&
+            members.length > 0 &&
+            members?.map((user, index) => (
               <tr key={user?.id} className="border border-card-border">
                 <td className="py-3 px-4 border border-card-border">
                   {index + 1}

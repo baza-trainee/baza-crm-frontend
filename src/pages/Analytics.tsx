@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FiFilter } from 'react-icons/fi';
 import { RiFilter3Line } from 'react-icons/ri';
 // import SortMembers from '../components/SortMembers'; // додай імпорт компонента
-// import FilterMembers from '../components/FilterMembers'; // додай імпорт компонента
+import FilterMembers from '../components/FilterMembers'; // додай імпорт компонента
 import SortProjects from '../components/SortProjects'; // додай імпорт компонента
 import FilterProjects from '../components/FilterProjects';
 import SubjectOption from '../components/SubjectOption';
@@ -10,52 +10,53 @@ import ActionOption from '../components/ActionOption';
 
 // import { useMutation } from '@tanstack/react-query';
 // import { useSelector } from 'react-redux';
-import { Project, RequestBody } from '../types';
-import { filterProjects } from '../utils/filterApi';
+import {
+  Member,
+  Project,
+  RequestBodyProjects,
+  RequestBodyMembers,
+} from '../types';
+import { filterProjects, filterMembers } from '../utils/filterApi';
 
 const Analytics: React.FC = () => {
   const [action, setAction] = useState<string>('');
   const [infoType, setInfoType] = useState<string>('');
 
   // const user = useSelector((state: RootState) => state.userState.user);
-  const [filterData, setFilterData] = useState<Project[]>([]);
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
+  const [filteredMembers, setFilteredMembers] = useState<Member[]>([]);
 
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzI4MzMyMjY2LCJleHAiOjE3Mjg0MTg2NjZ9.5sBn9j5NSoSba-yCfFrYT0Wb5SACjHzpaDdJ5RCMZac';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzI4ODIwMzQwLCJleHAiOjE3Mjg5MDY3NDB9.ZEhMEU2j0IlrT-oa_WP4l7OniQv2SjWUvg3-NmBa8co';
 
-  const handleFilter = async (data: RequestBody) => {
+  const handleProjectsFilter = async (data: RequestBodyProjects) => {
     console.log(data);
     try {
       // setLoading(true); // Set loading while fetching
       const result = await filterProjects(token, data); // Fetch filtered projects
-      setFilterData(result); // Update the projects state with fetched data
+      setFilteredProjects(result); // Update the projects state with fetched data
     } catch (error) {
+      throw new Error('Проєктів не знайдено');
       console.error('Error fetching projects:', error);
     } finally {
       // setLoading(false); // Stop loading when the request is done
     }
   };
 
-  // const fetchFilteredProjects = async (
-  //   data: RequestBody,
-  // ): Promise<Project[]> => {
-  //   return await filterProjects(token, data);
-  // };
+  const handleMembersFilter = async (data: RequestBodyMembers) => {
+    console.log(data);
+    try {
+      // setLoading(true); // Set loading while fetching
+      const membersResult = await filterMembers(token, data); // Fetch filtered projects
+      setFilteredMembers(membersResult); // Update the projects state with fetched data
+    } catch (error) {
+      throw new Error('Проєктів не знайдено');
+      console.error('Error fetching projects:', error);
+    } finally {
+      // setLoading(false); // Stop loading when the request is done
+    }
+  };
 
-  // const { mutate: handleFilter, isLoading } = useMutation<
-  //   Project[],
-  //   Error,
-  //   RequestBody
-  // >(fetchFilteredProjects, {
-  //   onSuccess: (data: Project[]) => {
-  //     setFilterData(data); // Update the projects state with fetched data
-  //   },
-  //   onError: (error: string) => {
-  //     console.error('Error fetching projects:', error);
-  //   },
-  // });
-
-  console.log(filterData);
   return (
     <section className="p-8 font-lato font-normal text-[20px] leading-[30px]">
       <div className="flex flex-row mb-[30px]">
@@ -102,20 +103,25 @@ const Analytics: React.FC = () => {
           {/* {infoType === 'Учасники' && action === 'Сортування' && (
             <SortMembers members={} />
           )} */}
-          {/* {infoType === 'Учасники' && action === 'Фільтр' && <FilterMembers />} */}
+          {infoType === 'Учасники' && action === 'Фільтр' && (
+            <FilterMembers
+              members={filteredMembers}
+              onFilterMembers={handleMembersFilter}
+              error={'error'}
+            />
+          )}
           {infoType === 'Проєкти' && action === 'Сортування' && (
-            <SortProjects projects={filterData} />
+            <SortProjects projects={filteredProjects} />
           )}
           {infoType === 'Проєкти' && action === 'Фільтр' && (
-            <FilterProjects projects={filterData} onFilter={handleFilter} />
+            <FilterProjects
+              projects={filteredProjects}
+              onFilterProjects={handleProjectsFilter}
+              error={'fvsdfgsdf'}
+            />
           )}
           {/* <ActionChoice action={action} infoType={infoType} /> */}
         </div>
-        {/* {data.length > 0 ? (
-          <AnalyticsTable />
-        ) : (
-          <div>За обраними параметрами дані не знайдено </div>
-        )} */}
       </div>
     </section>
   );

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Wrapper from './Wrapper';
 import useMenuState from '../hooks';
 import { SelectOptionType, Member } from '../types';
-// import FilterMembersTable from './Analytics/FilterMembersTable';
+import FilterMembersTable from './Analytics/FilterMembersTable';
 
 const sortOptions: SelectOptionType[] = [
   { value: 'specializationАZ', label: 'Спеціалізація від A до Z' },
@@ -193,7 +193,7 @@ const SortMembers: React.FC<SortMembersProps> = ({ members }) => {
           styles={customStyles}
         />
       </Wrapper>
-      {/* <FilterMembersTable members={sortedMembers} /> */}
+      <FilterMembersTable members={sortedMembers} />
     </div>
   );
 };

@@ -19,20 +19,27 @@ const formatOptions: SelectOptionType[] = [
 
 type FilterProjectsProps = {
   projects: Project[];
-  onFilter: (body: { formats: string[]; statuses: string[] }) => void;
+  error?: string;
+  onFilterProjects: (body: { formats?: string[]; statuses?: string[] }) => void;
 };
 const FilterProjects: React.FC<FilterProjectsProps> = ({
   projects,
-  onFilter,
+  onFilterProjects,
+  error,
 }) => {
   console.log(projects);
 
   const { isMenuOpen } = useMenuState();
   return (
     <div className={'flex'}>
-      <AnalyticsForm onFilter={onFilter}>
+      <AnalyticsForm onFilter={onFilterProjects}>
         {(control) => (
-          <Wrapper isMenuOpen={isMenuOpen} height="432px" width="268px">
+          <Wrapper
+            isMenuOpen={isMenuOpen}
+            height="432px"
+            width="268px"
+            maxHeight="258px"
+          >
             <MultiSelect
               options={statusOptions}
               placeholder={'Статус'}
@@ -50,7 +57,10 @@ const FilterProjects: React.FC<FilterProjectsProps> = ({
           </Wrapper>
         )}
       </AnalyticsForm>
-      <FilterProjectsTable projects={projects} />
+      {projects.length > 0 && (
+        <FilterProjectsTable projects={projects} error={error} />
+      )}
+      {/* <FilterProjectsTable projects={projects} error={error} /> */}
     </div>
   );
 };

@@ -14,7 +14,15 @@ export type FormData = {
 
 type FormProps = {
   children: (control: Control<DataForm>) => React.ReactNode;
-  onFilter: (body: { formats: string[]; statuses: string[] }) => void;
+  onFilter: (body: {
+    formats?: string[];
+    statuses?: string[];
+    technologies?: string[];
+    specializations?: string[];
+    // statuses: string[];
+    from?: string;
+    to?: string;
+  }) => void;
 };
 
 const AnalyticsForm: React.FC<FormProps> = ({ children, onFilter }) => {

@@ -126,9 +126,17 @@ export type DataForm = {
   selectedDateFrom?: Date;
 };
 
-export type RequestBody = {
+export type RequestBodyProjects = {
   formats?: string[];
   statuses?: string[];
+};
+
+export type RequestBodyMembers = {
+  statuses?: string[];
+  technologies?: string[];
+  specializations?: string[];
+  selectedDateTo?: string;
+  selectedDateFrom?: string;
 };
 
 type Specialization = {
