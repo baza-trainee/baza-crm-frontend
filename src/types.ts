@@ -4,8 +4,11 @@ export type Link = {
 };
 
 export type SelectOptionType = {
-  value: string;
+  value?: string;
   label?: string;
+  id?: number;
+  name?: string;
+  color?: string;
 };
 
 export type SelectStatusType = {
@@ -102,14 +105,14 @@ export type Member = {
   email: string;
   firstName: string;
   lastName: string;
-  specializations: [];
+  specializations: Specialization[];
   technologies: [];
   country: string;
   city: string;
   status: string;
   registerAt: string;
-  scores?: number;
-  teamMark?: number;
+  karmaPoints?: number;
+  projectPoints?: number;
 
   linkedin?: string;
   discord?: string;
@@ -122,8 +125,8 @@ export type DataForm = {
   // formats: string[];
   statuses: { value: string }[];
   formats: { value: string }[];
-  technologies?: { value: string }[];
-  specializations?: { value: string }[];
+  technologies?: { value: string; id?: number; label: string }[];
+  specializations?: { value: string; id?: number; label: string }[];
   selectedDateTo?: Date;
   selectedDateFrom?: Date;
 };
@@ -133,15 +136,24 @@ export type RequestBodyProjects = {
   statuses?: string[];
 };
 
+// export type RequestBodyMembers = {
+//   statuses?: string[];
+//   technologies?: number[];
+//   specializations?: number[];
+//   selectedDateTo?: string;
+//   selectedDateFrom?: string;
+// };
+
 export type RequestBodyMembers = {
+  formats?: string[];
   statuses?: string[];
-  technologies?: string[];
-  specializations?: string[];
-  selectedDateTo?: string;
-  selectedDateFrom?: string;
+  technologies?: number[];
+  specializations?: number[];
+  to?: string;
+  from?: string;
 };
 
-type Specialization = {
+export type Specialization = {
   id: number;
   count: number;
   name?: string;

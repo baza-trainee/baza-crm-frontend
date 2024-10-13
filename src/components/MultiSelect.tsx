@@ -48,8 +48,7 @@ const customStyles: StylesConfig<SelectOptionType, true> = {
 type MultiSelectProps = {
   placeholder: string;
   options: SelectOptionType[];
-  // selectedValue: MultiValue<SelectOptionType>;
-  // setSelectedValue: (data: MultiValue<SelectOptionType>) => void;
+  // options: string[] | SelectOptionType[];
   control: Control<DataForm>;
   className: string;
   name: keyof DataForm;

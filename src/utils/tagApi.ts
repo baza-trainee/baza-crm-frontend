@@ -9,5 +9,6 @@ export const getTags = async (token: string): Promise<Tag[]> => {
       Authorization: `Bearer ${token}`,
     },
   });
+  console.log(data);
   return data;
 };

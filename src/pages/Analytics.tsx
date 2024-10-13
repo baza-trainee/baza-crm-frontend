@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { FiFilter } from 'react-icons/fi';
 import { RiFilter3Line } from 'react-icons/ri';
-// import SortMembers from '../components/SortMembers'; // додай імпорт компонента
-import FilterMembers from '../components/FilterMembers'; // додай імпорт компонента
-import SortProjects from '../components/SortProjects'; // додай імпорт компонента
+import SortMembers from '../components/SortMembers';
+import FilterMembers from '../components/FilterMembers';
+import SortProjects from '../components/SortProjects';
 import FilterProjects from '../components/FilterProjects';
 import SubjectOption from '../components/SubjectOption';
 import ActionOption from '../components/ActionOption';
@@ -27,7 +27,7 @@ const Analytics: React.FC = () => {
   const [filteredMembers, setFilteredMembers] = useState<Member[]>([]);
 
   const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzI4ODIwMzQwLCJleHAiOjE3Mjg5MDY3NDB9.ZEhMEU2j0IlrT-oa_WP4l7OniQv2SjWUvg3-NmBa8co';
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzI4ODQ3MzY5LCJleHAiOjE3Mjg5MzM3Njl9.wrtD6z92atAbY0SQSEoNj-3hB1R9UeKSXer9VHk4w-4';
 
   const handleProjectsFilter = async (data: RequestBodyProjects) => {
     console.log(data);
@@ -45,9 +45,13 @@ const Analytics: React.FC = () => {
 
   const handleMembersFilter = async (data: RequestBodyMembers) => {
     console.log(data);
+    console.log(data.technologies);
+
     try {
       // setLoading(true); // Set loading while fetching
+
       const membersResult = await filterMembers(token, data); // Fetch filtered projects
+
       setFilteredMembers(membersResult); // Update the projects state with fetched data
     } catch (error) {
       throw new Error('Проєктів не знайдено');
@@ -100,9 +104,9 @@ const Analytics: React.FC = () => {
       </div>
       <div className="flex gap-5">
         <div className="">
-          {/* {infoType === 'Учасники' && action === 'Сортування' && (
-            <SortMembers members={} />
-          )} */}
+          {infoType === 'Учасники' && action === 'Сортування' && (
+            <SortMembers members={filteredMembers} />
+          )}
           {infoType === 'Учасники' && action === 'Фільтр' && (
             <FilterMembers
               members={filteredMembers}

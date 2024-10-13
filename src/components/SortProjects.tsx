@@ -96,7 +96,7 @@ const SortProjects: React.FC<SortProjectsProps> = ({ projects }) => {
     if (option) {
       setSelectedOptions(option);
       const order = option.value;
-      const sortedProjects = sortProjects(projects, order);
+      const sortedProjects = sortProjects(projects, order as string);
       setSortedProjects(sortedProjects ?? []);
     } else {
       setSelectedOptions(undefined);
