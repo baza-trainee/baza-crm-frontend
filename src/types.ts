@@ -173,3 +173,13 @@ export type UserRequest = {
   phone: string;
   isAccepted: boolean | null;
 };
+
+export type UpdateUserMutationVariables = {
+  token: string;
+  requestId: number;
+  accepted: boolean;
+};
+
+export type UpdateUserResponse = {
+  status: boolean;
+};
