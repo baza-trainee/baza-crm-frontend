@@ -15,7 +15,7 @@ const ButtonLogin: React.FC<ButtonLoginProps> = ({
     <button
       type={type}
       disabled={disabled}
-      className={`block w-[254px] h-[40px] mx-auto font-Open Sans font-sans text-[16px] font-semibold text-white bg-[#1e70eb] rounded-[10px] ${additionalClass}`}
+      className={`block w-[254px] h-[40px] mx-auto font-Open Sans font-sans text-[16px] font-semibold text-white bg-[#1e70eb] border-primary-blue border-2 border-solid hover:bg-transparent rounded-[10px] ${additionalClass}`}
     >
       {label}
     </button>
