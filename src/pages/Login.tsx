@@ -143,7 +143,7 @@ const Login = () => {
             <br />
             <Link
               to="/forgotten-password"
-              className="underline cursor-pointer text-hover-gray"
+              className="underline cursor-pointer text-light-grey hover:text-hover-gray duration-500"
             >
               Відновити
             </Link>
