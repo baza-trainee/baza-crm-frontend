@@ -56,6 +56,7 @@ const Login = () => {
   };
 
   const password = watch('password', '');
+  const login = watch('login', '');
 
   if (mutation.isPending) {
     return (
@@ -84,9 +85,9 @@ const Login = () => {
               {...register('login')}
               placeholder="example@gmail.com"
               defaultValue="admin@gmail.com"
-              className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px] ${
-                errors?.login ? 'border-red border-2 border-solid' : ''
-              }`}
+              className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px] mb-[23.5px] ${
+                login ? 'bg-white' : 'bg-input-normal-state'
+              } ${errors?.login ? 'border-red border-2 border-solid' : ''}`}
             />
             {errors?.login && (
               <LuAlertTriangle
@@ -123,7 +124,7 @@ const Login = () => {
                   message: 'Максимум 30 символів',
                 },
               })}
-              className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[23.5px] ${
+              className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px]  mb-[23.5px] ${
                 password ? 'bg-white' : 'bg-input-normal-state'
               } ${errors?.login ? 'border-red border-2 border-solid' : ''}`}
             />
@@ -155,11 +156,6 @@ const Login = () => {
                 )}
               </div>
             </div>
-            {/* <div className="h-[40px] text-red">
-              {errors?.password && (
-                <p>{errors?.password?.message || 'Error!'}</p>
-              )}
-            </div> */}
           </div>
           <ButtonLogin label="Увійти" type="submit" disabled={!isValid} />
         </form>
