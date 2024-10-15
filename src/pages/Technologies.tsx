@@ -20,6 +20,25 @@ interface ColorRadioProps {
   onChange: (value: string) => void;
 }
 
+const colors = [
+  '#fea362', // Full stack
+  '#579dff', // PM
+  '#94c748', // Designer
+  '#f5cd47', // Frontend
+  '#9f8fef', // Backend
+  '#f87168', // QA
+  '#84e78d', // Green
+  '#2a4875', // Blue-dark
+  '#a1caff', // Light-blue
+  '#1e70eb', // Blue
+  '#f868e7', // Pink
+  '#f8f368', // Yellow
+  '#93f868', // Acid-green
+  '#68f8ee', // Baltic
+  '#1c8e44', // Dark-green
+  '#7c3d96', // Leela
+];
+
 const Technologies = () => {
   const token = useSelector((state: RootState) => state.userState.user?.token);
   const [selectedColor, setSelectedColor] = useState<string>('');
@@ -372,102 +391,14 @@ const Technologies = () => {
                   className={`flex gap-[4px] flex-wrap justify-center w-[392px] border border-card-border rounded-lg px-[26px] py-[20px] mb-[20px]
                   ${colorInputError ? 'border-2 border-red' : ''}`}
                 >
-                  {/* Full stack */}
-                  <ColorRadio
-                    value="#fea362"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* PM */}
-                  <ColorRadio
-                    value="#579dff"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Designer */}
-                  <ColorRadio
-                    value="#94c748"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Frontend */}
-                  <ColorRadio
-                    value="#f5cd47"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Backend */}
-                  <ColorRadio
-                    value="#9f8fef"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* QA */}
-                  <ColorRadio
-                    value="#f87168"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Green */}
-                  <ColorRadio
-                    value="#84e78d"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Blue-dark */}
-                  <ColorRadio
-                    value="#2a4875"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Light-blue */}
-                  <ColorRadio
-                    value="#a1caff"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Blue */}
-                  <ColorRadio
-                    value="#1e70eb"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Pink */}
-                  <ColorRadio
-                    value="#f868e7"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Yellow */}
-                  <ColorRadio
-                    value="#f8f368"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Acid-green */}
-                  <ColorRadio
-                    value="#93f868"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Baltic */}
-                  <ColorRadio
-                    value="#68f8ee"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Dark-green */}
-                  <ColorRadio
-                    value="#1c8e44"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
-                  {/* Leela */}
-                  <ColorRadio
-                    value="#7c3d96"
-                    selectedColor={selectedColor}
-                    onChange={handleColorChange}
-                  />
+                  {colors.map((color, index) => (
+                    <ColorRadio
+                      key={index}
+                      value={color}
+                      selectedColor={selectedColor}
+                      onChange={handleColorChange}
+                    />
+                  ))}
                 </div>
               </div>
               <div className="relative">
