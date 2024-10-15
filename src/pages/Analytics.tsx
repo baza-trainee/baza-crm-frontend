@@ -9,12 +9,13 @@ import SubjectOption from '../components/SubjectOption';
 import ActionOption from '../components/ActionOption';
 
 // import { useMutation } from '@tanstack/react-query';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   Member,
   Project,
   RequestBodyProjects,
   RequestBodyMembers,
+  RootState,
 } from '../types';
 import { filterProjects, filterMembers } from '../utils/filterApi';
 
@@ -22,22 +23,23 @@ const Analytics: React.FC = () => {
   const [action, setAction] = useState<string>('');
   const [infoType, setInfoType] = useState<string>('');
 
-  // const user = useSelector((state: RootState) => state.userState.user);
+  const user = useSelector((state: RootState) => state.userState.user);
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [filteredMembers, setFilteredMembers] = useState<Member[]>([]);
 
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzI4ODQ3MzY5LCJleHAiOjE3Mjg5MzM3Njl9.wrtD6z92atAbY0SQSEoNj-3hB1R9UeKSXer9VHk4w-4';
-
+  // const token =
+  //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzI4ODQ3MzY5LCJleHAiOjE3Mjg5MzM3Njl9.wrtD6z92atAbY0SQSEoNj-3hB1R9UeKSXer9VHk4w-4';
+  console.log(user?.token);
   const handleProjectsFilter = async (data: RequestBodyProjects) => {
     console.log(data);
     try {
-      // setLoading(true); // Set loading while fetching
-      const result = await filterProjects(token, data); // Fetch filtered projects
-      setFilteredProjects(result); // Update the projects state with fetched data
+      if (user?.token) {
+        // setLoading(true);
+        const result = await filterProjects(user?.token, data);
+        setFilteredProjects(result);
+      }
     } catch (error) {
       throw new Error('Проєктів не знайдено');
-      console.error('Error fetching projects:', error);
     } finally {
       // setLoading(false); // Stop loading when the request is done
     }
@@ -48,11 +50,13 @@ const Analytics: React.FC = () => {
     console.log(data.technologies);
 
     try {
-      // setLoading(true); // Set loading while fetching
+      if (user) {
+        // setLoading(true); // Set loading while fetching
 
-      const membersResult = await filterMembers(token, data); // Fetch filtered projects
+        const membersResult = await filterMembers(user?.token, data);
 
-      setFilteredMembers(membersResult); // Update the projects state with fetched data
+        setFilteredMembers(membersResult);
+      }
     } catch (error) {
       throw new Error('Проєктів не знайдено');
       console.error('Error fetching projects:', error);
