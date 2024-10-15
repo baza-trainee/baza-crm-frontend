@@ -118,9 +118,7 @@ const Technologies = () => {
       setSpecializationInputErrorMessage('');
     } else {
       console.error('Назва спеціалізації не може бути пустою');
-      setSpecializationInputErrorMessage(
-        'Назва спеціалізації не може бути пустою',
-      );
+      setSpecializationInputErrorMessage('Введіть назву');
     }
   };
 
@@ -216,7 +214,7 @@ const Technologies = () => {
       setTechnologyInputErrorMessage('');
     } else {
       console.error('Назва технології не може бути пустою');
-      setTechnologyInputErrorMessage('Назва технології не може бути пустою');
+      setTechnologyInputErrorMessage('Введіть назву');
     }
   };
 
