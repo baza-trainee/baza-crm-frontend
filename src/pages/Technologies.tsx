@@ -22,7 +22,7 @@ interface ColorRadioProps {
 
 const Technologies = () => {
   const token = useSelector((state: RootState) => state.userState.user?.token);
-  const [selectedColor, setSelectedColor] = useState<string>('#f87168');
+  const [selectedColor, setSelectedColor] = useState<string>('');
   const [specializations, setSpecializations] = useState<
     { name: string; color: string; id: number }[]
   >([]);
@@ -37,9 +37,13 @@ const Technologies = () => {
     useState<string>('');
   const [technologyInputErrorMessage, setTechnologyInputErrorMessage] =
     useState<string>('');
+  const [colorInputError, setColorInputError] = useState(false);
 
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
+    if (colorInputError) {
+      setColorInputError(false);
+    }
   };
 
   const { isError: isTagsError } = useQuery({
@@ -119,6 +123,10 @@ const Technologies = () => {
     } else {
       console.error('Назва спеціалізації не може бути пустою');
       setSpecializationInputErrorMessage('Введіть назву');
+    }
+    if (!selectedColor) {
+      setColorInputError(true);
+      return;
     }
   };
 
@@ -358,7 +366,10 @@ const Technologies = () => {
                   className="w-[107px] h-[30px] rounded-lg border border-card-border mb-[10px]"
                   style={{ backgroundColor: selectedColor }}
                 ></div>
-                <div className="flex gap-[4px] flex-wrap justify-center w-[392px] border border-card-border rounded-lg px-[26px] py-[20px] mb-[20px]">
+                <div
+                  className={`flex gap-[4px] flex-wrap justify-center w-[392px] border border-card-border rounded-lg px-[26px] py-[20px] mb-[20px]
+                  ${colorInputError ? 'border-2 border-red' : ''}`}
+                >
                   {/* Full stack */}
                   <ColorRadio
                     value="#fea362"
@@ -455,6 +466,15 @@ const Technologies = () => {
                     selectedColor={selectedColor}
                     onChange={handleColorChange}
                   />
+                </div>
+              </div>
+              <div className="relative">
+                <div className="absolute bottom-[-5px]">
+                  {colorInputError && (
+                    <p className="font-Open Sans font-sans text-[12px] text-red">
+                      Оберіть колір
+                    </p>
+                  )}
                 </div>
               </div>
               <div className="flex justify-center">
