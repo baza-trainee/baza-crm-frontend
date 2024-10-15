@@ -116,17 +116,19 @@ const Technologies = () => {
   };
 
   const handleSaveSpecialization = () => {
-    if (specializationName.trim()) {
+    if (specializationName.trim() && selectedColor) {
       addSpecializationToServer(specializationName);
       setSpecializationName('');
       setSpecializationInputErrorMessage('');
+      setColorInputError(false);
     } else {
-      console.error('Назва спеціалізації не може бути пустою');
-      setSpecializationInputErrorMessage('Введіть назву');
-    }
-    if (!selectedColor) {
-      setColorInputError(true);
-      return;
+      if (!specializationName.trim()) {
+        console.error('Назва спеціалізації не може бути пустою');
+        setSpecializationInputErrorMessage('Введіть назву');
+      }
+      if (!selectedColor) {
+        setColorInputError(true);
+      }
     }
   };
 
@@ -257,7 +259,7 @@ const Technologies = () => {
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     if (data.technologyName) {
       resetTechnology();
-    } else if (data.specializationName) {
+    } else if (data.specializationName && selectedColor) {
       resetSpecialization();
     }
   };
