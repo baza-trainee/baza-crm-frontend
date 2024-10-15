@@ -437,7 +437,7 @@ const Technologies = () => {
               <div className="flex justify-center">
                 <Button
                   label="Зберегти"
-                  className="w-[268px] text-white bg-[#1e70eb]"
+                  className="w-[268px] text-white duration-500 bg-primary-blue hover:bg-white hover:text-[#000]"
                   onClick={handleSaveSpecialization}
                 />
               </div>
@@ -491,7 +491,7 @@ const Technologies = () => {
               <div className="flex justify-center">
                 <Button
                   label="Зберегти"
-                  className="w-[268px] text-white bg-[#1e70eb]"
+                  className="w-[268px] text-white duration-500 bg-primary-blue hover:bg-white hover:text-[#000]"
                   onClick={handleSaveTechnology}
                 />
               </div>
