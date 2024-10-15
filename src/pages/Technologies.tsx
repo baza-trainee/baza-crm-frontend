@@ -33,6 +33,10 @@ const Technologies = () => {
   const [isFormTechVisible, setIsFormTechVisible] = useState(false);
   const [specializationName, setSpecializationName] = useState<string>('');
   const [technologyName, setTechnologyName] = useState<string>('');
+  const [specializationInputErrorMessage, setSpecializationInputErrorMessage] =
+    useState<string>('');
+  const [technologyInputErrorMessage, setTechnologyInputErrorMessage] =
+    useState<string>('');
 
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
@@ -111,8 +115,12 @@ const Technologies = () => {
     if (specializationName.trim()) {
       addSpecializationToServer(specializationName);
       setSpecializationName('');
+      setSpecializationInputErrorMessage('');
     } else {
       console.error('Назва спеціалізації не може бути пустою');
+      setSpecializationInputErrorMessage(
+        'Назва спеціалізації не може бути пустою',
+      );
     }
   };
 
@@ -205,8 +213,10 @@ const Technologies = () => {
     if (technologyName.trim()) {
       addTechnologyToServer(technologyName);
       setTechnologyName('');
+      setTechnologyInputErrorMessage('');
     } else {
       console.error('Назва технології не може бути пустою');
+      setTechnologyInputErrorMessage('Назва технології не може бути пустою');
     }
   };
 
@@ -323,9 +333,24 @@ const Technologies = () => {
                     required: true,
                   })}
                   maxLength={15}
-                  className="h-[40px] font-normal px-[10px] rounded-lg mb-[20px] border-2 focus:border-primary-blue focus:outline-none"
-                  onChange={(e) => setSpecializationName(e.target.value)}
+                  className={`h-[40px] font-normal px-[10px] rounded-lg mb-[20px] border-2 focus:border-primary-blue focus:outline-none
+                    ${specializationInputErrorMessage ? 'border-red focus:border-red' : ''}`}
+                  onChange={(e) => {
+                    setSpecializationName(e.target.value);
+                    if (specializationInputErrorMessage) {
+                      setSpecializationInputErrorMessage('');
+                    }
+                  }}
                 />
+                <div className="relative">
+                  <div className="absolute bottom-[-10px]">
+                    {specializationInputErrorMessage && (
+                      <p className="font-Open Sans font-sans text-[12px] text-red">
+                        {specializationInputErrorMessage}
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
               <div className="flex flex-col">
                 <label className="font-Open Sans font-sans text-[16px] font-normal leading-[1.75] mb-[10px]">
@@ -484,9 +509,24 @@ const Technologies = () => {
                 <input
                   {...registerTechnology('technologyName', { required: true })}
                   maxLength={20}
-                  className="h-[40px] font-normal px-[10px] rounded-lg mb-[20px] border-2 focus:border-primary-blue focus:outline-none"
-                  onChange={(e) => setTechnologyName(e.target.value)}
+                  className={`h-[40px] font-normal px-[10px] rounded-lg mb-[37px] border-2 focus:border-primary-blue focus:outline-none
+                    ${technologyInputErrorMessage ? 'border-red focus:border-red' : ''}`}
+                  onChange={(e) => {
+                    setTechnologyName(e.target.value);
+                    if (technologyInputErrorMessage) {
+                      setTechnologyInputErrorMessage('');
+                    }
+                  }}
                 />
+                <div className="relative">
+                  <div className="absolute bottom-[5px]">
+                    {technologyInputErrorMessage && (
+                      <p className="font-Open Sans font-sans text-[12px] text-red">
+                        {technologyInputErrorMessage}
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
               <div className="flex justify-center">
                 <Button
