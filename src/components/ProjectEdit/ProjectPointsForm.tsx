@@ -1,8 +1,8 @@
-import { Tooltip } from 'react-tooltip';
+// import { Tooltip } from 'react-tooltip';
 import { useFormContext } from 'react-hook-form';
 import { useState } from 'react';
 
-import ProjectFormat from '../Projects/ProjectFormat';
+// import ProjectFormat from '../Projects/ProjectFormat';
 
 const ProjectPointsForm = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,7 +40,7 @@ const ProjectPointsForm = () => {
           )}
       </div>
       {/* PROJECT TYPE AND PRICE */}
-      <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border justify-between flex items-end">
+      {/* <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border justify-between flex items-end">
         <p>Формат участі</p>
         <p
           className="font-semibold uppercase cursor-default text-primary-blue"
@@ -55,7 +55,7 @@ const ProjectPointsForm = () => {
         >
           <ProjectFormat projectType={selectedFormat} />
         </Tooltip>
-      </div>
+      </div> */}
       <div className="bg-white rounded-[10px] px-8 py-5 border-card-border border flex items-center gap-5">
         <div className="flex flex-col gap-2">
           <span>Сума, грн</span>

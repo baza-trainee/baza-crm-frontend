@@ -1,4 +1,5 @@
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { LuAlertTriangle } from 'react-icons/lu';
 import { AxiosError } from 'axios';
 import { Link } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -55,6 +56,7 @@ const Login = () => {
   };
 
   const password = watch('password', '');
+  const login = watch('login', '');
 
   if (mutation.isPending) {
     return (
@@ -75,7 +77,7 @@ const Login = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col w-[538px] mt-[50px] mx-auto"
         >
-          <div className="flex flex-col">
+          <div className="flex flex-col relative">
             <label className="font-Open Sans font-sans text-[20px] font-normal leading-[1.5] text-white mb-[2.5px]">
               Логін (Email)
             </label>
@@ -83,8 +85,16 @@ const Login = () => {
               {...register('login')}
               placeholder="example@gmail.com"
               defaultValue="admin@gmail.com"
-              className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
+              className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px] mb-[23.5px] ${
+                login ? 'bg-white' : 'bg-input-normal-state'
+              } ${errors?.login ? 'border-red border-2 border-solid' : ''}`}
             />
+            {errors?.login && (
+              <LuAlertTriangle
+                size={24}
+                className="absolute right-[16px] top-[52px] transform -translate-y-1/2 text-red"
+              />
+            )}
             <div className="relative">
               <div className="absolute bottom-[-2px]">
                 {errors?.login && (
@@ -114,25 +124,37 @@ const Login = () => {
                   message: 'Максимум 30 символів',
                 },
               })}
-              className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[23.5px] ${
+              className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px]  mb-[23.5px] ${
                 password ? 'bg-white' : 'bg-input-normal-state'
-              }`}
+              } ${errors?.login ? 'border-red border-2 border-solid' : ''}`}
             />
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-[16px] top-[52px] transform -translate-y-1/2 text-gray-500"
-            >
-              {showPassword ? (
-                <AiOutlineEyeInvisible size={24} />
-              ) : (
-                <AiOutlineEye size={24} />
-              )}
-            </button>
-            <div className="h-[40px] text-red">
-              {errors?.password && (
-                <p>{errors?.password?.message || 'Error!'}</p>
-              )}
+            {errors?.login && (
+              <LuAlertTriangle
+                size={24}
+                className="absolute right-[16px] top-[52px] transform -translate-y-1/2 text-red"
+              />
+            )}
+            {!errors?.login && (
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-[16px] top-[52px] transform -translate-y-1/2 text-gray-500"
+              >
+                {showPassword ? (
+                  <AiOutlineEyeInvisible size={24} />
+                ) : (
+                  <AiOutlineEye size={24} />
+                )}
+              </button>
+            )}
+            <div className="relative">
+              <div className="absolute bottom-[-2px]">
+                {errors?.login && (
+                  <p className="font-Open Sans font-sans text-[12px] text-red">
+                    {errors.login.message}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
           <ButtonLogin label="Увійти" type="submit" disabled={!isValid} />
@@ -143,7 +165,7 @@ const Login = () => {
             <br />
             <Link
               to="/forgotten-password"
-              className="underline cursor-pointer text-hover-gray"
+              className="underline cursor-pointer text-light-grey hover:text-hover-gray duration-500"
             >
               Відновити
             </Link>

@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import AddParticipantsForm from '../components/Projects/AddParticipantsForm';
 import DescriptionForm from '../components/ProjectEdit/DescriptionForm';
 import ProjectPointsForm from '../components/ProjectEdit/ProjectPointsForm';
+import SocialsLinks from '../components/ProjectEdit/SocialsLinks';
 import Spinner from '../components/Spinner';
 import TeamForm from '../components/ProjectEdit/TeamForm';
 import TitleForm from '../components/ProjectEdit/TitleForm';
@@ -64,7 +65,12 @@ const ProjectEdit = () => {
         price: project?.price,
         dateStart: project?.dateStart,
         dateTeam: project?.dateTeam,
-        links: project?.links,
+        // links: project?.links,
+        links: [
+          'https://www.youtube.com',
+          'https://www.facebook.com',
+          'https://www.linkedin.com',
+        ],
         specializations: projectSpecializations,
       });
     }
@@ -97,7 +103,7 @@ const ProjectEdit = () => {
     return <Spinner />;
   }
 
-  if (isError) {
+  if (isError || isTagsError) {
     return (
       <section className="flex w-full gap-5 px-8 py-5 bg-light-blue-bg height-100">
         <h2 className="text-2xl text-center mt-[10%]">
@@ -106,12 +112,6 @@ const ProjectEdit = () => {
       </section>
     );
   }
-
-  if (isTagsError) {
-    console.log(isTagsError);
-  }
-
-  console.log(project);
 
   return (
     <FormProvider {...methods}>
@@ -124,6 +124,7 @@ const ProjectEdit = () => {
         <div className="flex flex-wrap gap-5 mb-10">
           <DescriptionForm />
           <ProjectPointsForm />
+          <SocialsLinks />
         </div>
         <TeamForm
           project={project}
