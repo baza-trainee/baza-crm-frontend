@@ -15,6 +15,7 @@ import TitleForm from '../components/ProjectEdit/TitleForm';
 import { RootState, UpdateProjectRequest } from '../types';
 import { getProjectById, updateProject } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
+import ProjectTypeForm from '../components/ProjectEdit/ProjectTypeForm';
 
 const ProjectEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -123,7 +124,10 @@ const ProjectEdit = () => {
         <h3 className="mb-3 ml-8 text-xl font-bold">Опис проєкту</h3>
         <div className="flex flex-wrap gap-5 mb-10">
           <DescriptionForm />
-          <ProjectPointsForm />
+          <div className="w-[412px] flex flex-col gap-5">
+            <ProjectPointsForm />
+            <ProjectTypeForm />
+          </div>
           <SocialsLinks />
         </div>
         <TeamForm
