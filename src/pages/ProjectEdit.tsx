@@ -7,7 +7,9 @@ import { useSelector } from 'react-redux';
 
 import AddParticipantsForm from '../components/Projects/AddParticipantsForm';
 import DescriptionForm from '../components/ProjectEdit/DescriptionForm';
+import DocumentsLinks from '../components/ProjectEdit/DocumentsLinks';
 import ProjectPointsForm from '../components/ProjectEdit/ProjectPointsForm';
+import ProjectTypeForm from '../components/ProjectEdit/ProjectTypeForm';
 import SocialsLinks from '../components/ProjectEdit/SocialsLinks';
 import Spinner from '../components/Spinner';
 import TeamForm from '../components/ProjectEdit/TeamForm';
@@ -15,7 +17,6 @@ import TitleForm from '../components/ProjectEdit/TitleForm';
 import { RootState, UpdateProjectRequest } from '../types';
 import { getProjectById, updateProject } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
-import ProjectTypeForm from '../components/ProjectEdit/ProjectTypeForm';
 
 const ProjectEdit = () => {
   const { id } = useParams<{ id: string }>();
@@ -67,6 +68,7 @@ const ProjectEdit = () => {
         dateStart: project?.dateStart,
         dateTeam: project?.dateTeam,
         // links: project?.links,
+        documents: project.documents || [],
         links: [
           'https://www.youtube.com',
           'https://www.facebook.com',
@@ -91,12 +93,12 @@ const ProjectEdit = () => {
     const token = user?.token;
     const projectId = project?.id;
     if (token && projectId) {
-      mutation.mutate({
-        projectData: data,
-        token,
-        projectId,
-      });
-      // console.log(data);
+      // mutation.mutate({
+      //   projectData: data,
+      //   token,
+      //   projectId,
+      // });
+      console.log(data);
     }
   };
 
@@ -127,6 +129,7 @@ const ProjectEdit = () => {
           <div className="w-[412px] flex flex-col gap-5">
             <ProjectPointsForm />
             <ProjectTypeForm />
+            <DocumentsLinks />
           </div>
           <SocialsLinks />
         </div>

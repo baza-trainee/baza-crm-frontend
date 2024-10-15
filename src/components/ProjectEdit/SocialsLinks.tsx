@@ -3,7 +3,6 @@ import { useState } from 'react';
 
 const SocialsLinks = () => {
   const {
-    // register,
     setValue,
     watch,
     formState: { errors },
@@ -45,7 +44,7 @@ const SocialsLinks = () => {
           className="flex items-center justify-between gap-2 px-8 cursor-pointer "
           onClick={toggleDropdown}
         >
-          <h3 className="hover:after:w-64 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 hover:text-primary-blue after:mx-8">
+          <h3 className="hover:after:w-64 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 hover:text-primary-blue after:mx-8 font-semibold">
             Додати посилання на соц. мережі
           </h3>
           <svg

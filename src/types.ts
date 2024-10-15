@@ -1,7 +1,4 @@
-export type Link = {
-  href: string;
-  label: string;
-};
+export type Link = { href: string; label: string };
 
 export type SelectOptionType = {
   value: string;
@@ -29,6 +26,11 @@ type ProjectMember = {
   userId: number;
 };
 
+export type Document = {
+  name: string;
+  link: string;
+};
+
 export type Project = {
   id: number;
   name: string;
@@ -40,6 +42,7 @@ export type Project = {
   dateStart: string;
   dateTeam: string;
   links: string[];
+  documents: Document[];
   projectRequirments: ProjectRequirement[];
   projectMember: ProjectMember[];
 };
@@ -118,6 +121,7 @@ export type UpdateProjectRequest = {
   dateStart: string;
   dateTeam: string;
   links: string[];
+  documents: Document[];
   specializations: Specialization[];
 };
 
