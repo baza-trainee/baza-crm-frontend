@@ -67,13 +67,8 @@ const ProjectEdit = () => {
         price: project?.price,
         dateStart: project?.dateStart,
         dateTeam: project?.dateTeam,
-        // links: project?.links,
+        links: project?.links || [],
         documents: project.documents || [],
-        links: [
-          'https://www.youtube.com',
-          'https://www.facebook.com',
-          'https://www.linkedin.com',
-        ],
         specializations: projectSpecializations,
       });
     }
