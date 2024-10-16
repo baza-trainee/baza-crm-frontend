@@ -2,6 +2,7 @@ import Button from '../components/Button';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { MdClose } from 'react-icons/md';
+import { Scrollbar } from 'react-scrollbars-custom';
 import { toast } from 'react-toastify';
 import { getTags } from '../utils/tagApi';
 import { RootState } from '../types';
@@ -343,39 +344,59 @@ const Technologies = () => {
     <div className="flex gap-[165px] min-h-screen font-lato font-bold text-[20px] leading-[30px] px-[30px] py-[40px] bg-light-blue-bg">
       <div>
         <h1 className="px-[20px] mb-[10px]">Спеціалізації</h1>
-        <div className="text-[16px] font-semibold p-[20px] bg-white border border-card-border rounded-lg">
-          <ul className="mb-[18px]">
-            {specializations.map((specialization, index) => (
-              <li
-                key={index}
-                className="relative w-[372px] bg-blue-hover rounded-lg mb-[8px] hover:bg-hover-blue before:block before:absolute before:w-[86px] before:h-[30px] before:top-1/2 before:-translate-y-1/2 before:left-0 pl-[110px]"
-              >
-                <span
-                  className="absolute left-0 top-1/2 transform -translate-y-1/2 w-[86px] h-[30px] rounded-lg"
-                  style={{ backgroundColor: specialization.color }}
-                ></span>
-                <div className="flex items-center justify-between">
-                  {specialization.name}
-                  <button
-                    className="mr-[5px]"
-                    onClick={() => deleteSpecializationFromServer(index)}
-                  >
-                    <MdClose size={18} style={{ color: '#91A2B6' }} />
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+        <div className="lg:w-[412px] md:w-[372px] text-[16px] font-semibold p-[20px] bg-white border border-card-border rounded-lg">
+          <Scrollbar
+            style={{ height: 332, width: '105%' }}
+            trackYProps={{
+              style: {
+                backgroundColor: 'inherit',
+                height: '300px',
+                width: '8px',
+                right: '2px',
+              },
+            }}
+            thumbYProps={{
+              style: {
+                cursor: 'default',
+                backgroundColor: '#E8F2FF',
+                borderRadius: '4px',
+              },
+            }}
+            noScrollX={true}
+          >
+            <ul className="lg:w-[372px] md:w-[332px]">
+              {specializations.map((specialization, index) => (
+                <li
+                  key={index}
+                  className="relative lg:w-[372px] md:w-[332px] bg-blue-hover rounded-lg mb-[8px] last:mb-0 hover:bg-hover-blue before:block before:absolute before:w-[86px] before:h-[30px] before:top-1/2 before:-translate-y-1/2 before:left-0 pl-[110px]"
+                >
+                  <span
+                    className="absolute left-0 top-1/2 transform -translate-y-1/2 w-[86px] h-[30px] rounded-lg"
+                    style={{ backgroundColor: specialization.color }}
+                  ></span>
+                  <div className="flex items-center justify-between">
+                    {specialization.name}
+                    <button
+                      className="mr-[5px]"
+                      onClick={() => deleteSpecializationFromServer(index)}
+                    >
+                      <MdClose size={18} style={{ color: '#91A2B6' }} />
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Scrollbar>
           <div className="flex justify-center">
             <Button
               label="Додати спеціалізацію"
-              className="w-[268px] duration-500"
+              className="w-[268px] duration-500 mt-[18px]"
               onClick={handleAddClickSpecialization}
             />
           </div>
         </div>
         {isFormSpecVisible && (
-          <div className="text-[16px] font-semibold py-[20px] px-[12px] bg-input-normal-state border border-card-border rounded-lg">
+          <div className="text-[16px] font-semibold py-[20px] px-[10px] bg-input-normal-state border border-card-border rounded-lg">
             <form onSubmit={handleSubmitSpecialization(onSubmit)}>
               <div className="flex flex-col">
                 <label className="font-Open Sans font-sans text-[16px] font-normal leading-[1.75] mb-[8px]">
@@ -386,7 +407,7 @@ const Technologies = () => {
                     required: true,
                   })}
                   maxLength={15}
-                  className={`h-[40px] font-normal px-[10px] rounded-lg mb-[20px] border-2 focus:border-primary-blue focus:outline-none
+                  className={`h-[40px] font-normal px-[10px] rounded-lg mb-[20px] border-2 hover:bg-hover-blue focus:border-primary-blue focus:outline-none
                     ${specializationInputErrorMessage ? 'border-red focus:border-red' : ''}`}
                   onChange={(e) => {
                     setSpecializationName(e.target.value);
@@ -414,7 +435,7 @@ const Technologies = () => {
                   style={{ backgroundColor: selectedColor }}
                 ></div>
                 <div
-                  className={`flex gap-[4px] flex-wrap justify-center w-[392px] border border-card-border rounded-lg px-[26px] py-[20px] mb-[20px]
+                  className={`lg:w-[392px] md:w-[352px] flex gap-[4px] flex-wrap justify-center border border-card-border rounded-lg px-[26px] py-[20px] mb-[20px]
                   ${colorInputError ? 'border-2 border-red' : ''}`}
                 >
                   {colors.map((color, index) => (
@@ -450,29 +471,49 @@ const Technologies = () => {
       </div>
       <div>
         <h1 className="px-[20px] mb-[10px]">Технології</h1>
-        <div className="text-[16px] font-semibold p-[20px] bg-white border border-card-border rounded-lg">
-          <ul className="mb-[18px]">
-            {technologies.map((tech, index) => (
-              <li
-                key={index}
-                className="w-[372px] px-[8px] bg-blue-hover hover:bg-hover-blue rounded-lg mb-[8px]"
-              >
-                <div className="flex items-center justify-between">
-                  {tech.name}
-                  <button
-                    className="mr-[5px]"
-                    onClick={() => deleteTechnologieFromServer(index)}
-                  >
-                    <MdClose size={18} style={{ color: '#91A2B6' }} />
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+        <div className="lg:w-[412px] md:w-[372px] text-[16px] font-semibold p-[20px] bg-white border border-card-border rounded-lg">
+          <Scrollbar
+            style={{ height: 332, width: '105%' }}
+            trackYProps={{
+              style: {
+                backgroundColor: 'inherit',
+                height: '300px',
+                width: '8px',
+                right: '2px',
+              },
+            }}
+            thumbYProps={{
+              style: {
+                cursor: 'default',
+                backgroundColor: '#E8F2FF',
+                borderRadius: '4px',
+              },
+            }}
+            noScrollX={true}
+          >
+            <ul className="lg:w-[372px] md:w-[332px]">
+              {technologies.map((tech, index) => (
+                <li
+                  key={index}
+                  className="lg:w-[372px] md:w-[332px] mb-[8px] last:mb-0 px-[8px] bg-blue-hover hover:bg-hover-blue rounded-lg"
+                >
+                  <div className="flex items-center justify-between">
+                    {tech.name}
+                    <button
+                      className="mr-[5px]"
+                      onClick={() => deleteTechnologieFromServer(index)}
+                    >
+                      <MdClose size={18} style={{ color: '#91A2B6' }} />
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Scrollbar>
           <div className="flex justify-center">
             <Button
               label="Додати технологію"
-              className="w-[220px] duration-500"
+              className="w-[220px] mt-[18px] duration-500"
               onClick={handleAddClickTechnology}
             />
           </div>
@@ -487,7 +528,7 @@ const Technologies = () => {
                 <input
                   {...registerTechnology('technologyName', { required: true })}
                   maxLength={20}
-                  className={`h-[40px] font-normal px-[10px] rounded-lg mb-[37px] border-2 focus:border-primary-blue focus:outline-none
+                  className={`h-[40px] font-normal px-[10px] rounded-lg mb-[37px] border-2 hover:bg-hover-blue focus:border-primary-blue focus:outline-none
                     ${technologyInputErrorMessage ? 'border-red focus:border-red' : ''}`}
                   onChange={(e) => {
                     setTechnologyName(e.target.value);
