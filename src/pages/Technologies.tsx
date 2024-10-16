@@ -18,6 +18,7 @@ interface ColorRadioProps {
   value: string;
   selectedColor: string;
   onChange: (value: string) => void;
+  usedColors: string[];
 }
 
 const colors = [
@@ -57,6 +58,7 @@ const Technologies = () => {
   const [technologyInputErrorMessage, setTechnologyInputErrorMessage] =
     useState<string>('');
   const [colorInputError, setColorInputError] = useState(false);
+  const [usedColors, setUsedColors] = useState<string[]>([]);
 
   const handleColorChange = (color: string) => {
     setSelectedColor(color);
@@ -87,6 +89,10 @@ const Technologies = () => {
           );
 
           setSpecializations(specializations);
+
+          // Used colors
+          const usedColors = specializations.map((spec) => spec.color);
+          setUsedColors(usedColors);
         }
       } catch (error) {
         console.error('Помилка отримання спеціалізацій', error);
@@ -127,6 +133,11 @@ const Technologies = () => {
           id: newSpecialization.id,
         },
       ]);
+
+      // Refresh list of used colors
+      setUsedColors([...usedColors, selectedColor]);
+      setSelectedColor('');
+
       toast.success('Спеціалізацію успішно створено');
     } catch (error) {
       console.error('Помилка додавання спеціалізації:', error);
@@ -154,6 +165,8 @@ const Technologies = () => {
   // Delete Specialization
   const deleteSpecializationFromServer = async (index: number) => {
     const tagId = specializations[index].id;
+    const colorToRestore = specializations[index].color;
+
     try {
       const url = `${import.meta.env.VITE_API_URL}/tag/${tagId}`;
 
@@ -164,6 +177,12 @@ const Technologies = () => {
       });
 
       setSpecializations((prev) => prev.filter((_, i) => i !== index));
+
+      // Refresh list of used colors after delete specialization
+      setUsedColors((prevUsedColors) =>
+        prevUsedColors.filter((color) => color !== colorToRestore),
+      );
+
       toast.success('Спеціалізацію успішно видалено');
     } catch (error) {
       console.error('Помилка видалення спеціалізації:', error);
@@ -297,21 +316,28 @@ const Technologies = () => {
     value,
     selectedColor,
     onChange,
-  }) => (
-    <label className="cursor-pointer">
-      <input
-        type="radio"
-        name="color"
-        value={value}
-        className="hidden"
-        onChange={() => onChange(value)}
-      />
-      <div
-        className={`w-[30px] h-[30px] rounded-lg box-border ${selectedColor === value ? 'border-2 border-black' : ''}`}
-        style={{ backgroundColor: value }}
-      ></div>
-    </label>
-  );
+    usedColors,
+  }) => {
+    const isDisabled = usedColors.includes(value);
+
+    return (
+      <label className="cursor-pointer">
+        <input
+          type="radio"
+          name="color"
+          value={value}
+          className="hidden"
+          onChange={() => onChange(value)}
+          disabled={isDisabled}
+        />
+        <div
+          className={`w-[30px] h-[30px] rounded-lg box-border ${selectedColor === value ? 'border-2 border-black' : ''}
+          ${isDisabled ? 'border-2 border-black' : ''}`}
+          style={{ backgroundColor: value }}
+        ></div>
+      </label>
+    );
+  };
 
   return (
     <div className="flex gap-[165px] min-h-screen font-lato font-bold text-[20px] leading-[30px] px-[30px] py-[40px] bg-light-blue-bg">
@@ -397,6 +423,7 @@ const Technologies = () => {
                       value={color}
                       selectedColor={selectedColor}
                       onChange={handleColorChange}
+                      usedColors={usedColors}
                     />
                   ))}
                 </div>
@@ -413,7 +440,7 @@ const Technologies = () => {
               <div className="flex justify-center">
                 <Button
                   label="Зберегти"
-                  className="w-[268px] text-white duration-500 bg-primary-blue hover:bg-white hover:text-[#000]"
+                  className="w-[268px] text-white duration-500 bg-primary-blue hover:bg-white hover:!text-[#000]"
                   onClick={handleSaveSpecialization}
                 />
               </div>
@@ -482,7 +509,7 @@ const Technologies = () => {
               <div className="flex justify-center">
                 <Button
                   label="Зберегти"
-                  className="w-[268px] text-white duration-500 bg-primary-blue hover:bg-white hover:text-[#000]"
+                  className="w-[268px] text-white duration-500 bg-primary-blue hover:bg-white hover:!text-[#000]"
                   onClick={handleSaveTechnology}
                 />
               </div>
