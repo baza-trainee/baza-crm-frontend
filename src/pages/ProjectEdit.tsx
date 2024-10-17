@@ -121,7 +121,7 @@ const ProjectEdit = () => {
         <h3 className="mb-3 ml-8 text-xl font-bold">Опис проєкту</h3>
         <div className="flex flex-wrap gap-5 mb-10">
           <DescriptionForm />
-          <div className="w-[412px] flex flex-col gap-5">
+          <div className="w-[412px] flex flex-col gap-2 justify-center">
             <ProjectPointsForm />
             <ProjectTypeForm />
             <DocumentsLinks />

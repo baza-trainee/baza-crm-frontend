@@ -7,7 +7,7 @@ const ProjectPointsForm = () => {
   } = useFormContext();
 
   return (
-    <div className="w-[412px] flex flex-col gap-5">
+    <div className="w-[412px] flex flex-col">
       <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border justify-between flex items-center">
         <p className="font-bold font-lato">Бали за участь</p>
         <input
@@ -20,7 +20,7 @@ const ProjectPointsForm = () => {
           })}
         />
       </div>
-      <div className="h-5 px-8 -mt-5 -mb-3">
+      <div className="h-4 px-8">
         {errors.projectPoints &&
           typeof errors.projectPoints.message === 'string' && (
             <span className="text-red">{errors.projectPoints.message}</span>

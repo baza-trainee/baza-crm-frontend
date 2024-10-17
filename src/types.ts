@@ -88,12 +88,19 @@ export type Inputs = {
   password: string;
 };
 
-type Specialization = {
+export type Specialization = {
   id: number;
-  count: number;
+  count?: number;
   name?: string;
   color?: string;
   isSpecialization?: boolean;
+};
+
+export type Technology = {
+  id: number;
+  name: string;
+  color: string;
+  isSpecialization: boolean;
 };
 
 export type CreateProjectRequest = {
@@ -186,4 +193,23 @@ export type UpdateUserMutationVariables = {
 
 export type UpdateUserResponse = {
   status: boolean;
+};
+
+export type UserInformation = {
+  id: number;
+  email: string;
+  technologies: Technology[];
+  specializations: Specialization[];
+  linkedin: string;
+  discord: string | null;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  city: string;
+  country: string;
+  discordReceiving: boolean;
+  status: string;
+  registerAt: string;
+  projectPoints: number;
+  karmaPoints: number | null;
 };

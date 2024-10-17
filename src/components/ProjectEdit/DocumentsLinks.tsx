@@ -63,7 +63,7 @@ const DocumentsLinks = () => {
   };
 
   return (
-    <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border relative">
+    <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border relative mt-4">
       <div
         onClick={toggleDropdown}
         className="flex items-center justify-between cursor-pointer "

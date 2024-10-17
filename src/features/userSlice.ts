@@ -20,12 +20,12 @@ const userSlice = createSlice({
       const user = action.payload;
       localStorage.setItem('user', JSON.stringify(user));
       state.user = user;
-      toast.success('Увійшли успішно');
+      toast.success('Вхід успішний');
     },
     logoutUser: (state) => {
       localStorage.removeItem('user');
       state.user = null;
-      toast.success('Вийшли успішно');
+      toast.success('Вихід успішний');
     },
   },
 });
