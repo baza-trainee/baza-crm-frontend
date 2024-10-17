@@ -23,36 +23,6 @@ interface ProjectApplicationsProps {
   project: Project;
 }
 
-// const sampleData = [
-//   {
-//     id: 1,
-//     name: 'John Doe',
-//     email: 'john@example.com',
-//     linkedin: 'https://incompatible-heifer.biz',
-//     projectPoints: 5,
-//     karmaPoints: 5,
-//     status: 'accepted',
-//   },
-//   {
-//     id: 2,
-//     name: 'Jane Smith',
-//     email: 'jane@example.com',
-//     linkedin: 'https://incompatible-heifer.biz',
-//     projectPoints: 1,
-//     karmaPoints: 4,
-//     status: 'declined',
-//   },
-//   {
-//     id: 3,
-//     name: 'Alice Johnson',
-//     email: 'alice@example.com',
-//     linkedin: 'https://incompatible-heifer.biz',
-//     projectPoints: 8,
-//     karmaPoints: 2,
-//     status: 'accepted',
-//   },
-// ];
-
 const ProjectApplications: React.FC<ProjectApplicationsProps> = ({
   modalIsOpen,
   closeModal,
@@ -67,16 +37,6 @@ const ProjectApplications: React.FC<ProjectApplicationsProps> = ({
     number[]
   >([]);
   const [resolvedFilter, setResolvedFilter] = useState<boolean>(false);
-
-  // const {
-  //   data: applications,
-  //   isError,
-  //   isPending,
-  // } = useQuery({
-  //   queryKey: ['getApplicationById', user?.token, resolvedFilter],
-  //   queryFn: () => getApplicationsById(user!.token, projectId),
-  //   enabled: !!user?.token,
-  // });
 
   const {
     data: applications,
@@ -105,6 +65,11 @@ const ProjectApplications: React.FC<ProjectApplicationsProps> = ({
         return selectedSpecializations.includes(specializationId ?? -1);
       })
     : applications;
+
+  const nameTag = (id: number) => {
+    const tag = tags?.find((tag) => tag.id === id);
+    return tag?.name;
+  };
 
   const mutation = useMutation({
     mutationFn: resolveApplication,
@@ -175,6 +140,7 @@ const ProjectApplications: React.FC<ProjectApplicationsProps> = ({
           <TableBodyApplications
             {...{
               filteredApplications,
+              nameTag,
               handleAccept,
               handleReject,
             }}

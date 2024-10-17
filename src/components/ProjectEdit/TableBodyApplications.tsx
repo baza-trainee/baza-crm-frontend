@@ -4,12 +4,14 @@ import { Application } from '../../types';
 
 interface TableBodyApplicationsProps {
   filteredApplications: Application[] | undefined;
+  nameTag: (id: number) => string | undefined;
   handleAccept: (id: number) => void;
   handleReject: (id: number) => void;
 }
 
 const TableBodyApplications: React.FC<TableBodyApplicationsProps> = ({
   filteredApplications,
+  nameTag,
   handleAccept,
   handleReject,
 }) => {
@@ -26,35 +28,35 @@ const TableBodyApplications: React.FC<TableBodyApplicationsProps> = ({
           }}
         >
           <td className="relative w-full px-4 py-2 truncate">
-            {application.user?.firstName}
+            {application.user?.user.firstName}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative px-4 py-2 truncate">
-            {application.user?.lastName}
+            {application.user?.user.lastName}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative px-4 py-2 truncate">
-            {application.user?.country}
+            {application.user?.user.country}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative px-4 py-2 truncate">
-            {application.tagId}
+            {nameTag(application.tagId)}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative z-10 px-4 py-2 truncate">
-            {application.user?.email}
+            {application.user?.user?.email}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border -z-10"></span>
           </td>
           <td className="relative px-4 py-2 truncate">
-            {application.user?.linkedin}
+            {application.user?.user.linkedin}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative px-4 py-2 truncate">
-            {application.user?.projectPoints}
+            {application.user?.user.projectPoints}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative px-4 py-2 truncate">
-            {application.user?.karmaPoints}
+            {application.user?.user.karmaPoints}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative z-10 px-4 py-2">

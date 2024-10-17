@@ -40,18 +40,28 @@ export const useApplicationsWithUsers = (token: string, projectId: number) => {
 
       // CREATE AN OBJECT FOR FAST USER LOOKUP BY ID
       const usersById = users.reduce(
-        (acc, user) => {
-          acc[user.id] = user;
+        (acc, userWrapper) => {
+          const user = userWrapper.user; // EXTRACT USER OBJECT
+          if (user && user.id) {
+            // CHECK IF USER EXISTS AND HAS A VALID ID
+            acc[user.id] = userWrapper; // STORE THE ENTIRE WRAPPER
+          } else {
+            console.error('Invalid user data:', userWrapper); // LOG IF USER DATA IS INVALID
+          }
           return acc;
         },
-        {} as Record<number, UserInformation>,
+        {} as Record<number, UserInformation>, // TYPE FOR THE WHOLE WRAPPER
       );
 
       // RETURN APPLICATIONS WITH USER DATA INCLUDED
-      return requests.map((req) => ({
+      const data = requests.map((req) => ({
         ...req,
         user: usersById[req.userId],
       }));
+
+      console.log(data);
+
+      return data;
     },
   });
 };

@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-import { RegisterResponse, User } from '../types';
+import { RegisterResponse, Auth } from '../types';
 
 export const loginUserApi = async (data: {
   email: string;
   password: string;
-}): Promise<User> => {
+}): Promise<Auth> => {
   const url = `${import.meta.env.VITE_API_URL}/auth/login`;
-  const response = await axios.post<User>(url, data);
+  const response = await axios.post<Auth>(url, data);
   return response.data;
 };
 

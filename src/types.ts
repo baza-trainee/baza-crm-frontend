@@ -55,7 +55,7 @@ export type Tag = {
   count?: number;
 };
 
-export type User = {
+export type Auth = {
   token: string;
   user: {
     id: string;
@@ -65,7 +65,7 @@ export type User = {
 };
 
 export type UserState = {
-  user: User | null;
+  user: Auth | null;
 };
 
 export type RootState = {
@@ -195,7 +195,7 @@ export type UpdateUserResponse = {
   status: boolean;
 };
 
-export type UserInformation = {
+export type User = {
   id: number;
   email: string;
   technologies: Technology[];
@@ -212,6 +212,10 @@ export type UserInformation = {
   registerAt: string;
   projectPoints: number;
   karmaPoints: number | null;
+};
+
+export type UserInformation = {
+  user: User;
 };
 
 export type Application = {
