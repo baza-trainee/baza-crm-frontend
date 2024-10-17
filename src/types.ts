@@ -1,7 +1,4 @@
-export type Link = {
-  href: string;
-  label: string;
-};
+export type Link = { href: string; label: string };
 
 export type SelectOptionType = {
   value?: string;
@@ -37,6 +34,11 @@ type ProjectMember = {
   userId: number;
 };
 
+export type Document = {
+  name: string;
+  link: string;
+};
+
 export type Project = {
   id: number;
   name: string;
@@ -48,6 +50,7 @@ export type Project = {
   dateStart: string;
   dateTeam: string;
   links: string[];
+  documents: Document[];
   projectRequirments: ProjectRequirement[];
   projectMember: ProjectMember[];
 };
@@ -60,14 +63,7 @@ export type Tag = {
   count?: number;
 };
 
-// export type User = {
-//   username: string;
-//   jwt: string;
-//   isAdmin: boolean;
-// };
-
-export type User = {
-  // message: string;
+export type Auth = {
   token: string;
   user: {
     id: string;
@@ -77,7 +73,7 @@ export type User = {
 };
 
 export type UserState = {
-  user: User | null;
+  user: Auth | null;
 };
 
 export type RootState = {
@@ -113,7 +109,6 @@ export type Member = {
   registerAt: string;
   karmaPoints?: number;
   projectPoints?: number;
-
   linkedin?: string;
   discord?: string;
   phone?: string;
@@ -155,10 +150,17 @@ export type RequestBodyMembers = {
 
 export type Specialization = {
   id: number;
-  count: number;
+  count?: number;
   name?: string;
   color?: string;
   isSpecialization?: boolean;
+};
+
+export type Technology = {
+  id: number;
+  name: string;
+  color: string;
+  isSpecialization: boolean;
 };
 
 export type CreateProjectRequest = {
@@ -186,6 +188,7 @@ export type UpdateProjectRequest = {
   dateStart: string;
   dateTeam: string;
   links: string[];
+  documents: Document[];
   specializations: Specialization[];
 };
 
@@ -250,4 +253,47 @@ export type UpdateUserMutationVariables = {
 
 export type UpdateUserResponse = {
   status: boolean;
+};
+
+export type User = {
+  id: number;
+  email: string;
+  technologies: Technology[];
+  specializations: Specialization[];
+  linkedin: string;
+  discord: string | null;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  city: string;
+  country: string;
+  discordReceiving: boolean;
+  status: string;
+  registerAt: string;
+  projectPoints: number;
+  karmaPoints: number | null;
+};
+
+export type UserInformation = {
+  user: User;
+};
+
+export type Application = {
+  id: number;
+  projectId: number;
+  tagId: number;
+  userId: number;
+  state: string;
+  user?: UserInformation;
+};
+
+export type resolveApplicationMutationVariables = {
+  token: string;
+  projectId: number;
+  aplicationId: number;
+  status: string;
+};
+
+export type resolveApplicationResponse = {
+  message: string;
 };

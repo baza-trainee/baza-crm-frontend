@@ -1,13 +1,15 @@
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import AddParticipantsForm from '../components/Projects/AddParticipantsForm';
 import DescriptionForm from '../components/ProjectEdit/DescriptionForm';
+import DocumentsLinks from '../components/ProjectEdit/DocumentsLinks';
 import ProjectPointsForm from '../components/ProjectEdit/ProjectPointsForm';
+import ProjectTypeForm from '../components/ProjectEdit/ProjectTypeForm';
 import SocialsLinks from '../components/ProjectEdit/SocialsLinks';
 import Spinner from '../components/Spinner';
 import TeamForm from '../components/ProjectEdit/TeamForm';
@@ -15,10 +17,22 @@ import TitleForm from '../components/ProjectEdit/TitleForm';
 import { RootState, UpdateProjectRequest } from '../types';
 import { getProjectById, updateProject } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
+import ProjectApplications from '../components/ProjectEdit/ProjectApplications';
 
 const ProjectEdit = () => {
   const { id } = useParams<{ id: string }>();
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const user = useSelector((state: RootState) => state.userState.user);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    document.body.style.overflow = 'auto';
+  };
 
   const {
     data: project,
@@ -65,12 +79,8 @@ const ProjectEdit = () => {
         price: project?.price,
         dateStart: project?.dateStart,
         dateTeam: project?.dateTeam,
-        // links: project?.links,
-        links: [
-          'https://www.youtube.com',
-          'https://www.facebook.com',
-          'https://www.linkedin.com',
-        ],
+        links: project?.links || [],
+        documents: project.documents || [],
         specializations: projectSpecializations,
       });
     }
@@ -90,12 +100,12 @@ const ProjectEdit = () => {
     const token = user?.token;
     const projectId = project?.id;
     if (token && projectId) {
-      mutation.mutate({
-        projectData: data,
-        token,
-        projectId,
-      });
-      // console.log(data);
+      // mutation.mutate({
+      //   projectData: data,
+      //   token,
+      //   projectId,
+      // });
+      console.log(data);
     }
   };
 
@@ -123,7 +133,11 @@ const ProjectEdit = () => {
         <h3 className="mb-3 ml-8 text-xl font-bold">Опис проєкту</h3>
         <div className="flex flex-wrap gap-5 mb-10">
           <DescriptionForm />
-          <ProjectPointsForm />
+          <div className="w-[412px] flex flex-col gap-2 justify-center">
+            <ProjectPointsForm />
+            <ProjectTypeForm />
+            <DocumentsLinks />
+          </div>
           <SocialsLinks />
         </div>
         <TeamForm
@@ -165,13 +179,19 @@ const ProjectEdit = () => {
             )}
           </div>
           <button
-            type="submit"
+            type="button"
+            onClick={openModal}
             className="border-2 border-primary-blue rounded-[10px] duration-500 text-black hover:bg-transparent hover:text-primary-blue font-semibold flex justify-center items-center w-[268px] h-10 mt-2"
           >
             Робота с заявками
           </button>
         </div>
       </form>
+      <ProjectApplications
+        modalIsOpen={modalIsOpen}
+        closeModal={closeModal}
+        project={project}
+      />
     </FormProvider>
   );
 };

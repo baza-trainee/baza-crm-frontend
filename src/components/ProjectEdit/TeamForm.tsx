@@ -84,11 +84,11 @@ const TeamForm = ({
                   member.tagId === specialization.id && (
                     <div
                       key={member.userId}
-                      className="flex justify-between w-full rounded-[10px] bg-blue-hover px-2.5 py-1.5 items-center"
+                      className="flex justify-between w-full rounded-[10px] bg-blue-hover items-center"
                     >
-                      <p>Viktor Filippov</p>
+                      <p className="mx-3 my-1">Viktor Filippov</p>
                       <RiCloseLine
-                        className="duration-500 cursor-pointer size-5 text-normal-ui hover:text-red"
+                        className="p-1 duration-500 rounded-r-lg cursor-pointer size-7 text-normal-ui hover:text-red hover:bg-rose-100"
                         onClick={() => handleDeleteMember(member.userId)}
                       />
                     </div>

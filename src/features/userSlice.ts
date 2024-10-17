@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 
-import { User, UserState } from '../types';
+import { Auth, UserState } from '../types';
 
 const getUserFromLocalStorage = () => {
   const user = localStorage.getItem('user');
@@ -16,16 +16,16 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    loginUser: (state, action: PayloadAction<User>) => {
+    loginUser: (state, action: PayloadAction<Auth>) => {
       const user = action.payload;
       localStorage.setItem('user', JSON.stringify(user));
       state.user = user;
-      toast.success('Увійшли успішно');
+      toast.success('Вхід успішний');
     },
     logoutUser: (state) => {
       localStorage.removeItem('user');
       state.user = null;
-      toast.success('Вийшли успішно');
+      toast.success('Вихід успішний');
     },
   },
 });
