@@ -220,6 +220,7 @@ export type Application = {
   tagId: number;
   userId: number;
   state: string;
+  user?: UserInformation;
 };
 
 export type resolveApplicationMutationVariables = {

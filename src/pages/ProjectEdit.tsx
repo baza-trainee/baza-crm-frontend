@@ -187,7 +187,11 @@ const ProjectEdit = () => {
           </button>
         </div>
       </form>
-      <ProjectApplications modalIsOpen={modalIsOpen} closeModal={closeModal} />
+      <ProjectApplications
+        modalIsOpen={modalIsOpen}
+        closeModal={closeModal}
+        project={project}
+      />
     </FormProvider>
   );
 };

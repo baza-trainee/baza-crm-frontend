@@ -1,15 +1,15 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 
-import { UserRequest } from '../../types';
+import { Application } from '../../types';
 
 interface TableBodyApplicationsProps {
-  filteredUsers: UserRequest[] | undefined;
+  filteredApplications: Application[] | undefined;
   handleAccept: (id: number) => void;
   handleReject: (id: number) => void;
 }
 
 const TableBodyApplications: React.FC<TableBodyApplicationsProps> = ({
-  filteredUsers,
+  filteredApplications,
   handleAccept,
   handleReject,
 }) => {
@@ -17,51 +17,50 @@ const TableBodyApplications: React.FC<TableBodyApplicationsProps> = ({
 
   return (
     <tbody className="text-center" ref={parent}>
-      {filteredUsers?.map((user) => (
+      {filteredApplications?.map((application) => (
         <tr
-          key={user.id}
+          key={application.id}
           style={{
             backgroundColor:
-              user.isAccepted === false ? '#F0F2FB' : 'transparent',
+              application.state === 'declined' ? '#F0F2FB' : 'transparent',
           }}
         >
           <td className="relative w-full px-4 py-2 truncate">
-            {user.firstName}
+            {application.user?.firstName}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative px-4 py-2 truncate">
-            {user.lastName}
+            {application.user?.lastName}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative px-4 py-2 truncate">
-            {user.country}
+            {application.user?.country}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative px-4 py-2 truncate">
-            {user.specialization}
+            {application.tagId}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative z-10 px-4 py-2 truncate">
-            {user.email}
+            {application.user?.email}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border -z-10"></span>
           </td>
-
           <td className="relative px-4 py-2 truncate">
-            {user.linkedin}
+            {application.user?.linkedin}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative px-4 py-2 truncate">
-            {user.phone}
+            {application.user?.projectPoints}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative px-4 py-2 truncate">
-            {user.discord}
+            {application.user?.karmaPoints}
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative z-10 px-4 py-2">
             <button
-              disabled={user.isAccepted !== null}
-              onClick={() => handleAccept(user.id)}
+              disabled={application.state !== null}
+              onClick={() => handleAccept(application.id)}
               className="px-4 py-1 text-white bg-primary-blue hover:bg-white rounded-[10px] duration-500 hover:text-black border border-primary-blue disabled:opacity-50 disabled:hover:bg-primary-blue disabled:hover:text-white disabled:cursor-not-allowed disabled:filter disabled:brightness-50"
             >
               Прийняти
@@ -70,8 +69,8 @@ const TableBodyApplications: React.FC<TableBodyApplicationsProps> = ({
           </td>
           <td className="relative z-10 px-4 py-2">
             <button
-              disabled={user.isAccepted !== null}
-              onClick={() => handleReject(user.id)}
+              disabled={application.state !== null}
+              onClick={() => handleReject(application.id)}
               className="px-4 py-1 text-red rounded-[10px] duration-500 hover:text-black border border-red disabled:opacity-50 disabled:hover:text-red disabled:cursor-not-allowed disabled:filter disabled:brightness-50"
             >
               Відхилити
@@ -82,16 +81,16 @@ const TableBodyApplications: React.FC<TableBodyApplicationsProps> = ({
             className="relative px-4 py-2"
             style={{
               color:
-                user.isAccepted === true
+                application.state === 'accepted'
                   ? '#34A853'
-                  : user.isAccepted === false
+                  : application.state === 'declined'
                     ? '#FA2727'
                     : '#FFB800',
             }}
           >
-            {user.isAccepted === true
+            {application.state === 'accepted'
               ? 'Прийнято'
-              : user.isAccepted === false
+              : application.state === 'declined'
                 ? 'Відхилено'
                 : 'Нова'}
             <span className="absolute top-0 right-0 w-full h-full border-t border-card-border"></span>

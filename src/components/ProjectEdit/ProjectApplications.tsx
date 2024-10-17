@@ -6,17 +6,21 @@ import { toast } from 'react-toastify';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
-import { RootState } from '../../types';
-import { getUserRequests, updateUserRequest } from '../../utils/userRequestApi';
+import { Project, RootState } from '../../types';
 import { getTags } from '../../utils/tagApi';
 import Spinner from '../Spinner';
 import { RiCloseLine } from 'react-icons/ri';
+import {
+  resolveApplication,
+  useApplicationsWithUsers,
+} from '../../utils/projectApplicationApi';
 
 Modal.setAppElement('#root');
 
 interface ProjectApplicationsProps {
   modalIsOpen: boolean;
   closeModal: () => void;
+  project: Project;
 }
 
 // const sampleData = [
@@ -52,24 +56,33 @@ interface ProjectApplicationsProps {
 const ProjectApplications: React.FC<ProjectApplicationsProps> = ({
   modalIsOpen,
   closeModal,
+  project,
 }) => {
   const queryClient = useQueryClient();
   const user = useSelector((state: RootState) => state.userState.user);
+  const token = user?.token;
+  const projectId = project?.id;
 
   const [selectedSpecializations, setSelectedSpecializations] = useState<
     number[]
   >([]);
   const [resolvedFilter, setResolvedFilter] = useState<boolean>(false);
 
+  // const {
+  //   data: applications,
+  //   isError,
+  //   isPending,
+  // } = useQuery({
+  //   queryKey: ['getApplicationById', user?.token, resolvedFilter],
+  //   queryFn: () => getApplicationsById(user!.token, projectId),
+  //   enabled: !!user?.token,
+  // });
+
   const {
-    data: userRequests,
-    isError,
+    data: applications,
     isPending,
-  } = useQuery({
-    queryKey: ['userRequests', user?.token, resolvedFilter],
-    queryFn: () => getUserRequests(user!.token, resolvedFilter),
-    enabled: !!user?.token,
-  });
+    isError,
+  } = useApplicationsWithUsers(token!, projectId);
 
   const {
     data: tags,
@@ -83,38 +96,38 @@ const ProjectApplications: React.FC<ProjectApplicationsProps> = ({
 
   const specializations = tags?.filter((tag) => tag.isSpecialization === true);
 
-  const filteredUsers = selectedSpecializations.length
-    ? userRequests?.filter((user) => {
+  const filteredApplications = selectedSpecializations.length
+    ? applications?.filter((application) => {
         const specializationId = specializations?.find(
-          (tag) => tag.name === user.specialization,
+          (tag) => tag.id === application.tagId,
         )?.id;
 
         return selectedSpecializations.includes(specializationId ?? -1);
       })
-    : userRequests;
+    : applications;
 
   const mutation = useMutation({
-    mutationFn: updateUserRequest,
+    mutationFn: resolveApplication,
     onSuccess: () => {
       toast.success('Заявка успішно оброблена');
-      queryClient.invalidateQueries({ queryKey: ['userRequests'] });
+      queryClient.invalidateQueries({ queryKey: ['resolveApplication'] });
     },
     onError: () => {
       toast.error('Не вдалося обробити заявку');
     },
   });
 
-  const handleAccept = (requestId: number) => {
-    const token = user?.token;
+  const handleAccept = (aplicationId: number) => {
+    const projectId = project?.id;
     if (token) {
-      mutation.mutate({ token, requestId, accepted: true });
+      mutation.mutate({ token, projectId, aplicationId, status: 'accepted' });
     }
   };
 
-  const handleReject = (requestId: number) => {
+  const handleReject = (aplicationId: number) => {
     const token = user?.token;
     if (token) {
-      mutation.mutate({ token, requestId, accepted: false });
+      mutation.mutate({ token, projectId, aplicationId, status: 'declined' });
     }
   };
 
@@ -139,7 +152,7 @@ const ProjectApplications: React.FC<ProjectApplicationsProps> = ({
       contentLabel="Project Applications"
       className="flex flex-col w-11/12 gap-5 p-8 mx-auto my-10 bg-white rounded-md modal-content max-h-[85%]"
       overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center modal-overlay"
-      closeTimeoutMS={300}
+      closeTimeoutMS={500}
     >
       <div className="h-[60px] flex justify-center items-center text-2xl font-bold text-text-black bg-white rounded-[10px] border-card-border border">
         <h1>Робота з заявками</h1>
@@ -161,7 +174,7 @@ const ProjectApplications: React.FC<ProjectApplicationsProps> = ({
           />
           <TableBodyApplications
             {...{
-              filteredUsers,
+              filteredApplications,
               handleAccept,
               handleReject,
             }}
