@@ -213,3 +213,22 @@ export type UserInformation = {
   projectPoints: number;
   karmaPoints: number | null;
 };
+
+export type Application = {
+  id: number;
+  projectId: number;
+  tagId: number;
+  userId: number;
+  state: string;
+};
+
+export type resolveApplicationMutationVariables = {
+  token: string;
+  projectId: number;
+  aplicationId: number;
+  status: string;
+};
+
+export type resolveApplicationResponse = {
+  message: string;
+};
