@@ -1,6 +1,14 @@
 export type Link = { href: string; label: string };
 
 export type SelectOptionType = {
+  value?: string;
+  label?: string;
+  id?: number;
+  name?: string;
+  color?: string;
+};
+
+export type SelectStatusType = {
   value: string;
   label: string;
 };
@@ -86,6 +94,58 @@ export type RegisterResponse = {
 export type Inputs = {
   login: string;
   password: string;
+};
+
+export type Member = {
+  id?: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  specializations: Specialization[];
+  technologies: [];
+  country: string;
+  city: string;
+  status: string;
+  registerAt: string;
+  karmaPoints?: number;
+  projectPoints?: number;
+  linkedin?: string;
+  discord?: string;
+  phone?: string;
+  discordReceiving?: boolean;
+};
+
+export type DataForm = {
+  // statuses: string[];
+  // formats: string[];
+  statuses: { value: string }[];
+  formats: { value: string }[];
+  technologies?: { value: string; id?: number; label: string }[];
+  specializations?: { value: string; id?: number; label: string }[];
+  selectedDateTo?: Date;
+  selectedDateFrom?: Date;
+};
+
+export type RequestBodyProjects = {
+  formats?: string[];
+  statuses?: string[];
+};
+
+// export type RequestBodyMembers = {
+//   statuses?: string[];
+//   technologies?: number[];
+//   specializations?: number[];
+//   selectedDateTo?: string;
+//   selectedDateFrom?: string;
+// };
+
+export type RequestBodyMembers = {
+  formats?: string[];
+  statuses?: string[];
+  technologies?: number[];
+  specializations?: number[];
+  to?: string;
+  from?: string;
 };
 
 export type Specialization = {
