@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UseFormRegister } from 'react-hook-form';
-import { UserData } from './PortalUserForm';
+import { UserData } from '../../types';
 
 interface FileInputProps {
   id: keyof UserData;

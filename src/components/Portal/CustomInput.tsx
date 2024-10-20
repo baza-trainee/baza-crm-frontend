@@ -1,5 +1,5 @@
 import { UseFormRegister } from 'react-hook-form';
-import { UserData } from './PortalUserForm';
+import { UserData } from '../../types';
 
 interface CustomInputProps {
   id: keyof UserData;
