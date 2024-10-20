@@ -251,3 +251,16 @@ export type UpdateUserMutationVariables = {
 export type UpdateUserResponse = {
   status: boolean;
 };
+
+export type UserData = {
+  firstName: string;
+  lastName: string;
+  country: string;
+  city: string;
+  phone: string;
+  resume: File | null;
+  specialization: string[];
+  technologies: string[];
+  email: string;
+  linkedin: string;
+};
