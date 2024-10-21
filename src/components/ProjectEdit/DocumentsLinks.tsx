@@ -14,6 +14,8 @@ const DocumentsLinks = () => {
 
   const documents: Document[] = watch('documents', []);
 
+  console.log(typeof documents);
+
   const [documentInput, setDocumentInput] = useState<Document>({
     name: '',
     link: '',
@@ -85,7 +87,7 @@ const DocumentsLinks = () => {
         </svg>
       </div>
       {isOpen && (
-        <div className="bg-white rounded-[10px] pt-5 border-card-border border flex flex-col gap-5 w-full absolute top-11 left-0">
+        <div className="bg-white rounded-[10px] pt-5 border-card-border border flex flex-col gap-5 w-full absolute top-11 left-0 z-10">
           <ul className="flex flex-col gap-2 px-8">
             {documents.map((doc) => (
               <li key={doc.link}>

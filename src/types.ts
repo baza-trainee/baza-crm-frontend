@@ -74,7 +74,7 @@ export type Project = {
   dateStart: string;
   dateTeam: string;
   links: string[];
-  documents: Document[];
+  documents: Document[] | string;
   projectRequirments: ProjectRequirement[];
   projectMember: ProjectMember[];
 };

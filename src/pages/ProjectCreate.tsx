@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Tooltip } from 'react-tooltip';
 import { toast } from 'react-toastify';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 
@@ -13,8 +13,11 @@ import calendar from '../assets/common/calendar.svg';
 import { CreateProjectRequest, RootState } from '../types';
 import { createProject } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
+import { useNavigate } from 'react-router-dom';
 
 const ProjectCreate: React.FC = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const user = useSelector((state: RootState) => state.userState.user);
 
   const {
@@ -53,6 +56,8 @@ const ProjectCreate: React.FC = () => {
     mutationFn: createProject,
     onSuccess: () => {
       toast.success('Проєкт успішно створено');
+      queryClient.invalidateQueries({ queryKey: ['projects'] });
+      navigate('/crm/projects');
     },
     onError: () => {
       toast.error('Не вдалося створити проєкт');
@@ -321,8 +326,17 @@ const ProjectCreate: React.FC = () => {
                 placeholder="Число"
                 type="number"
                 min={specialization.name === 'PM' ? 1 : 0}
+                max={20}
                 {...register(`specializations.${index}.count`, {
                   required: "Кількість обов'язкова",
+                  min: {
+                    value: specialization.name === 'PM' ? 1 : 0,
+                    message: 'Кількість не може бути менше 0',
+                  },
+                  max: {
+                    value: 20,
+                    message: 'Кількість не може бути більше 20',
+                  },
                 })}
               />
               <input

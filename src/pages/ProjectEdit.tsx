@@ -1,8 +1,8 @@
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import AddParticipantsForm from '../components/Projects/AddParticipantsForm';
@@ -19,9 +19,12 @@ import { updateProject } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
 import ProjectApplications from '../components/ProjectEdit/ProjectApplications';
 import { useProjectWithUsers } from '../utils/projectUsersApi';
+import { changeStatus, finishProject } from '../utils/projectStatusApi';
 
 const ProjectEdit = () => {
   const { id } = useParams<{ id: string }>();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const user = useSelector((state: RootState) => state.userState.user);
   const token = user?.token;
@@ -79,6 +82,15 @@ const ProjectEdit = () => {
 
   useEffect(() => {
     if (project && tags) {
+      const parsedDocuments =
+        typeof project.documents === 'string' && project.documents
+          ? JSON.parse(project.documents)
+          : [];
+
+      reset({
+        ...project,
+        documents: parsedDocuments,
+      });
       reset({
         name: project.name,
         description: project.description,
@@ -88,31 +100,93 @@ const ProjectEdit = () => {
         dateStart: project.dateStart,
         dateTeam: project.dateTeam,
         links: project.links || [],
-        documents: project.documents || [],
+        documents: parsedDocuments || [],
         specializations: projectSpecializations,
       });
     }
-  }, [project, tags, projectSpecializations, reset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project, tags, reset]);
 
   const mutation = useMutation({
     mutationFn: updateProject,
     onSuccess: () => {
-      toast.success('Проєкт успішно створено');
+      toast.success('Проєкт успішно оновлено');
+      queryClient.invalidateQueries({
+        queryKey: ['projects'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['projectWithUsers', project?.id],
+      });
+      navigate('/crm/projects');
     },
     onError: () => {
-      toast.error('Не вдалося створити проєкт');
+      toast.error('Не вдалося змінити проєкт');
     },
   });
 
   const onSubmit: SubmitHandler<UpdateProjectRequest> = (data) => {
     const projectId = project?.id;
     if (token && projectId) {
-      // mutation.mutate({
-      //   projectData: data,
-      //   token,
-      //   projectId,
-      // });
-      console.log(data);
+      mutation.mutate({
+        projectData: data,
+        token,
+        projectId,
+      });
+      // console.log(data);
+    }
+  };
+
+  // const mutationDeleteProject = useMutation({
+  //   mutationFn: deleteMember,
+  //   onSuccess: () => {
+  //     toast.success('Учасник успішно видалений');
+  //   },
+  //   onError: () => {
+  //     toast.error('Не вдалося видалити учасника');
+  //   },
+  // });
+
+  // const handleDeleteProject = (userId: number) => {
+  //   const projectId = project?.id;
+  //   if (token && userId && projectId) {
+  //     mutationDeleteProject.mutate({ userId, token, projectId });
+  //   }
+  // };
+
+  const mutationChangeStatus = useMutation({
+    mutationFn: changeStatus,
+    onSuccess: () => {
+      toast.success('Статус успішно змінено');
+      queryClient.invalidateQueries({ queryKey: ['projectWithUsers'] });
+    },
+    onError: () => {
+      toast.error('Не вдалося змінити статус');
+    },
+  });
+
+  const handleChangeStatus = () => {
+    const projectId = project?.id;
+    const status: string = 'working';
+    if (token && projectId) {
+      mutationChangeStatus.mutate({ status, token, projectId });
+    }
+  };
+
+  const mutationFinishProject = useMutation({
+    mutationFn: finishProject,
+    onSuccess: () => {
+      toast.success('Статус успішно змінено');
+      queryClient.invalidateQueries({ queryKey: ['projectWithUsers'] });
+    },
+    onError: () => {
+      toast.error('Не вдалося змінити статус');
+    },
+  });
+
+  const handleFinishProject = () => {
+    const projectId = project?.id;
+    if (token && projectId) {
+      mutationFinishProject.mutate({ token, projectId });
     }
   };
 
@@ -164,26 +238,37 @@ const ProjectEdit = () => {
             >
               {mutation.isPending ? 'Збереження...' : 'Зберегти зміни'}
             </button>
-            {project.projectStatus !== 'ended' && (
+            {project.projectStatus === 'searching' && (
               <button
-                type="submit"
+                type="button"
+                onClick={handleChangeStatus}
                 className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-transparent hover:text-black font-semibold flex justify-center items-center w-[268px] h-10 mt-2"
               >
-                {mutation.isPending
+                {mutationChangeStatus.isPending
                   ? 'Зміна  статусу...'
-                  : project.projectStatus === 'working'
-                    ? 'Завершити проєкт'
-                    : 'Проєкт в роботу'}
+                  : 'Проєкт в роботу'}
               </button>
             )}
-            {project.projectStatus === 'ended' && (
+            {project.projectStatus === 'working' && (
               <button
-                type="submit"
+                type="button"
+                onClick={handleFinishProject}
+                className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-transparent hover:text-black font-semibold flex justify-center items-center w-[268px] h-10 mt-2"
+              >
+                {mutationFinishProject.isPending
+                  ? 'Зміна  статусу...'
+                  : 'Завершити проєкт'}
+              </button>
+            )}
+            {/* {project.projectStatus === 'ended' && (
+              <button
+                type="button"
+                onClick={() => handleDeleteProject(project.userId)}
                 className="border-2 border-red rounded-[10px] duration-500 text-red hover:bg-transparent hover:text-black font-semibold flex justify-center items-center w-[268px] h-10 mt-2"
               >
-                {mutation.isPending ? 'Видалення...' : 'Видалити проєкт'}
+                {mutationDeleteProject.isPending ? 'Видалення...' : 'Видалити проєкт'}
               </button>
-            )}
+            )} */}
           </div>
           <button
             type="button"
