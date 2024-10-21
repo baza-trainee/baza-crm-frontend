@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
   Application,
   resolveApplicationMutationVariables,
-  resolveApplicationResponse,
+  MessageResponse,
   UserInformation,
 } from '../types';
 import { useQuery } from '@tanstack/react-query';
@@ -59,8 +59,6 @@ export const useApplicationsWithUsers = (token: string, projectId: number) => {
         user: usersById[req.userId],
       }));
 
-      console.log(data);
-
       return data;
     },
   });
@@ -71,7 +69,7 @@ export const resolveApplication = async ({
   projectId,
   aplicationId,
   status,
-}: resolveApplicationMutationVariables): Promise<resolveApplicationResponse> => {
+}: resolveApplicationMutationVariables): Promise<MessageResponse> => {
   const url = `${import.meta.env.VITE_API_URL}/project/${projectId}/aplication/resolve`;
   const authHeaders = {
     headers: {
@@ -79,7 +77,7 @@ export const resolveApplication = async ({
     },
   };
 
-  const { data } = await axios.post<resolveApplicationResponse>(
+  const { data } = await axios.post<MessageResponse>(
     url,
     { aplicationId, status },
     authHeaders,

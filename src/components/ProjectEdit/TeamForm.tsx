@@ -54,15 +54,26 @@ const TeamForm = ({
               >
                 {specialization.name}
               </div>
-              <input
-                className="w-20 text-center duration-500 border-b-2 outline-none focus:border-b-2 focus:border-b-primary-blue"
-                placeholder="Число"
-                type="number"
-                min={specialization.name === 'PM' ? 1 : 0}
-                {...register(`specializations.${index}.count`, {
-                  required: "Кількість обов'язкова",
-                })}
-              />
+              <div className="flex items-center">
+                <p className="text-black">{specialization.userCount}/</p>
+                <input
+                  className="w-10 text-center duration-500 border-b-2 outline-none focus:border-b-2 focus:border-b-primary-blue text-primary-blue"
+                  type="number"
+                  min={specialization.name === 'PM' ? 1 : 0}
+                  max={20}
+                  {...register(`specializations.${index}.count`, {
+                    required: "Кількість обов'язкова",
+                    min: {
+                      value: specialization.name === 'PM' ? 1 : 0,
+                      message: 'Кількість не може бути менше 0',
+                    },
+                    max: {
+                      value: 20,
+                      message: 'Кількість не може бути більше 20',
+                    },
+                  })}
+                />
+              </div>
               <input
                 type="hidden"
                 {...register(`specializations.${index}.id`, {
@@ -86,7 +97,10 @@ const TeamForm = ({
                       key={member.userId}
                       className="flex justify-between w-full rounded-[10px] bg-blue-hover items-center"
                     >
-                      <p className="mx-3 my-1">Viktor Filippov</p>
+                      <p className="mx-3 my-1">
+                        {member.user?.user.firstName}{' '}
+                        {member.user?.user.lastName}
+                      </p>
                       <RiCloseLine
                         className="p-1 duration-500 rounded-r-lg cursor-pointer size-7 text-normal-ui hover:text-red hover:bg-rose-100"
                         onClick={() => handleDeleteMember(member.userId)}

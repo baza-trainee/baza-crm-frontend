@@ -1,13 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 import {
   AddMemberMutationVariables,
-  addMemberResponse,
   CreateProjectMutationVariables,
   CreateProjectResponse,
   DeleteMemberMutationVariables,
-  deleteMemberResponse,
+  MessageResponse,
   UpdateProjectMutationVariables,
-  UpdateProjectResponse,
   type Project,
 } from '../types';
 
@@ -77,7 +75,7 @@ export const updateProject = async ({
   projectData,
   token,
   projectId,
-}: UpdateProjectMutationVariables): Promise<UpdateProjectResponse> => {
+}: UpdateProjectMutationVariables): Promise<MessageResponse> => {
   const urlProject = `${import.meta.env.VITE_API_URL}/project/${projectId}`;
   const authHeaders = {
     headers: {
@@ -85,8 +83,11 @@ export const updateProject = async ({
     },
   };
 
-  const projectResponse: AxiosResponse<UpdateProjectResponse> =
-    await axios.patch(urlProject, projectData, authHeaders);
+  const projectResponse: AxiosResponse<MessageResponse> = await axios.patch(
+    urlProject,
+    projectData,
+    authHeaders,
+  );
 
   const urlSpecializations = `${import.meta.env.VITE_API_URL}/project/${projectId}/requirment`;
 
@@ -105,11 +106,31 @@ export const updateProject = async ({
   return projectResponse.data;
 };
 
+// export const deleteProject = async ({
+//   userId,
+//   token,
+//   projectId,
+// }: DeleteMemberMutationVariables): Promise<MessageResponse> => {
+//   const url = `${import.meta.env.VITE_API_URL}/project/${projectId}/member`;
+//   const authHeaders = {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   };
+
+//   const { data } = await axios.delete<MessageResponse>(url, {
+//     params: { userId },
+//     ...authHeaders,
+//   });
+
+//   return data;
+// };
+
 export const addMember = async ({
   memberData,
   token,
   projectId,
-}: AddMemberMutationVariables): Promise<addMemberResponse> => {
+}: AddMemberMutationVariables): Promise<MessageResponse> => {
   const url = `${import.meta.env.VITE_API_URL}/project/${projectId}/member`;
   const authHeaders = {
     headers: {
@@ -117,7 +138,7 @@ export const addMember = async ({
     },
   };
 
-  const { data } = await axios.post<addMemberResponse>(
+  const { data } = await axios.post<MessageResponse>(
     url,
     memberData,
     authHeaders,
@@ -130,7 +151,7 @@ export const deleteMember = async ({
   userId,
   token,
   projectId,
-}: DeleteMemberMutationVariables): Promise<deleteMemberResponse> => {
+}: DeleteMemberMutationVariables): Promise<MessageResponse> => {
   const url = `${import.meta.env.VITE_API_URL}/project/${projectId}/member`;
   const authHeaders = {
     headers: {
@@ -138,8 +159,8 @@ export const deleteMember = async ({
     },
   };
 
-  const { data } = await axios.delete<deleteMemberResponse>(url, {
-    data: { userId },
+  const { data } = await axios.delete<MessageResponse>(url, {
+    params: { userId },
     ...authHeaders,
   });
 
