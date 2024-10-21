@@ -86,7 +86,10 @@ const TeamForm = ({
                       key={member.userId}
                       className="flex justify-between w-full rounded-[10px] bg-blue-hover items-center"
                     >
-                      <p className="mx-3 my-1">Viktor Filippov</p>
+                      <p className="mx-3 my-1">
+                        {member.user?.user.firstName}{' '}
+                        {member.user?.user.lastName}
+                      </p>
                       <RiCloseLine
                         className="p-1 duration-500 rounded-r-lg cursor-pointer size-7 text-normal-ui hover:text-red hover:bg-rose-100"
                         onClick={() => handleDeleteMember(member.userId)}

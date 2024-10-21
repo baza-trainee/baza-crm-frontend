@@ -59,8 +59,6 @@ export const useApplicationsWithUsers = (token: string, projectId: number) => {
         user: usersById[req.userId],
       }));
 
-      console.log(data);
-
       return data;
     },
   });

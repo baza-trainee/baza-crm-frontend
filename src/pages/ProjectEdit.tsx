@@ -15,14 +15,16 @@ import Spinner from '../components/Spinner';
 import TeamForm from '../components/ProjectEdit/TeamForm';
 import TitleForm from '../components/ProjectEdit/TitleForm';
 import { RootState, UpdateProjectRequest } from '../types';
-import { getProjectById, updateProject } from '../utils/projectApi';
+import { updateProject } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
 import ProjectApplications from '../components/ProjectEdit/ProjectApplications';
+import { useProjectWithUsers } from '../utils/projectUsersApi';
 
 const ProjectEdit = () => {
   const { id } = useParams<{ id: string }>();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const user = useSelector((state: RootState) => state.userState.user);
+  const token = user?.token;
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -34,15 +36,21 @@ const ProjectEdit = () => {
     document.body.style.overflow = 'auto';
   };
 
+  // const {
+  //   data: project,
+  //   isPending,
+  //   isError,
+  // } = useQuery({
+  //   queryKey: ['project', id],
+  //   queryFn: () => getProjectById(Number(id), user!.token),
+  //   enabled: !!user?.token,
+  // });
+
   const {
     data: project,
     isPending,
     isError,
-  } = useQuery({
-    queryKey: ['project', id],
-    queryFn: () => getProjectById(Number(id), user!.token),
-    enabled: !!user?.token,
-  });
+  } = useProjectWithUsers(token!, Number(id));
 
   const {
     data: tags,
@@ -97,7 +105,6 @@ const ProjectEdit = () => {
   });
 
   const onSubmit: SubmitHandler<UpdateProjectRequest> = (data) => {
-    const token = user?.token;
     const projectId = project?.id;
     if (token && projectId) {
       // mutation.mutate({

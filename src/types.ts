@@ -22,6 +22,29 @@ export type StatusCount = {
   [key: string]: number;
 };
 
+export type User = {
+  id: number;
+  email: string;
+  technologies: Technology[];
+  specializations: Specialization[];
+  linkedin: string;
+  discord: string | null;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  city: string;
+  country: string;
+  discordReceiving: boolean;
+  status: string;
+  registerAt: string;
+  projectPoints: number;
+  karmaPoints: number | null;
+};
+
+export type UserInformation = {
+  user: User;
+};
+
 type ProjectRequirement = {
   projectId: number;
   tagId: number;
@@ -32,6 +55,7 @@ type ProjectMember = {
   projectId: number;
   tagId: number;
   userId: number;
+  user?: UserInformation;
 };
 
 export type Document = {
@@ -253,29 +277,6 @@ export type UpdateUserMutationVariables = {
 
 export type UpdateUserResponse = {
   status: boolean;
-};
-
-export type User = {
-  id: number;
-  email: string;
-  technologies: Technology[];
-  specializations: Specialization[];
-  linkedin: string;
-  discord: string | null;
-  firstName: string;
-  lastName: string;
-  phone: string;
-  city: string;
-  country: string;
-  discordReceiving: boolean;
-  status: string;
-  registerAt: string;
-  projectPoints: number;
-  karmaPoints: number | null;
-};
-
-export type UserInformation = {
-  user: User;
 };
 
 export type Application = {
