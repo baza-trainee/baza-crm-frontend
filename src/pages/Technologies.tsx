@@ -350,9 +350,10 @@ const Technologies = () => {
             trackYProps={{
               style: {
                 backgroundColor: 'inherit',
-                height: '300px',
+                height: '332px',
                 width: '8px',
                 right: '2px',
+                top: '0px',
               },
             }}
             thumbYProps={{
@@ -360,6 +361,7 @@ const Technologies = () => {
                 cursor: 'default',
                 backgroundColor: '#E8F2FF',
                 borderRadius: '4px',
+                border: '2px solid #1e70eb',
               },
             }}
             noScrollX={true}
@@ -477,9 +479,10 @@ const Technologies = () => {
             trackYProps={{
               style: {
                 backgroundColor: 'inherit',
-                height: '300px',
+                height: '332px',
                 width: '8px',
                 right: '2px',
+                top: '0px',
               },
             }}
             thumbYProps={{
@@ -487,6 +490,7 @@ const Technologies = () => {
                 cursor: 'default',
                 backgroundColor: '#E8F2FF',
                 borderRadius: '4px',
+                border: '2px solid #1e70eb',
               },
             }}
             noScrollX={true}
