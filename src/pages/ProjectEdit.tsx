@@ -36,16 +36,6 @@ const ProjectEdit = () => {
     document.body.style.overflow = 'auto';
   };
 
-  // const {
-  //   data: project,
-  //   isPending,
-  //   isError,
-  // } = useQuery({
-  //   queryKey: ['project', id],
-  //   queryFn: () => getProjectById(Number(id), user!.token),
-  //   enabled: !!user?.token,
-  // });
-
   const {
     data: project,
     isPending,
@@ -62,37 +52,47 @@ const ProjectEdit = () => {
     enabled: !!user?.token,
   });
 
-  const projectSpecializations = tags?.filter((tag) =>
-    project?.projectRequirments.some(
-      (req) => req.tagId === tag.id && tag.isSpecialization,
-    ),
-  );
+  const projectSpecializations = tags
+    ?.filter((tag) =>
+      project?.projectRequirments.some(
+        (req) => req.tagId === tag.id && tag.isSpecialization,
+      ),
+    )
+    .map((tag) => {
+      const userCount = project?.projectMember.filter(
+        (member) => member.tagId === tag.id,
+      ).length;
+
+      const requirement = project?.projectRequirments.find(
+        (req) => req.tagId === tag.id,
+      );
+
+      return {
+        ...tag,
+        count: requirement?.count || 0,
+        userCount,
+      };
+    });
 
   const methods = useForm<UpdateProjectRequest>();
   const { reset } = methods;
 
   useEffect(() => {
     if (project && tags) {
-      const projectSpecializations = tags?.filter((tag) =>
-        project?.projectRequirments.some(
-          (req) => req.tagId === tag.id && tag.isSpecialization,
-        ),
-      );
-
       reset({
-        name: project?.name,
-        description: project?.description,
-        projectPoints: project?.projectPoints,
-        projectType: project?.projectType,
-        price: project?.price,
-        dateStart: project?.dateStart,
-        dateTeam: project?.dateTeam,
-        links: project?.links || [],
+        name: project.name,
+        description: project.description,
+        projectPoints: project.projectPoints,
+        projectType: project.projectType,
+        price: project.price,
+        dateStart: project.dateStart,
+        dateTeam: project.dateTeam,
+        links: project.links || [],
         documents: project.documents || [],
         specializations: projectSpecializations,
       });
     }
-  }, [project, tags, reset]);
+  }, [project, tags, projectSpecializations, reset]);
 
   const mutation = useMutation({
     mutationFn: updateProject,

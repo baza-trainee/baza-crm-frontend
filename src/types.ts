@@ -85,6 +85,7 @@ export type Tag = {
   color: string;
   isSpecialization: boolean;
   count?: number;
+  userCount?: number;
 };
 
 export type Auth = {
@@ -226,10 +227,6 @@ export type CreateProjectResponse = {
   id: string;
 };
 
-export type UpdateProjectResponse = {
-  message: string;
-};
-
 export type MemberData = {
   email: string;
   tagId: number;
@@ -241,18 +238,10 @@ export type AddMemberMutationVariables = {
   projectId: number;
 };
 
-export type addMemberResponse = {
-  message: string;
-};
-
 export type DeleteMemberMutationVariables = {
   userId: number;
   token: string;
   projectId: number;
-};
-
-export type deleteMemberResponse = {
-  message: string;
 };
 
 export type UserRequest = {
@@ -295,6 +284,17 @@ export type resolveApplicationMutationVariables = {
   status: string;
 };
 
-export type resolveApplicationResponse = {
+export type ChangeStatusMutationVariables = {
+  status: string;
+  token: string;
+  projectId: number;
+};
+
+export type FinishProjectMutationVariables = {
+  token: string;
+  projectId: number;
+};
+
+export type MessageResponse = {
   message: string;
 };

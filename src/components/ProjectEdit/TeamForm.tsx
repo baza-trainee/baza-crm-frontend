@@ -30,6 +30,8 @@ const TeamForm = ({
     },
   });
 
+  console.log(projectSpecializations);
+
   const handleDeleteMember = (userId: number) => {
     const token = user?.token;
     const projectId = project?.id;
@@ -54,15 +56,17 @@ const TeamForm = ({
               >
                 {specialization.name}
               </div>
-              <input
-                className="w-20 text-center duration-500 border-b-2 outline-none focus:border-b-2 focus:border-b-primary-blue"
-                placeholder="Число"
-                type="number"
-                min={specialization.name === 'PM' ? 1 : 0}
-                {...register(`specializations.${index}.count`, {
-                  required: "Кількість обов'язкова",
-                })}
-              />
+              <div className="flex items-center">
+                <p className="text-black">{specialization.userCount}/</p>
+                <input
+                  className="w-10 text-center duration-500 border-b-2 outline-none focus:border-b-2 focus:border-b-primary-blue text-primary-blue"
+                  type="number"
+                  min={specialization.name === 'PM' ? 1 : 0}
+                  {...register(`specializations.${index}.count`, {
+                    required: "Кількість обов'язкова",
+                  })}
+                />
+              </div>
               <input
                 type="hidden"
                 {...register(`specializations.${index}.id`, {
