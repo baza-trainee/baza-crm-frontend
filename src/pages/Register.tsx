@@ -3,12 +3,12 @@ import { AxiosError } from 'axios';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
 import Spinner from '../components/Spinner';
-import { registerUserApi } from '../utils/authApi';
+import { registerUserApi, getEmailByTokenApi } from '../utils/authApi';
 
 type Inputs = {
   login: string;
@@ -25,6 +25,7 @@ const Register = () => {
     handleSubmit,
     watch,
     reset,
+    setValue,
   } = useForm<Inputs>({
     mode: 'onBlur',
   });
@@ -33,6 +34,13 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  const [emailLoading, setEmailLoading] = useState(true);
+  const [tokenError, setTokenError] = useState('');
+
+  // get code from link
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get('code');
 
   type RegisterResponse = {
     message: string;
@@ -45,8 +53,10 @@ const Register = () => {
     },
     onSuccess: (data: RegisterResponse) => {
       console.log('Registration successful:', data);
-      navigate('/crm');
-      reset();
+      setTimeout(() => {
+        navigate('/crm');
+        reset();
+      }, 1500);
     },
     onError: (error: AxiosError<{ message: string }>) => {
       console.error('Registration error:', error);
@@ -70,6 +80,31 @@ const Register = () => {
   const password = watch('password', '');
   const confirmPassword = watch('confirmPassword', '');
 
+  useEffect(() => {
+    if (code) {
+      setEmailLoading(true);
+      getEmailByTokenApi(code)
+        .then((response) => {
+          const email = response.data?.email;
+          if (email) {
+            setValue('login', email);
+            setEmailLoading(false);
+          } else {
+            setTokenError('Email не знайдений за наданим токеном.');
+            setEmailLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.error('Помилка при отриманні email:', error);
+          setTokenError('Не вдалося отримати email за токеном.');
+          setEmailLoading(false);
+        });
+    } else {
+      setTokenError('Токен не знайдено в URL.');
+      setEmailLoading(false);
+    }
+  }, [code, setValue]);
+
   return (
     <div className="grid min-h-screen place-items-center w-full bg-text-black pb-[198px]">
       <LogoSection
@@ -84,22 +119,34 @@ const Register = () => {
           <label className="font-Open Sans font-sans text-[20px] font-normal leading-[1.5] text-white mb-[2.5px]">
             Логін (Email)
           </label>
-          <input
-            placeholder="Evgen.ga@gmail.com"
-            {...register('login', {
-              required: "обов'язкове поле",
-            })}
-            className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px] ${errors?.login ? 'border border-red-500' : ''}`}
-          />
-          <div className="relative">
-            <div className="absolute bottom-[-2px]">
-              {errors?.login && (
-                <p className="font-Open Sans font-sans text-[12px] text-red">
-                  {errors.login.message}
-                </p>
+          {emailLoading ? (
+            <Spinner />
+          ) : (
+            <>
+              <input
+                placeholder="Evgen.ga@gmail.com"
+                {...register('login', {
+                  required: "обов'язкове поле",
+                })}
+                className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px] ${
+                  errors?.login ? 'border border-red-500' : ''
+                }`}
+                readOnly
+              />
+              <div className="relative">
+                <div className="absolute bottom-[-2px]">
+                  {errors?.login && (
+                    <p className="font-Open Sans font-sans text-[12px] text-red">
+                      {errors.login.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+              {tokenError && (
+                <p className="text-red-500 text-sm mt-2">{tokenError}</p>
               )}
-            </div>
-          </div>
+            </>
+          )}
         </div>
         <div className="relative flex flex-col">
           <label className="font-Open Sans font-sans text-[20px] font-normal leading-[1.5] text-white mb-[2.5px]">
@@ -207,7 +254,11 @@ const Register = () => {
             <Spinner />
           </div>
         ) : (
-          <ButtonLogin label="Увійти" type="submit" disabled={!isValid} />
+          <ButtonLogin
+            label="Зареєструватись"
+            type="submit"
+            disabled={!isValid || emailLoading}
+          />
         )}
       </form>
     </div>
