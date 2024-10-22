@@ -128,8 +128,8 @@ const Register = () => {
                 {...register('login', {
                   required: "обов'язкове поле",
                 })}
-                className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px] ${
-                  errors?.login ? 'border border-red-500' : ''
+                className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal  hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px] mb-[23.5px] ${
+                  errors?.login ? 'border-red border-2 border-solid' : ''
                 }`}
                 readOnly
               />
@@ -166,8 +166,8 @@ const Register = () => {
                 message: 'Максимум 30 символів',
               },
             })}
-            className={`font-Lato font-sans font-normal leading-relaxed text-[16px] rounded-[10px] p-[16px] h-[40px] mb-[8px] ${
-              password ? 'bg-white' : 'bg-input-normal-state'
+            className={`font-Lato font-sans font-normal leading-relaxed text-[16px] hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px] mb-[8px] ${
+              password ? 'bg-white' : 'bg-input-normal'
             }`}
           />
           <button
@@ -208,8 +208,8 @@ const Register = () => {
                 }
               },
             })}
-            className={`font-Lato font-sans font-normal text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[49px] ${
-              confirmPassword ? 'bg-white' : 'bg-input-normal-state'
+            className={`font-Lato font-sans font-normal text-[16px] bg-input-normal  hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px]  mb-[49px] ${
+              confirmPassword ? 'bg-white' : 'bg-input-normal'
             }`}
           />
           <button
@@ -239,11 +239,11 @@ const Register = () => {
           />
           <label className="font-Open Sans font-sans text-[16px] text-light-grey">
             Погоджуюсь з{' '}
-            <span className="underline leading-[1.62] cursor-pointer ">
+            <span className="underline leading-[1.62] cursor-pointer duration-500 hover:text-primary-blue">
               <a>Правилами користування</a>
             </span>{' '}
             та{' '}
-            <span className="underline leading-[1.62] cursor-pointer">
+            <span className="underline leading-[1.62] cursor-pointer duration-500 hover:text-primary-blue">
               <a>Політикою конфіденційності</a>
             </span>
             .
