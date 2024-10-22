@@ -100,7 +100,7 @@ const Register = () => {
           setEmailLoading(false);
         });
     } else {
-      setTokenError('Токен не знайдено в URL.');
+      setTokenError('Токен не знайдено в URL');
       setEmailLoading(false);
     }
   }, [code, setValue]);
@@ -125,26 +125,24 @@ const Register = () => {
             <>
               <input
                 placeholder="Evgen.ga@gmail.com"
-                {...register('login', {
-                  required: "обов'язкове поле",
-                })}
-                className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal  hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px] mb-[23.5px] ${
+                {...register('login')}
+                className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal  hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px] mb-[8px] ${
                   errors?.login ? 'border-red border-2 border-solid' : ''
                 }`}
                 readOnly
               />
-              <div className="relative">
-                <div className="absolute bottom-[-2px]">
+              <div className="relative h-[18px] mb-[12px]">
+                <div className="absolute">
                   {errors?.login && (
                     <p className="font-Open Sans font-sans text-[12px] text-red">
                       {errors.login.message}
                     </p>
                   )}
+                  {tokenError && (
+                    <p className=" text-red text-[12px]">{tokenError}</p>
+                  )}
                 </div>
               </div>
-              {tokenError && (
-                <p className="text-red-500 text-sm mt-2">{tokenError}</p>
-              )}
             </>
           )}
         </div>
@@ -208,7 +206,7 @@ const Register = () => {
                 }
               },
             })}
-            className={`font-Lato font-sans font-normal text-[16px] bg-input-normal  hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px]  mb-[49px] ${
+            className={`font-Lato font-sans font-normal text-[16px] bg-input-normal  hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px]  mb-[8px] ${
               confirmPassword ? 'bg-white' : 'bg-input-normal'
             }`}
           />
@@ -223,10 +221,12 @@ const Register = () => {
               <AiOutlineEye size={24} />
             )}
           </button>
-          <div className="h-[40px] text-red">
-            {errors?.confirmPassword && (
-              <p>{errors?.confirmPassword?.message || 'Error!'}</p>
-            )}
+          <div className="relative h-[18px] mb-[32px]">
+            <div className="absolute text-[12px] text-red">
+              {errors?.confirmPassword && (
+                <p>{errors?.confirmPassword?.message || 'Error!'}</p>
+              )}
+            </div>
           </div>
         </div>
         <div className="flex gap-[10px] mb-[32px]">
