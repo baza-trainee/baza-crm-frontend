@@ -1,4 +1,5 @@
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
+import { LuAlertTriangle } from 'react-icons/lu';
 import { AxiosError } from 'axios';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useMutation } from '@tanstack/react-query';
@@ -115,7 +116,7 @@ const Register = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="w-[538px] mt-[50px] mx-auto"
       >
-        <div className="flex flex-col">
+        <div className="relative flex flex-col">
           <label className="font-Open Sans font-sans text-[20px] font-normal leading-[1.5] text-white mb-[2.5px]">
             Логін (Email)
           </label>
@@ -127,10 +128,18 @@ const Register = () => {
                 placeholder="Evgen.ga@gmail.com"
                 {...register('login')}
                 className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal  hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px] mb-[8px] ${
-                  errors?.login ? 'border-red border-2 border-solid' : ''
+                  errors?.login || tokenError
+                    ? 'border-red border-2 border-solid'
+                    : ''
                 }`}
                 readOnly
               />
+              {tokenError && (
+                <LuAlertTriangle
+                  size={24}
+                  className="absolute right-[16px] top-[52px] transform -translate-y-1/2 text-red"
+                />
+              )}
               <div className="relative h-[18px] mb-[12px]">
                 <div className="absolute">
                   {errors?.login && (
@@ -166,8 +175,14 @@ const Register = () => {
             })}
             className={`font-Lato font-sans font-normal leading-relaxed text-[16px] hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px] mb-[8px] ${
               password ? 'bg-white' : 'bg-input-normal'
-            }`}
+            } ${errors?.password ? 'border-red border-2 border-solid' : ''}`}
           />
+          {errors?.password && (
+            <LuAlertTriangle
+              size={24}
+              className="absolute right-[45px] top-[52px] transform -translate-y-1/2 text-red"
+            />
+          )}
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
@@ -208,8 +223,14 @@ const Register = () => {
             })}
             className={`font-Lato font-sans font-normal text-[16px] bg-input-normal  hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px]  mb-[8px] ${
               confirmPassword ? 'bg-white' : 'bg-input-normal'
-            }`}
+            } ${errors?.confirmPassword ? 'border-red border-2 border-solid' : ''}`}
           />
+          {errors?.confirmPassword && (
+            <LuAlertTriangle
+              size={24}
+              className="absolute right-[45px] top-[52px] transform -translate-y-1/2 text-red"
+            />
+          )}
           <button
             type="button"
             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
