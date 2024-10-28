@@ -19,3 +19,7 @@ export const registerUserApi = async (data: {
   const response = await axios.post<RegisterResponse>(url, data);
   return response.data;
 };
+
+export const getEmailByTokenApi = (code: string) => {
+  return axios.post(`${import.meta.env.VITE_API_URL}/auth/confirmRegisterCode?code=${code}`);
+};
