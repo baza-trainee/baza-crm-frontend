@@ -1,7 +1,7 @@
 {
   "name": "baza-crm-frontend",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -40,6 +40,7 @@
   "devDependencies": {
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
+    "@types/react-modal": "^3.16.3",
     "@types/react-select": "^5.0.1",
     "@types/react-tooltip": "^3.11.0",
     "@typescript-eslint/eslint-plugin": "^7.2.0",

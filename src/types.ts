@@ -1,7 +1,4 @@
-export type Link = {
-  href: string;
-  label: string;
-};
+export type Link = { href: string; label: string };
 
 export type SelectOptionType = {
   value?: string;
@@ -25,6 +22,29 @@ export type StatusCount = {
   [key: string]: number;
 };
 
+export type User = {
+  id: number;
+  email: string;
+  technologies: Technology[];
+  specializations: Specialization[];
+  linkedin: string;
+  discord: string | null;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  city: string;
+  country: string;
+  discordReceiving: boolean;
+  status: string;
+  registerAt: string;
+  projectPoints: number;
+  karmaPoints: number | null;
+};
+
+export type UserInformation = {
+  user: User;
+};
+
 type ProjectRequirement = {
   projectId: number;
   tagId: number;
@@ -35,6 +55,12 @@ type ProjectMember = {
   projectId: number;
   tagId: number;
   userId: number;
+  user?: UserInformation;
+};
+
+export type Document = {
+  name: string;
+  link: string;
 };
 
 export type Project = {
@@ -48,6 +74,7 @@ export type Project = {
   dateStart: string;
   dateTeam: string;
   links: string[];
+  documents: Document[] | string;
   projectRequirments: ProjectRequirement[];
   projectMember: ProjectMember[];
 };
@@ -58,16 +85,10 @@ export type Tag = {
   color: string;
   isSpecialization: boolean;
   count?: number;
+  userCount?: number;
 };
 
-// export type User = {
-//   username: string;
-//   jwt: string;
-//   isAdmin: boolean;
-// };
-
-export type User = {
-  // message: string;
+export type Auth = {
   token: string;
   user: {
     id: string;
@@ -77,7 +98,7 @@ export type User = {
 };
 
 export type UserState = {
-  user: User | null;
+  user: Auth | null;
 };
 
 export type RootState = {
@@ -113,7 +134,6 @@ export type Member = {
   registerAt: string;
   karmaPoints?: number;
   projectPoints?: number;
-
   linkedin?: string;
   discord?: string;
   phone?: string;
@@ -155,10 +175,17 @@ export type RequestBodyMembers = {
 
 export type Specialization = {
   id: number;
-  count: number;
+  count?: number;
   name?: string;
   color?: string;
   isSpecialization?: boolean;
+};
+
+export type Technology = {
+  id: number;
+  name: string;
+  color: string;
+  isSpecialization: boolean;
 };
 
 export type CreateProjectRequest = {
@@ -186,6 +213,7 @@ export type UpdateProjectRequest = {
   dateStart: string;
   dateTeam: string;
   links: string[];
+  documents: Document[];
   specializations: Specialization[];
 };
 
@@ -199,10 +227,6 @@ export type CreateProjectResponse = {
   id: string;
 };
 
-export type UpdateProjectResponse = {
-  message: string;
-};
-
 export type MemberData = {
   email: string;
   tagId: number;
@@ -214,18 +238,10 @@ export type AddMemberMutationVariables = {
   projectId: number;
 };
 
-export type addMemberResponse = {
-  message: string;
-};
-
 export type DeleteMemberMutationVariables = {
   userId: number;
   token: string;
   projectId: number;
-};
-
-export type deleteMemberResponse = {
-  message: string;
 };
 
 export type UserRequest = {
@@ -263,4 +279,35 @@ export type UserData = {
   technologies: string[];
   email: string;
   linkedin: string;
+};
+
+export type Application = {
+  id: number;
+  projectId: number;
+  tagId: number;
+  userId: number;
+  state: string;
+  user?: UserInformation;
+};
+
+export type resolveApplicationMutationVariables = {
+  token: string;
+  projectId: number;
+  aplicationId: number;
+  status: string;
+};
+
+export type ChangeStatusMutationVariables = {
+  status: string;
+  token: string;
+  projectId: number;
+};
+
+export type FinishProjectMutationVariables = {
+  token: string;
+  projectId: number;
+};
+
+export type MessageResponse = {
+  message: string;
 };

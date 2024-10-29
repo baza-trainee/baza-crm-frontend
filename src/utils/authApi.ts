@@ -1,13 +1,13 @@
 import axios from 'axios';
 
-import { RegisterResponse, User } from '../types';
+import { RegisterResponse, Auth } from '../types';
 
 export const loginUserApi = async (data: {
   email: string;
   password: string;
-}): Promise<User> => {
+}): Promise<Auth> => {
   const url = `${import.meta.env.VITE_API_URL}/auth/login`;
-  const response = await axios.post<User>(url, data);
+  const response = await axios.post<Auth>(url, data);
   return response.data;
 };
 
@@ -18,4 +18,10 @@ export const registerUserApi = async (data: {
   const url = `${import.meta.env.VITE_API_URL}/auth/register`;
   const response = await axios.post<RegisterResponse>(url, data);
   return response.data;
+};
+
+export const getEmailByTokenApi = (code: string) => {
+  return axios.post(
+    `${import.meta.env.VITE_API_URL}/auth/confirmRegisterCode?code=${code}`,
+  );
 };

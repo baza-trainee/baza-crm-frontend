@@ -24,4 +24,5 @@ const useMenuState = () => {
     handleMenuClose,
   };
 };
+
 export default useMenuState;
