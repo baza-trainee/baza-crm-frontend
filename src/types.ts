@@ -259,7 +259,7 @@ export type UserData = {
   city: string;
   phone: string;
   resume: File | null;
-  specialization: string[];
+  specializations: string[];
   technologies: string[];
   email: string;
   linkedin: string;
