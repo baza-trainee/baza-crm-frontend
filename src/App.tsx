@@ -47,7 +47,8 @@ const router = createBrowserRouter([
     element: <ResetPassword />,
   },
   {
-    path: 'register',
+    // path: 'register',
+    path: 'confirmRegisterCode',
     element: <Register />,
   },
   {
