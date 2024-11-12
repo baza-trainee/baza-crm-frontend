@@ -279,6 +279,8 @@ export type UserData = {
   technologies: string[];
   email: string;
   linkedin: string;
+  karmaPoints?: number | null;
+  projectPoints?: number | null;
 };
 
 export type Application = {
