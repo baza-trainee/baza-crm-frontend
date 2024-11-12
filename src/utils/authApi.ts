@@ -21,5 +21,7 @@ export const registerUserApi = async (data: {
 };
 
 export const getEmailByTokenApi = (code: string) => {
-  return axios.post(`${import.meta.env.VITE_API_URL}/auth/confirmRegisterCode?code=${code}`);
+  return axios.post(
+    `${import.meta.env.VITE_API_URL}/auth/confirmRegisterCode?code=${code}`,
+  );
 };

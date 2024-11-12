@@ -268,6 +268,21 @@ export type UpdateUserResponse = {
   status: boolean;
 };
 
+export type UserData = {
+  firstName: string;
+  lastName: string;
+  country: string;
+  city: string;
+  phone: string;
+  resume: File | null;
+  specializations: string[];
+  technologies: string[];
+  email: string;
+  linkedin: string;
+  karmaPoints?: number | null;
+  projectPoints?: number | null;
+};
+
 export type Application = {
   id: number;
   projectId: number;

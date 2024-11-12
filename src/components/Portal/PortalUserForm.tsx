@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import CustomInput from './CustomInput';
 import pencilIcon from '../../assets/common/pencil.svg';
@@ -5,19 +6,10 @@ import chevronDownIcon from '../../assets/common/chevron-down.svg';
 import CustomSelect, { SelectOption } from './CustomSelect';
 import { useState } from 'react';
 import FileInput from './FileInput';
-
-export interface UserData {
-  firstName: string;
-  lastName: string;
-  country: string;
-  city: string;
-  phone: string;
-  resume: File | null;
-  specialization: string[];
-  technologies: string[];
-  email: string;
-  linkedin: string;
-}
+import { UserData } from '../../types';
+import { getCurrentUser } from '../../utils/currentUserApi';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const specializationList: SelectOption[] = [
   { value: 'design', label: 'Design' },
@@ -46,6 +38,7 @@ const PortalUserForm: React.FC = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     // formState: { errors },
   } = useForm<UserData>({
     defaultValues: {
@@ -54,18 +47,50 @@ const PortalUserForm: React.FC = () => {
       country: '',
       city: '',
       phone: '',
-      specialization: [],
+      specializations: [],
       technologies: [],
       email: '',
       linkedin: '',
     },
   });
+  const token = useSelector((state: RootState) => state.userState.user?.token);
+  console.log(token);
 
   const onSubmit = handleSubmit((data) => console.log(data));
 
   const [selectedSpecializations, setSelectedSpecializations] = useState<
     readonly SelectOption[]
   >([]);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (token) {
+          const userData = await getCurrentUser(token);
+          console.log(userData);
+
+          setValue('firstName', userData.firstName);
+          setValue('lastName', userData.lastName);
+          setValue('country', userData.country);
+          setValue('city', userData.city);
+          setValue('phone', userData.phone);
+          setValue('email', userData.email);
+          setValue('linkedin', userData.linkedin);
+          setSelectedSpecializations(
+            specializationList.filter((item) =>
+              userData.specializations.includes(item.value as string),
+            ),
+          );
+        } else {
+          console.error('No token or user ID found');
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [token, setValue]);
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5 p-5">
@@ -114,7 +139,13 @@ const PortalUserForm: React.FC = () => {
             label="Спеціалізація"
             options={specializationList}
             value={Array.from(selectedSpecializations)}
-            onChange={(newValue) => setSelectedSpecializations(newValue)}
+            onChange={(newValue) => {
+              setSelectedSpecializations(newValue);
+              setValue(
+                'specializations',
+                newValue.map((option) => option.value),
+              );
+            }}
           />
           {selectedSpecializations.length > 0 && (
             <div>

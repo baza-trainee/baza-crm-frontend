@@ -5,13 +5,15 @@ import Select, {
   DropdownIndicatorProps,
   ActionMeta,
   StylesConfig,
+  OptionProps,
 } from 'react-select';
 import chevronDown from '../../assets/common/chevron-down.svg';
+import CustomOption from './CustomOption';
 
-export interface SelectOption {
+export type SelectOption = {
   readonly value: string;
   readonly label: string;
-}
+};
 
 const DropdownIndicator = (
   props: DropdownIndicatorProps<SelectOption, true>,
@@ -23,7 +25,7 @@ const DropdownIndicator = (
   );
 };
 
-interface CustomSelectProps {
+type CustomSelectProps = {
   options: SelectOption[];
   value: SelectOption[];
   onChange: (
@@ -31,7 +33,10 @@ interface CustomSelectProps {
     actionMeta: ActionMeta<SelectOption>,
   ) => void;
   label: string;
-}
+  components?: {
+    Option?: React.ComponentType<OptionProps<SelectOption>>;
+  };
+};
 
 const customStyles: StylesConfig<SelectOption, true> = {
   control: (provided, state) => ({
@@ -74,7 +79,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       </label>
       <Select
         closeMenuOnSelect={false}
-        components={{ DropdownIndicator }}
+        components={{ DropdownIndicator, Option: CustomOption }}
         isMulti
         options={options}
         value={value}
