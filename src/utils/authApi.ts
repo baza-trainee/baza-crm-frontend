@@ -12,8 +12,9 @@ export const loginUserApi = async (data: {
 };
 
 export const registerUserApi = async (data: {
-  email: string;
+  // email: string;
   password: string;
+  code: string;
 }): Promise<RegisterResponse> => {
   const url = `${import.meta.env.VITE_API_URL}/auth/register`;
   const response = await axios.post<RegisterResponse>(url, data);

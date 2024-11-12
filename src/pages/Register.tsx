@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
 import Spinner from '../components/Spinner';
+import { toast } from 'react-toastify';
 import { registerUserApi, getEmailByTokenApi } from '../utils/authApi';
 
 type Inputs = {
@@ -42,6 +43,7 @@ const Register = () => {
   // get code from link
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get('code');
+  console.log('Код з посилання:', code);
 
   type RegisterResponse = {
     message: string;
@@ -75,7 +77,18 @@ const Register = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    mutation.mutate({ email: data.login, password: data.password });
+    if (!code) {
+      toast.error('Код не знайдено в URL');
+      return;
+    }
+
+    console.log('Дані форми:', data.login, code);
+    toast.success('Відправлено');
+
+    mutation.mutate({
+      code: code,
+      password: data.password,
+    });
   };
 
   const password = watch('password', '');
@@ -132,7 +145,7 @@ const Register = () => {
                     ? 'border-red border-2 border-solid'
                     : ''
                 }`}
-                readOnly
+                // readOnly
               />
               {tokenError && (
                 <LuAlertTriangle
