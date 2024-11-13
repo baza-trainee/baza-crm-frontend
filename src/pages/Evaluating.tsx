@@ -1,17 +1,88 @@
+import EvaluatingCard from '../components/Evaluating/EvaluatingCard';
 import { useState } from 'react';
-import DefaultStar from '../assets/common/evaluating-default-star.svg';
-import Star1 from '../assets/common/evaluating-star-1.svg';
-import Star2 from '../assets/common/evaluating-star-2.svg';
-import Star3 from '../assets/common/evaluating-star-3.svg';
-import Star4 from '../assets/common/evaluating-star-4.svg';
-import Star5 from '../assets/common/evaluating-star-5.svg';
+import type { MembersEvaluations } from '../types';
 
 const Evaluating = () => {
-  const [rating, setRating] = useState(0);
-  const [hover, setHover] = useState(0);
-
+  const [membersEvaluations, setMembersEvaluations] = useState<
+    MembersEvaluations | []
+  >([]);
+  console.log(membersEvaluations);
+  const membersArray = [
+    {
+      title: 'Design',
+      members: [
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+      ],
+      borderColor: 'border-color-designer',
+      bgColor: 'bg-color-designer',
+    },
+    {
+      title: 'Front-end',
+      members: [
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+      ],
+      borderColor: 'border-color-front-end',
+      bgColor: 'bg-color-front-end',
+    },
+    {
+      title: 'Back-end',
+      members: [
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+      ],
+      borderColor: 'border-color-back-end',
+      bgColor: 'bg-color-back-end',
+    },
+    {
+      title: 'QA Manual',
+      members: [
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+      ],
+      borderColor: 'border-color-qa',
+      bgColor: 'bg-color-qa',
+    },
+    {
+      title: 'Full-Stack',
+      members: [
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+        { name: 'Антиристарх Евгений' },
+      ],
+      borderColor: 'border-color-full-stack',
+      bgColor: 'bg-color-full-stack',
+    },
+    {
+      title: 'PM',
+      members: [{ name: 'Антиристарх Евгений' }],
+      borderColor: 'border-color-pm',
+      bgColor: 'bg-color-pm',
+    },
+  ];
+  const sendEvaluations = () => {};
   return (
-    <section className="px-12 pt-5 pb-12 bg-input-normal-state height-100">
+    <section className="px-12 pt-5 pb-10 bg-input-normal-state ">
       <span className="text-2xl font-bold block py-3 border-card-border rounded-xl border text-center bg-white mb-5">
         Оцінка роботи команди
       </span>
@@ -25,56 +96,26 @@ const Evaluating = () => {
         </p>
         <p>Будь ласка, оцініть роботу команди.</p>
       </div>
-      <ul className="grid grid-cols-3 gap-5 mb-10">
-        <li className="py-5 px-8 bg-white border-2 rounded-[20px] border-color-designer">
-          <span className="inline-block mb-3 px-5 rounded-[10px] bg-color-designer font-bold text-lg leading-[1.5] text-white">
-            Design
-          </span>
-          <ul className="flex flex-col gap-3">
-            <li className="flex justify-between gap-2 px-[10px] border border-hover-gray rounded-[10px] py-2">
-              <span className="name">Антиристарх Евгений</span>
-              <div className="flex">
-                {[...Array(5)].map((_, index) => {
-                  index += 1;
-                  return (
-                    <button
-                      type="button"
-                      key={index}
-                      className="[&:not(:last-child)]:pr-2"
-                      onClick={() => setRating(index)}
-                      onMouseEnter={() => setHover(index)}
-                      onMouseLeave={() => setHover(rating)}
-                    >
-                      {hover >= index ? (
-                        <img
-                          src={
-                            hover === 1
-                              ? Star1
-                              : hover === 2
-                                ? Star2
-                                : hover === 3
-                                  ? Star3
-                                  : hover === 4
-                                    ? Star4
-                                    : Star5
-                          }
-                          alt="star"
-                        />
-                      ) : (
-                        <img
-                          className="opacity-50"
-                          src={DefaultStar}
-                          alt="star"
-                        />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            </li>
-          </ul>
-        </li>
+      <ul className="grid grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
+        {membersArray.map((m, index) => (
+          <EvaluatingCard
+            key={index}
+            setMembersEvaluations={setMembersEvaluations}
+            title={m.title}
+            borderColor={m.borderColor}
+            bgColor={m.bgColor}
+            members={m.members}
+          />
+        ))}
       </ul>
+      <div className="flex justify-center">
+        <button
+          className="px-[87px] py-[14px] bg-primary-blue rounded-[10px]"
+          onClick={sendEvaluations}
+        >
+          <p className="text-white font-semibold">Відправити</p>
+        </button>
+      </div>
     </section>
   );
 };
