@@ -313,3 +313,4 @@ export type FinishProjectMutationVariables = {
 export type MessageResponse = {
   message: string;
 };
+export type MembersEvaluations = { name: string; evaluation: number }[];
