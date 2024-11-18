@@ -9,7 +9,7 @@ const EvaluatingCard = ({
   members,
   setMembersEvaluations,
 }: {
-  members: { name: string }[];
+  members: { id?: string; name: string }[];
   title: string;
   borderColor: string;
   bgColor: string;
@@ -25,11 +25,13 @@ const EvaluatingCard = ({
         {title}
       </span>
       <ul className="flex flex-col gap-3">
-        <EvaluatingUser
-          key={title}
-          setMemberEvaluation={setMembersEvaluations}
-          members={members}
-        />
+        {members.map((m, index) => (
+          <EvaluatingUser
+            key={m.id ? m.id : index}
+            setMemberEvaluation={setMembersEvaluations}
+            member={m}
+          />
+        ))}
       </ul>
     </li>
   );

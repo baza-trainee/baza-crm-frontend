@@ -1,12 +1,25 @@
 import EvaluatingCard from '../components/Evaluating/EvaluatingCard';
-import { useState } from 'react';
-import type { MembersEvaluations } from '../types';
+import { useEffect, useState } from 'react';
+import type { MembersEvaluations, RootState } from '../types';
+import { useSelector } from 'react-redux';
+import type { BotProjectDetails } from '../types';
+import { getKarmaInfo } from '../utils/karmaApi';
 
 const Evaluating = () => {
+  const [projectDetails, setProjectDetails] = useState<
+    BotProjectDetails | []
+  >();
   const [membersEvaluations, setMembersEvaluations] = useState<
     MembersEvaluations | []
-  >([]);
+  >([]); // для setKarma
   console.log(membersEvaluations);
+  //const tags = {};
+  const user = useSelector((state: RootState) => state.userState.user);
+  const searchParams = new URLSearchParams(window.location.search);
+  const token = searchParams.get('data');
+  useEffect(() => {
+    getKarmaInfo(token!, user!.token).then((res) => setProjectDetails(res));
+  }, [user, token]);
   const membersArray = [
     {
       title: 'Design',
@@ -24,7 +37,7 @@ const Evaluating = () => {
     {
       title: 'Front-end',
       members: [
-        { name: 'Антиристарх Евгений' },
+        { id: user!.user.id, name: 'Поточний юзер' },
         { name: 'Антиристарх Евгений' },
         { name: 'Антиристарх Евгений' },
         { name: 'Антиристарх Евгений' },
@@ -82,7 +95,7 @@ const Evaluating = () => {
   ];
   const sendEvaluations = () => {};
   return (
-    <section className="px-12 pt-5 pb-10 bg-input-normal-state ">
+    <section className="px-12 pt-5 pb-10 bg-input-normal-state">
       <span className="text-2xl font-bold block py-3 border-card-border rounded-xl border text-center bg-white mb-5">
         Оцінка роботи команди
       </span>
@@ -97,16 +110,18 @@ const Evaluating = () => {
         <p>Будь ласка, оцініть роботу команди.</p>
       </div>
       <ul className="grid grid-cols-2 lg:grid-cols-3 gap-5 mb-10">
-        {membersArray.map((m, index) => (
-          <EvaluatingCard
-            key={index}
-            setMembersEvaluations={setMembersEvaluations}
-            title={m.title}
-            borderColor={m.borderColor}
-            bgColor={m.bgColor}
-            members={m.members}
-          />
-        ))}
+        {user &&
+          projectDetails &&
+          membersArray.map((m, index) => (
+            <EvaluatingCard
+              key={index}
+              setMembersEvaluations={setMembersEvaluations}
+              title={m.title}
+              borderColor={m.borderColor}
+              bgColor={m.bgColor}
+              members={m.members}
+            />
+          ))}
       </ul>
       <div className="flex justify-center">
         <button

@@ -43,7 +43,7 @@ const Project: React.FC<ProjectProps> = ({ project, tags = [] }) => {
 
   return (
     <div
-      className="w-[412px] h-[560px] border-2 rounded-[10px] bg-white flex flex-col gap-5 px-5 py-7 justify-between"
+      className="w-[412px]  border-2 rounded-[10px] bg-white flex flex-col gap-5 px-5 py-7 justify-between"
       style={{ borderColor }}
     >
       <div
