@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { BotProjectDetails } from '../types';
+import { BotProjectDetails, SetKarma } from '../types';
 
 export const getKarmaInfo = async (
-  prepareToken: string,
+  karmaToken: string,
   authToken: string,
 ): Promise<BotProjectDetails> => {
-  const url = `${import.meta.env.VITE_API_URL}/karma/prepare?data=${prepareToken}`;
+  const url = `${import.meta.env.VITE_API_URL}/karma/prepare?data=${karmaToken}`;
   const response = await axios.post<BotProjectDetails>(
     url,
     {},
@@ -17,4 +17,16 @@ export const getKarmaInfo = async (
   );
   return response.data;
 };
-export const setKarma = async () => {}; //оцінювання користувачів
+export const setKarma = async (
+  karmaToken: string,
+  authToken: string,
+  data: SetKarma,
+) => {
+  const url = `${import.meta.env.VITE_API_URL}/karma/setKarma?data=${karmaToken}`;
+  const response = await axios.post<BotProjectDetails>(url, data, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+  return response;
+};

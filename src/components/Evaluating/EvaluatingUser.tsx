@@ -14,21 +14,17 @@ const EvaluatingUser = ({
   member,
   setMemberEvaluation,
 }: {
-  member: { id?: string; name: string };
-  setMemberEvaluation: Dispatch<SetStateAction<MembersEvaluations | []>>;
+  member: { id: number | undefined; name: string };
+  setMemberEvaluation: Dispatch<SetStateAction<MembersEvaluations[] | []>>;
 }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const user = useSelector((state: RootState) => state.userState.user);
   const hoverImages = [DefaultStar, Star1, Star2, Star3, Star4, Star5];
 
-  const onSubmitRaiting = (
-    id: string | undefined,
-    index: number,
-    name: string,
-  ) => {
-    if (user?.user.id !== member.id) {
-      setMemberEvaluation((prev) => [...prev, { id, name, evaluation: index }]);
+  const onSubmitRaiting = (id: number, index: number) => {
+    if (Number(user?.user.id) !== member.id!) {
+      setMemberEvaluation((prev) => [...prev, { id, points: index }]);
       setRating(index);
     } else toast.error('Себе оцінювати не можна');
   };
@@ -54,7 +50,7 @@ const EvaluatingUser = ({
                 type="button"
                 key={index}
                 className="w-6 h-6"
-                onClick={() => onSubmitRaiting(member.id, index, member.name)}
+                onClick={() => onSubmitRaiting(member.id!, index)}
                 onMouseEnter={() => setHover(index)}
                 onMouseLeave={() => setHover(rating)}
               >

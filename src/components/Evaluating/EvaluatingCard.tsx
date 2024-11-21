@@ -9,11 +9,11 @@ const EvaluatingCard = ({
   members,
   setMembersEvaluations,
 }: {
-  members: { id?: string; name: string }[];
+  members: { id: number | undefined; name: string }[];
   title: string;
   borderColor: string;
   bgColor: string;
-  setMembersEvaluations: Dispatch<SetStateAction<MembersEvaluations | []>>;
+  setMembersEvaluations: Dispatch<SetStateAction<MembersEvaluations[] | []>>;
 }) => {
   return (
     <li
@@ -25,9 +25,9 @@ const EvaluatingCard = ({
         {title}
       </span>
       <ul className="flex flex-col gap-3">
-        {members.map((m, index) => (
+        {members.map((m) => (
           <EvaluatingUser
-            key={m.id ? m.id : index}
+            key={m.id}
             setMemberEvaluation={setMembersEvaluations}
             member={m}
           />

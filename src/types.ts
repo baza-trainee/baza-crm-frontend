@@ -314,9 +314,12 @@ export type MessageResponse = {
   message: string;
 };
 export type MembersEvaluations = {
-  id?: string;
-  name: string;
-  evaluation: number;
+  id: number | undefined;
+  points: number;
+};
+
+export type SetEvaluations = {
+  karmas: MembersEvaluations[];
 }[];
 
 export type BotProjectDetails = {
@@ -332,6 +335,15 @@ export type BotProjectDetails = {
         firstName: string;
         lastName: string;
       };
+    },
+  ];
+};
+
+export type SetKarma = {
+  karmas: [
+    {
+      userId: number;
+      points: number;
     },
   ];
 };
