@@ -5,7 +5,7 @@ import Star2 from '../../assets/common/evaluating-star-2.svg';
 import Star3 from '../../assets/common/evaluating-star-3.svg';
 import Star4 from '../../assets/common/evaluating-star-4.svg';
 import Star5 from '../../assets/common/evaluating-star-5.svg';
-import { MembersEvaluations, RootState } from '../../types';
+import { MembersEvaluations, RootState, MemberDetail } from '../../types';
 import { toast } from 'react-toastify';
 
 import { useSelector } from 'react-redux';
@@ -14,7 +14,7 @@ const EvaluatingUser = ({
   member,
   setMemberEvaluation,
 }: {
-  member: { id: number | undefined; name: string };
+  member: MemberDetail['user'];
   setMemberEvaluation: Dispatch<SetStateAction<MembersEvaluations[] | []>>;
 }) => {
   const [rating, setRating] = useState(0);
@@ -24,7 +24,7 @@ const EvaluatingUser = ({
 
   const onSubmitRaiting = (id: number, index: number) => {
     if (Number(user?.user.id) !== member.id!) {
-      setMemberEvaluation((prev) => [...prev, { id, points: index }]);
+      setMemberEvaluation((prev) => [...prev, { userId: id, points: index }]);
       setRating(index);
     } else toast.error('Себе оцінювати не можна');
   };
@@ -38,10 +38,11 @@ const EvaluatingUser = ({
       );
     }
   };
-
   return (
     <li className="flex justify-between gap-7 px-[10px] border border-wave-blue rounded-[10px] py-2">
-      <span className="name flex items-center ">{member.name}</span>
+      <span className="name flex items-center ">
+        {member.firstName + ' ' + member.lastName}
+      </span>
       <div className="flex p-1 gap-2">
         {hoverImages.map((_, index) => {
           if (index > 0) {
