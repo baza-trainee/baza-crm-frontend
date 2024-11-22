@@ -55,7 +55,7 @@ const Evaluating = () => {
     return originalTagsArray;
   };
   return (
-    <section className="px-12 pt-5 pb-10 bg-input-normal-state">
+    <section className="px-12 pt-5 pb-10 bg-input-normal-state min-h-screen">
       <span className="text-2xl font-bold block py-3 border-card-border rounded-xl border text-center bg-white mb-5">
         Оцінка роботи команди
       </span>

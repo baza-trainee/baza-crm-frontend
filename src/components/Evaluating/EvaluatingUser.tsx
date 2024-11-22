@@ -5,10 +5,7 @@ import Star2 from '../../assets/common/evaluating-star-2.svg';
 import Star3 from '../../assets/common/evaluating-star-3.svg';
 import Star4 from '../../assets/common/evaluating-star-4.svg';
 import Star5 from '../../assets/common/evaluating-star-5.svg';
-import { MembersEvaluations, RootState, MemberDetail } from '../../types';
-import { toast } from 'react-toastify';
-
-import { useSelector } from 'react-redux';
+import { MembersEvaluations, MemberDetail } from '../../types';
 
 const EvaluatingUser = ({
   member,
@@ -19,14 +16,13 @@ const EvaluatingUser = ({
 }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
-  const user = useSelector((state: RootState) => state.userState.user);
+  const [sended, setSended] = useState(false);
   const hoverImages = [DefaultStar, Star1, Star2, Star3, Star4, Star5];
 
   const onSubmitRaiting = (id: number, index: number) => {
-    if (Number(user?.user.id) !== member.id!) {
-      setMemberEvaluation((prev) => [...prev, { userId: id, points: index }]);
-      setRating(index);
-    } else toast.error('Себе оцінювати не можна');
+    setMemberEvaluation((prev) => [...prev, { userId: id, points: index }]);
+    setRating(index);
+    setSended(true);
   };
 
   const activeStars = (index: number) => {
@@ -39,7 +35,7 @@ const EvaluatingUser = ({
     }
   };
   return (
-    <li className="flex justify-between gap-7 px-[10px] border border-wave-blue rounded-[10px] py-2">
+    <li className="flex justify-between gap-7 px-[10px] border border-color-pm rounded-[10px] py-2">
       <span className="name flex items-center ">
         {member.firstName + ' ' + member.lastName}
       </span>
@@ -51,6 +47,7 @@ const EvaluatingUser = ({
                 type="button"
                 key={index}
                 className="w-6 h-6"
+                disabled={sended}
                 onClick={() => onSubmitRaiting(member.id!, index)}
                 onMouseEnter={() => setHover(index)}
                 onMouseLeave={() => setHover(rating)}
