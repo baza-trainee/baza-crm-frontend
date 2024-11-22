@@ -1,35 +1,37 @@
 import { Dispatch, SetStateAction } from 'react';
 import EvaluatingUser from './EvaluatingUser';
-import type { MembersEvaluations } from '../../types';
+import type { MembersEvaluations, MemberDetail } from '../../types';
 
 const EvaluatingCard = ({
   title,
-  borderColor,
-  bgColor,
+  color,
   members,
   setMembersEvaluations,
 }: {
-  members: { name: string }[];
+  members: MemberDetail[];
   title: string;
-  borderColor: string;
-  bgColor: string;
-  setMembersEvaluations: Dispatch<SetStateAction<MembersEvaluations | []>>;
+  color: string;
+  setMembersEvaluations: Dispatch<SetStateAction<MembersEvaluations[] | []>>;
 }) => {
   return (
     <li
-      className={`py-5 px-8 bg-white border-2 rounded-[20px] h-min ${borderColor}`}
+      style={{ borderColor: color }}
+      className="py-5 px-8 bg-white border-2 rounded-[20px] h-min "
     >
       <span
-        className={`inline-block mb-3 px-5 rounded-[10px] ${bgColor} font-bold text-lg leading-[1.5] text-white`}
+        style={{ backgroundColor: color }}
+        className="inline-block mb-3 px-5 rounded-[10px] font-bold text-lg leading-[1.5] text-white"
       >
         {title}
       </span>
       <ul className="flex flex-col gap-3">
-        <EvaluatingUser
-          key={title}
-          setMemberEvaluation={setMembersEvaluations}
-          members={members}
-        />
+        {members.map((m) => (
+          <EvaluatingUser
+            key={m.user.id}
+            setMemberEvaluation={setMembersEvaluations}
+            member={m.user}
+          />
+        ))}
       </ul>
     </li>
   );

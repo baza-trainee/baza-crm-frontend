@@ -68,7 +68,6 @@ const ProjectCreate: React.FC = () => {
     const token = user?.token;
     if (token) {
       mutation.mutate({ projectData: data, token });
-      // console.log(data);
     }
   };
 

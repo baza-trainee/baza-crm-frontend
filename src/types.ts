@@ -313,4 +313,28 @@ export type FinishProjectMutationVariables = {
 export type MessageResponse = {
   message: string;
 };
-export type MembersEvaluations = { name: string; evaluation: number }[];
+
+export type MemberDetail = {
+  tagId: number;
+  user: {
+    id: number;
+    firstName: string;
+    lastName: string;
+  };
+};
+
+export type BotProjectDetails = {
+  project: {
+    id: number;
+    name: string | number;
+  };
+  members: MemberDetail[];
+};
+export type MembersEvaluations = {
+  userId: number | undefined;
+  points: number;
+};
+
+export type SetEvaluations = {
+  karmas: MembersEvaluations[] | [];
+};
