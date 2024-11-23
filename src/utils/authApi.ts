@@ -12,7 +12,7 @@ export const loginUserApi = async (data: {
 };
 
 export const registerUserApi = async (data: {
-  // email: string;
+  email: string;
   password: string;
   code: string;
 }): Promise<RegisterResponse> => {
@@ -21,8 +21,8 @@ export const registerUserApi = async (data: {
   return response.data;
 };
 
-export const getEmailByTokenApi = (code: string) => {
-  return axios.post(
-    `${import.meta.env.VITE_API_URL}/auth/confirmRegisterCode?code=${code}`,
-  );
+export const getEmailByTokenApi = async (code: string) => {
+  const url = `${import.meta.env.VITE_API_URL}/auth/confirmRegisterCode`;
+  const response = await axios.post(url, { code: `${code}` });
+  return response.data;
 };
