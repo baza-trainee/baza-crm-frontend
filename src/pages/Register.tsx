@@ -81,11 +81,11 @@ const Register = () => {
       toast.error('Код не знайдено в URL');
       return;
     }
-
     console.log('Дані форми:', data.login, code);
     toast.success('Відправлено');
 
     mutation.mutate({
+      email: data.login,
       code: code,
       password: data.password,
     });
