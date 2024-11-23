@@ -43,27 +43,19 @@ const Register = () => {
   // get code from link
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get('code');
-  console.log('Код з посилання:', code);
-
-  type RegisterResponse = {
-    message: string;
-  };
 
   const mutation = useMutation({
     mutationFn: registerUserApi,
     onMutate: () => {
       setIsLoading(true);
     },
-    onSuccess: (data: RegisterResponse) => {
-      console.log('Registration successful:', data);
+    onSuccess: () => {
       setTimeout(() => {
         navigate('/crm');
         reset();
       }, 1500);
     },
     onError: (error: AxiosError<{ message: string }>) => {
-      console.error('Registration error:', error);
-
       if (error?.response?.data?.message) {
         setError('login', {
           type: 'server',
