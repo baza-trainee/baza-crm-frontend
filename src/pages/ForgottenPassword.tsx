@@ -6,12 +6,15 @@ import { useDispatch } from 'react-redux';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
 import { setUser } from '../features/authSlice';
+import { useState } from 'react';
+import Countdown from '../components/Forgotten-Password/Countdown';
 
 type Inputs = {
   email: string;
 };
 
 const ForgottenPassword = () => {
+  const [send, setSend] = useState(false);
   const {
     register,
     formState: { isValid },
@@ -25,10 +28,11 @@ const ForgottenPassword = () => {
   const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setSend(true);
     console.log('sent:', data);
     try {
       const response = await axios.post(
-        'http://185.161.208.63:5000/api/v1/auth/#',
+        'http://185.161.208.63:5000/api/v1/auth/#', // поки немаЄ ендоінту !!!
         {
           email: data.email,
         },
@@ -72,29 +76,20 @@ const ForgottenPassword = () => {
             Email
           </label>
           <input
-            {...register('email')}
+            type="email"
+            {...(register('email'), { required: true })}
             className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
           />
         </div>
-        <div className="font-Open Sans font-sans my-[30px] p-[16px] rounded-[10px] bg-normal-ui">
-          <p className="mb-[8px] text-[16px] leading-6 font-semibold text-[rgba(0, 0, 0, 0.2)]">
-            На вказану електронну пошту буде відправлено повідомлення з
-            посиланням для відновлення паролю. Посилання діє 30хв.
-          </p>
-          <div className="flex justify-between">
-            <p className="text-[14px] font-normal">
-              Якщо лист не отримано, спробуйте ще через 1хв.
-            </p>
-            <p>
-              <span className="text-primary-blue">59</span> сек.
-            </p>
-          </div>
-        </div>
-        <ButtonLogin
-          label="Отримати посилання"
-          type="submit"
-          disabled={!isValid}
-        />
+        {send ? (
+          <Countdown send={send} setSend={setSend} />
+        ) : (
+          <ButtonLogin
+            label="Отримати посилання"
+            type="submit"
+            disabled={!isValid}
+          />
+        )}
       </form>
     </div>
   );

@@ -25,20 +25,21 @@ const Evaluating = () => {
   const requstToken = searchParams.get('data');
 
   useEffect(() => {
-    Promise.all([
-      getKarmaObject(requstToken!, user!.token),
-      getTags(user!.token),
-    ]).then((res) => {
-      setCurrentProjectDetails(res[0]);
-      setTags(res[1]);
-    });
+    if (requstToken) {
+      Promise.all([
+        getKarmaObject(requstToken!, user!.token),
+        getTags(user!.token),
+      ]).then((res) => {
+        setCurrentProjectDetails(res[0]);
+        setTags(res[1]);
+      });
+    }
   }, [user, requstToken]);
 
   const sendEvaluations = async () => {
     const karmasObj: SetEvaluations = {
       karmas: membersEvaluations,
     };
-    console.log(karmasObj);
     await setKarma(requstToken as string, user!.token, karmasObj);
     setSended(true);
   };
@@ -59,7 +60,7 @@ const Evaluating = () => {
       <span className="text-2xl font-bold block py-3 border-card-border rounded-xl border text-center bg-white mb-5">
         Оцінка роботи команди
       </span>
-      {currentProjectDetails && (
+      {currentProjectDetails ? (
         <>
           <div className="text-center [&>p]:text-xl mb-5">
             <p>
@@ -100,6 +101,8 @@ const Evaluating = () => {
             </button>
           </div>
         </>
+      ) : (
+        <p className="font-semibold">Немає даних про команду</p>
       )}
     </section>
   );
