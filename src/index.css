@@ -29,3 +29,18 @@ h6 {
 #sidebar a.active img {
   opacity: 1;
 }
+
+#thumb::-webkit-scrollbar {
+  width: 6px;
+}
+
+#thumb::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+#thumb::-webkit-scrollbar-thumb {
+  background: gray;
+  height: 20px;
+  border-radius: 5px;
+}

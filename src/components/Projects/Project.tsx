@@ -54,23 +54,25 @@ const Project: React.FC<ProjectProps> = ({ project, tags = [] }) => {
       </div>
       <h2 className="text-2xl font-bold">{project.name}</h2>
       <p className="font-semibold">Склад команди</p>
-      <div className="flex flex-wrap overflow-y-scroll h-32 gap-3">
+      <div id="thumb" className="flex flex-wrap overflow-y-auto h-32 gap-3">
         {filteredTags.map((tag) => {
-          return (
-            <div
-              key={tag.id}
-              style={{ borderColor: tag.color }}
-              className="text-text-gray h-min rounded-[10px] px-2 py-1 border-2"
-            >
-              {tag.name}{' '}
-              {tag.count === tag.maxCount ? (
-                <span className="text-primary-blue">{tag.count}</span>
-              ) : (
-                <span>{tag.count}</span>
-              )}
-              <span className="text-primary-blue">/{tag.maxCount}</span>
-            </div>
-          );
+          if (tag.maxCount > 0) {
+            return (
+              <div
+                key={tag.id}
+                style={{ borderColor: tag.color }}
+                className="text-text-gray h-min rounded-[10px] px-2 py-1 border-2"
+              >
+                {tag.name}
+                {tag.count === tag.maxCount ? (
+                  <span className="text-primary-blue">{tag.count}</span>
+                ) : (
+                  <span>{tag.count}</span>
+                )}
+                <span className="text-primary-blue">/{tag.maxCount}</span>
+              </div>
+            );
+          }
         })}
       </div>
       <div className="flex justify-between gap-3">
