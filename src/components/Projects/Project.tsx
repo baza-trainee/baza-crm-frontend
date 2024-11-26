@@ -43,7 +43,7 @@ const Project: React.FC<ProjectProps> = ({ project, tags = [] }) => {
 
   return (
     <div
-      className="w-[412px] h-[560px] border-2 rounded-[10px] bg-white flex flex-col gap-5 px-5 py-7 justify-between"
+      className="w-full h-[643px] lg:h-[560px] border-2 rounded-[10px] bg-white flex flex-col gap-5 px-5 py-7 justify-between"
       style={{ borderColor }}
     >
       <div
@@ -54,13 +54,13 @@ const Project: React.FC<ProjectProps> = ({ project, tags = [] }) => {
       </div>
       <h2 className="text-2xl font-bold">{project.name}</h2>
       <p className="font-semibold">Склад команди</p>
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap overflow-y-scroll h-32 gap-3">
         {filteredTags.map((tag) => {
           return (
             <div
               key={tag.id}
               style={{ borderColor: tag.color }}
-              className="text-text-gray rounded-[10px] px-2 py-1 border-2"
+              className="text-text-gray h-min rounded-[10px] px-2 py-1 border-2"
             >
               {tag.name}{' '}
               {tag.count === tag.maxCount ? (
