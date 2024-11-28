@@ -193,7 +193,7 @@ export type CreateProjectRequest = {
   name: string;
   projectPoints: number;
   projectType: 'free' | 'light' | 'strong';
-  price: number;
+  price: number | 'free';
   dateStart: string;
   dateTeam: string;
   specializations: Specialization[];

@@ -6,7 +6,7 @@ import { Tooltip } from 'react-tooltip';
 import { toast } from 'react-toastify';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import ProjectFormat from '../components/Projects/ProjectFormat';
 import calendar from '../assets/common/calendar.svg';
@@ -24,6 +24,7 @@ const ProjectCreate: React.FC = () => {
     register,
     watch,
     handleSubmit,
+    setValue,
     control,
     formState: { errors },
   } = useForm<CreateProjectRequest>({
@@ -33,13 +34,20 @@ const ProjectCreate: React.FC = () => {
   });
 
   const [isOpen, setIsOpen] = useState(false);
+  const toggle = useRef<HTMLDivElement | null>(null);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+  const toggleDropdown = (e: MouseEvent) => {
+    const elem = e.target as HTMLElement;
+    if (toggle.current?.contains(elem)) {
+      setIsOpen((prev) => !prev);
+    } else setIsOpen(false);
   };
+  useEffect(() => {
+    document.addEventListener('click', toggleDropdown);
+    return () => document.removeEventListener('click', toggleDropdown);
+  }, [toggle]);
 
   const selectedFormat = watch('projectType');
-
   const { data: tags, isError: isTagsError } = useQuery({
     queryKey: ['tags', user?.token],
     queryFn: () => getTags(user!.token),
@@ -66,6 +74,7 @@ const ProjectCreate: React.FC = () => {
 
   const onSubmit: SubmitHandler<CreateProjectRequest> = (data) => {
     const token = user?.token;
+    console.log(data);
     if (token) {
       mutation.mutate({ projectData: data, token });
     }
@@ -195,6 +204,8 @@ const ProjectCreate: React.FC = () => {
               className="text-center duration-500 border-b-2 outline-none w-52 focus:border-b-2 focus:border-b-primary-blue"
               placeholder="Вказати кількість балів"
               type="number"
+              step={5}
+              defaultValue={0}
               min={0}
               {...register('projectPoints', {
                 required: "Кількість балів обов'язкова і є числом",
@@ -230,11 +241,16 @@ const ProjectCreate: React.FC = () => {
                 className="w-36 text-center duration-500 border-2 rounded-[10px] outline-none focus:border-2 focus:border-primary-blue p-2"
                 placeholder="Число"
                 type="number"
+                disabled={selectedFormat === 'free'}
                 min={0}
                 {...register('price', {
-                  required: "Сума обов'язкова",
+                  validate: (value) => {
+                    if (selectedFormat === 'free') return true;
+                    else return (value as number) > 0 || "Сума обов'язкова";
+                  },
                 })}
               />
+
               <div className="h-5 -mb-3">
                 {errors.price && (
                   <span className="text-red">{errors.price.message}</span>
@@ -244,8 +260,8 @@ const ProjectCreate: React.FC = () => {
             <div className="relative flex flex-col w-48 gap-2 grow">
               <span>Формат участі</span>
               <div
+                ref={toggle}
                 className="flex items-center gap-2 border-2 rounded-[10px] px-7 bg-input-normal-state border-card-border cursor-pointer"
-                onClick={toggleDropdown}
               >
                 <span className="w-full h-[40px] items-center flex capitalize">
                   {selectedFormat}
@@ -264,38 +280,60 @@ const ProjectCreate: React.FC = () => {
                     d="M19 9l-7 7-7-7"
                   />
                 </svg>
+                {isOpen && (
+                  <div className="absolute left-0 z-10 bg-input-normal-state rounded-[10px] shadow-lg top-20 w-full border-card-border border px-7 py-5">
+                    <label
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setValue('projectType', 'free');
+                        setIsOpen(false);
+                      }}
+                      className="relative flex gap-2 hover:after:w-12 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 after:mx-6 hover:text-primary-blue cursor-pointer"
+                    >
+                      <input
+                        type="radio"
+                        value="free"
+                        {...register('projectType')}
+                        className="cursor-pointer"
+                      />
+                      Free
+                    </label>
+                    <label
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setValue('projectType', 'light');
+                        setIsOpen(false);
+                      }}
+                      className="relative flex gap-2 hover:after:w-12 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 after:mx-6 hover:text-primary-blue cursor-pointer mt-2"
+                    >
+                      <input
+                        type="radio"
+                        value="light"
+                        {...register('projectType')}
+                        className="cursor-pointer"
+                      />
+                      Light
+                    </label>
+                    <label
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setValue('projectType', 'strong');
+                        setIsOpen(false);
+                      }}
+                      className="relative flex gap-2 hover:after:w-12 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 after:mx-6 hover:text-primary-blue cursor-pointer mt-2"
+                    >
+                      <input
+                        type="radio"
+                        value="strong"
+                        {...register('projectType')}
+                        className="cursor-pointer"
+                      />
+                      Strong
+                    </label>
+                  </div>
+                )}
               </div>
-              {isOpen && (
-                <div className="absolute left-0 z-10 bg-input-normal-state rounded-[10px] shadow-lg top-20 w-full border-card-border border px-7 py-5">
-                  <label className="relative flex gap-2 hover:after:w-12 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 after:mx-6 hover:text-primary-blue cursor-pointer">
-                    <input
-                      type="radio"
-                      value="free"
-                      {...register('projectType')}
-                      className="cursor-pointer"
-                    />
-                    Free
-                  </label>
-                  <label className="relative flex gap-2 hover:after:w-12 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 after:mx-6 hover:text-primary-blue cursor-pointer mt-2">
-                    <input
-                      type="radio"
-                      value="light"
-                      {...register('projectType')}
-                      className="cursor-pointer"
-                    />
-                    Light
-                  </label>
-                  <label className="relative flex gap-2 hover:after:w-12 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 after:mx-6 hover:text-primary-blue cursor-pointer mt-2">
-                    <input
-                      type="radio"
-                      value="strong"
-                      {...register('projectType')}
-                      className="cursor-pointer"
-                    />
-                    Strong
-                  </label>
-                </div>
-              )}
+
               <div className="h-5 -mb-3">
                 {errors.projectType && (
                   <span className="text-red">{errors.projectType.message}</span>
@@ -324,6 +362,8 @@ const ProjectCreate: React.FC = () => {
                 className="w-20 text-center duration-500 border-b-2 outline-none focus:border-b-2 focus:border-b-primary-blue"
                 placeholder="Число"
                 type="number"
+                // disabled={specialization.name === 'PM2'}
+                defaultValue={specialization.name === 'PM2' ? 1 : 0}
                 min={specialization.name === 'PM' ? 1 : 0}
                 max={20}
                 {...register(`specializations.${index}.count`, {

@@ -14,6 +14,8 @@ const ProjectPointsForm = () => {
           className="text-center duration-500 border-b-2 outline-none w-52 focus:border-b-2 focus:border-b-primary-blue"
           placeholder="Вказати кількість балів"
           type="number"
+          step={5}
+          defaultValue={0}
           min={0}
           {...register('projectPoints', {
             required: "Кількість балів обов'язкова і є числом",
