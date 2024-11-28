@@ -362,19 +362,19 @@ const ProjectCreate: React.FC = () => {
                 className="w-20 text-center duration-500 border-b-2 outline-none focus:border-b-2 focus:border-b-primary-blue"
                 placeholder="Число"
                 type="number"
-                // disabled={specialization.name === 'PM2'}
+                disabled={specialization.name === 'PM2'}
                 defaultValue={specialization.name === 'PM2' ? 1 : 0}
-                min={specialization.name === 'PM' ? 1 : 0}
+                min={specialization.name === 'PM2' ? 1 : 0}
                 max={20}
                 {...register(`specializations.${index}.count`, {
-                  required: "Кількість обов'язкова",
-                  min: {
-                    value: specialization.name === 'PM' ? 1 : 0,
-                    message: 'Кількість не може бути менше 0',
-                  },
-                  max: {
-                    value: 20,
-                    message: 'Кількість не може бути більше 20',
+                  validate: (value) => {
+                    if (value) {
+                      if (specialization.name === 'PM2') true;
+                      else if (value <= 0)
+                        return 'Кількість не може бути менше 0';
+                      else if (value > 20)
+                        return 'Кількість не може бути більше 20';
+                    }
                   },
                 })}
               />
