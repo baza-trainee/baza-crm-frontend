@@ -54,7 +54,7 @@ const SocialsLinks = () => {
   };
 
   return (
-    <div className="bg-white rounded-[10px] py-5 border-card-border border flex flex-col gap-5 w-[412px]">
+    <div className="bg-white rounded-[10px] py-5 relative border-card-border border flex flex-col gap-5 w-[412px]">
       <ul className="flex flex-col gap-2 px-8">
         {links.map((link) => (
           <li key={link}>
@@ -69,7 +69,7 @@ const SocialsLinks = () => {
           </li>
         ))}
       </ul>
-      <div className="relative">
+      <div /* className="relative" */>
         <div className="flex items-center justify-between gap-2 px-8 cursor-pointer ">
           <h3
             ref={linkRef}
@@ -81,7 +81,7 @@ const SocialsLinks = () => {
         {isOpen && (
           <div
             ref={menuRef}
-            className="absolute left-0 z-10 bg-input-normal-state rounded-[10px] shadow-lg top-8 w-full border-card-border border px-7 py-5"
+            className="absolute left-0 z-10 bg-input-normal-state rounded-[10px] shadow-lg -bottom-[11.6rem] w-full border-card-border border px-7 py-5"
           >
             <label htmlFor="linkInput" className="">
               Нове посилання

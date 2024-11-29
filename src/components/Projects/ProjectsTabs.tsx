@@ -38,43 +38,50 @@ const ProjectsTabs: React.FC<ProjectsTabsProps> = ({
   const isAdmin = true;
   const animatedComponents = makeAnimated();
   return (
-    <div className="h-[60px] flex items-center text-text-black bg-white rounded-[10px] border-card-border border px-8 gap-6">
-      <span className="font-semibold">Загалом:</span>
-      <div className="px-3 py-2 border-2 rounded-[10px] border-orange">
-        {projectStatusOptions[0].label}{' '}
-        <span className="text-lg font-semibold">
-          {projectNumber.searching || 0}
-        </span>
+    <div className="py-2 flex  items-stretch text-text-black bg-white rounded-[10px] border-card-border border px-8 gap-8">
+      <div className="flex flex-col items-center lg:flex-row  text-text-black gap-6">
+        <div className="flex items-center gap-6">
+          <span className="font-semibold">Загалом:</span>
+          <div className="px-3 py-2 border-2 rounded-[10px] border-orange">
+            {projectStatusOptions[0].label}{' '}
+            <span className="text-lg font-semibold">
+              {projectNumber.searching || 0}
+            </span>
+          </div>
+          <div className="px-3 py-2 border-2 rounded-[10px] border-light-blue">
+            {projectStatusOptions[1].label}{' '}
+            <span className="text-lg font-semibold">
+              {projectNumber.working || 0}
+            </span>
+          </div>
+          <div className="px-3 py-2 border-2 rounded-[10px] border-dark-green">
+            {projectStatusOptions[2].label}{' '}
+            <span className="text-lg font-semibold">
+              {projectNumber.ended || 0}
+            </span>
+          </div>
+        </div>
+        <div className="flex w-full lg:w-max">
+          <Select
+            // components={{
+            //   Option: CustomOption,
+            // }}
+            closeMenuOnSelect={false}
+            options={projectStatusOptions}
+            components={animatedComponents}
+            onChange={(options) => setSelectedOption(options as OptionType[])}
+            value={selectedOption}
+            isMulti
+            className="min-w-80"
+            classNamePrefix="react-select"
+          />
+        </div>
       </div>
-      <div className="px-3 py-2 border-2 rounded-[10px] border-light-blue">
-        {projectStatusOptions[1].label}{' '}
-        <span className="text-lg font-semibold">
-          {projectNumber.working || 0}
-        </span>
-      </div>
-      <div className="px-3 py-2 border-2 rounded-[10px] border-dark-green">
-        {projectStatusOptions[2].label}{' '}
-        <span className="text-lg font-semibold">
-          {projectNumber.ended || 0}
-        </span>
-      </div>
-      <Select
-        // components={{
-        //   Option: CustomOption,
-        // }}
-        closeMenuOnSelect={false}
-        options={projectStatusOptions}
-        components={animatedComponents}
-        onChange={(options) => setSelectedOption(options as OptionType[])}
-        value={selectedOption}
-        isMulti
-        className="min-w-80"
-        classNamePrefix="react-select"
-      />
+
       {isAdmin && (
         <Link
           to="/crm/projects/create"
-          className="text-white hover:bg-white bg-primary-blue h-[40px] rounded-[10px] flex justify-center items-center duration-500 w-[268px] border-2 border-primary-blue hover:text-black font-semibold"
+          className="text-white hover:bg-white bg-primary-blue py-2 h-min rounded-[10px] flex justify-center  items-center duration-500 w-[268px] border-2 border-primary-blue hover:text-black font-semibold"
         >
           + Створити проєкт
         </Link>

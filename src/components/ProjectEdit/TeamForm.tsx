@@ -41,10 +41,10 @@ const TeamForm = ({
   return (
     <>
       <h3 className="mb-3 ml-8 text-xl font-bold">Склад команди</h3>
-      <div className="flex flex-wrap gap-6">
+      <div className="grid grid-cols-4 lg:grid-cols-5 gap-6">
         {projectSpecializations?.map((specialization, index) => (
           <div
-            className="w-[268px] bg-white rounded-[10px] px-8 py-5 border-color-pm border flex flex-col justify-start gap-3 relative"
+            className="h-[240px] overflow-y-auto bg-white rounded-[10px] px-8 py-5 border-color-pm border flex flex-col justify-start gap-3 relative"
             key={specialization.id}
           >
             <div className="flex items-center justify-between gap-5">
