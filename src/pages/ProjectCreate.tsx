@@ -25,28 +25,38 @@ const ProjectCreate: React.FC = () => {
     watch,
     handleSubmit,
     setValue,
+    getValues,
     control,
     formState: { errors },
   } = useForm<CreateProjectRequest>({
     defaultValues: {
       projectType: 'free',
+      price: 0,
     },
   });
 
   const [isOpen, setIsOpen] = useState(false);
-  const toggle = useRef<HTMLDivElement | null>(null);
+  const toggleRadioMenuRef = useRef<HTMLDivElement | null>(null);
+  const radioMenuRef = useRef<HTMLDivElement | null>(null);
 
   const toggleDropdown = (e: MouseEvent) => {
     const elem = e.target as HTMLElement;
-    if (toggle.current?.contains(elem)) {
+    if (toggleRadioMenuRef.current?.contains(elem)) {
       setIsOpen((prev) => !prev);
-    } else setIsOpen(false);
+    } else if (!radioMenuRef.current?.contains(e.target as Node))
+      setIsOpen(false);
   };
   useEffect(() => {
     document.addEventListener('click', toggleDropdown);
     return () => document.removeEventListener('click', toggleDropdown);
-  }, [toggle]);
+  }, [toggleRadioMenuRef, radioMenuRef]);
 
+  const onChangeRadioMenu = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const projectType = e.currentTarget.value as 'free' | 'light' | 'strong';
+    if (projectType === 'free') setValue('price', 0);
+    setValue('projectType', projectType);
+    setIsOpen(false);
+  };
   const selectedFormat = watch('projectType');
   const { data: tags, isError: isTagsError } = useQuery({
     queryKey: ['tags', user?.token],
@@ -245,8 +255,9 @@ const ProjectCreate: React.FC = () => {
                 min={0}
                 {...register('price', {
                   validate: (value) => {
-                    if (selectedFormat === 'free') return true;
-                    else return (value as number) > 0 || "Сума обов'язкова";
+                    if (selectedFormat === 'free') {
+                      return true;
+                    } else return (value as number) > 0 || "Сума обов'язкова";
                   },
                 })}
               />
@@ -260,7 +271,7 @@ const ProjectCreate: React.FC = () => {
             <div className="relative flex flex-col w-48 gap-2 grow">
               <span>Формат участі</span>
               <div
-                ref={toggle}
+                ref={toggleRadioMenuRef}
                 className="flex items-center gap-2 border-2 rounded-[10px] px-7 bg-input-normal-state border-card-border cursor-pointer"
               >
                 <span className="w-full h-[40px] items-center flex capitalize">
@@ -280,59 +291,52 @@ const ProjectCreate: React.FC = () => {
                     d="M19 9l-7 7-7-7"
                   />
                 </svg>
-                {isOpen && (
-                  <div className="absolute left-0 z-10 bg-input-normal-state rounded-[10px] shadow-lg top-20 w-full border-card-border border px-7 py-5">
-                    <label
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setValue('projectType', 'free');
-                        setIsOpen(false);
-                      }}
-                      className="relative flex gap-2 hover:after:w-12 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 after:mx-6 hover:text-primary-blue cursor-pointer"
-                    >
-                      <input
-                        type="radio"
-                        value="free"
-                        {...register('projectType')}
-                        className="cursor-pointer"
-                      />
-                      Free
-                    </label>
-                    <label
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setValue('projectType', 'light');
-                        setIsOpen(false);
-                      }}
-                      className="relative flex gap-2 hover:after:w-12 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 after:mx-6 hover:text-primary-blue cursor-pointer mt-2"
-                    >
-                      <input
-                        type="radio"
-                        value="light"
-                        {...register('projectType')}
-                        className="cursor-pointer"
-                      />
-                      Light
-                    </label>
-                    <label
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setValue('projectType', 'strong');
-                        setIsOpen(false);
-                      }}
-                      className="relative flex gap-2 hover:after:w-12 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 after:mx-6 hover:text-primary-blue cursor-pointer mt-2"
-                    >
-                      <input
-                        type="radio"
-                        value="strong"
-                        {...register('projectType')}
-                        className="cursor-pointer"
-                      />
-                      Strong
-                    </label>
-                  </div>
-                )}
               </div>
+              {isOpen && (
+                <div
+                  ref={radioMenuRef}
+                  className="absolute left-0 z-10 bg-input-normal-state rounded-[10px] shadow-lg top-20 w-full border-card-border border px-7 py-5"
+                >
+                  <label className="relative flex gap-2 hover:after:w-12 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 after:mx-6 hover:text-primary-blue cursor-pointer">
+                    <input
+                      type="radio"
+                      value="free"
+                      checked={getValues('projectType') === 'free'}
+                      {...register('projectType', {
+                        onChange: onChangeRadioMenu,
+                      })}
+                      className="cursor-pointer"
+                    />
+                    Free
+                  </label>
+                  <label className="relative flex gap-2 hover:after:w-12 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 after:mx-6 hover:text-primary-blue cursor-pointer mt-2">
+                    <input
+                      type="radio"
+                      value="light"
+                      checked={getValues('projectType') === 'light'}
+                      {...(register('projectType'),
+                      {
+                        onChange: onChangeRadioMenu,
+                      })}
+                      className="cursor-pointer"
+                    />
+                    Light
+                  </label>
+                  <label className="relative flex gap-2 hover:after:w-12 after:w-0 after:block after:h-[1px] after:bg-primary-blue after:absolute after:left-0 after:bottom-0 after:duration-500 after:mx-6 hover:text-primary-blue cursor-pointer mt-2">
+                    <input
+                      type="radio"
+                      value="strong"
+                      checked={getValues('projectType') === 'strong'}
+                      {...(register('projectType'),
+                      {
+                        onChange: onChangeRadioMenu,
+                      })}
+                      className="cursor-pointer"
+                    />
+                    Strong
+                  </label>
+                </div>
+              )}
 
               <div className="h-5 -mb-3">
                 {errors.projectType && (
@@ -345,55 +349,61 @@ const ProjectCreate: React.FC = () => {
       </div>
       {/* TEAM */}
       <h3 className="mb-3 ml-8 text-xl font-bold">Склад команди</h3>
-      <div className="flex flex-wrap gap-6">
-        {specializations?.map((specialization, index) => (
-          <div
-            className="w-[268px] bg-white rounded-[10px] px-8 py-5 border-color-pm border flex flex-col justify-center gap-3 relative"
-            key={specialization.id}
-          >
-            <div className="flex items-center justify-between gap-5">
-              <div
-                className="px-8 py-2 text-white rounded-r-[10px] -ml-8 self-start"
-                style={{ backgroundColor: specialization.color }}
-              >
-                {specialization.name}
+      <div className="grid grid-cols-4 lg:grid-cols-5 gap-6">
+        {specializations?.map((specialization, index) => {
+          if (specialization.name === 'PM2') {
+            setValue(`specializations.${index}.count`, '1');
+          }
+          return (
+            <div
+              className="h-[240px] bg-white rounded-[10px]  pr-6 py-5 border-color-pm border flex flex-col justify-start gap-3 relative"
+              key={specialization.id}
+            >
+              <div className="flex items-center justify-between gap-5">
+                <div
+                  className="px-3  py-2 text-white rounded-r-[10px]"
+                  style={{ backgroundColor: specialization.color }}
+                >
+                  {specialization.name}
+                </div>
+                <input
+                  className="w-20 text-center duration-500 border-b-2 outline-none focus:border-b-2 focus:border-b-primary-blue"
+                  placeholder="Число"
+                  type="number"
+                  disabled={specialization.name === 'PM2'}
+                  defaultValue={specialization.name === 'PM2' ? 1 : 0}
+                  min={specialization.name === 'PM2' ? 1 : 0}
+                  max={20}
+                  {...register(`specializations.${index}.count`, {
+                    validate: (value) => {
+                      if (value) {
+                        if (specialization.name === 'PM2') {
+                          return true;
+                        } else if ((value as number) <= 0)
+                          return 'Кількість не може бути менше 0';
+                        else if ((value as number) > 20)
+                          return 'Кількість не може бути більше 20';
+                      }
+                    },
+                  })}
+                />
+                <input
+                  type="hidden"
+                  {...register(`specializations.${index}.id`, {
+                    value: Number(specialization.id),
+                  })}
+                />
               </div>
-              <input
-                className="w-20 text-center duration-500 border-b-2 outline-none focus:border-b-2 focus:border-b-primary-blue"
-                placeholder="Число"
-                type="number"
-                disabled={specialization.name === 'PM2'}
-                defaultValue={specialization.name === 'PM2' ? 1 : 0}
-                min={specialization.name === 'PM2' ? 1 : 0}
-                max={20}
-                {...register(`specializations.${index}.count`, {
-                  validate: (value) => {
-                    if (value) {
-                      if (specialization.name === 'PM2') true;
-                      else if (value <= 0)
-                        return 'Кількість не може бути менше 0';
-                      else if (value > 20)
-                        return 'Кількість не може бути більше 20';
-                    }
-                  },
-                })}
-              />
-              <input
-                type="hidden"
-                {...register(`specializations.${index}.id`, {
-                  value: Number(specialization.id),
-                })}
-              />
+              <div className="absolute left-0 h-5 -bottom-5">
+                {errors.specializations?.[index]?.count?.message && (
+                  <span className="text-red">
+                    {errors.specializations[index]?.count?.message}
+                  </span>
+                )}
+              </div>
             </div>
-            <div className="absolute left-0 h-5 -bottom-5">
-              {errors.specializations?.[index]?.count?.message && (
-                <span className="text-red">
-                  {errors.specializations[index]?.count?.message}
-                </span>
-              )}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       {/* BUTTON */}
       <button

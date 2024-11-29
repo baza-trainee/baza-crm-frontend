@@ -175,7 +175,7 @@ export type RequestBodyMembers = {
 
 export type Specialization = {
   id: number;
-  count?: number;
+  count?: number | string;
   name?: string;
   color?: string;
   isSpecialization?: boolean;
@@ -193,7 +193,7 @@ export type CreateProjectRequest = {
   name: string;
   projectPoints: number;
   projectType: 'free' | 'light' | 'strong';
-  price: number | 'free';
+  price: number;
   dateStart: string;
   dateTeam: string;
   specializations: Specialization[];
