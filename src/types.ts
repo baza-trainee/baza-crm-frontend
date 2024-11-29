@@ -175,7 +175,7 @@ export type RequestBodyMembers = {
 
 export type Specialization = {
   id: number;
-  count?: number;
+  count?: number | string;
   name?: string;
   color?: string;
   isSpecialization?: boolean;

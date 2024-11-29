@@ -35,6 +35,7 @@ const Projects = () => {
     queryFn: () => getTags(user!.token),
     enabled: !!user?.token,
   });
+  console.log(tags);
 
   if (isTagsError) {
     console.log(isTagsError);

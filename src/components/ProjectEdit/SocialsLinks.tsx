@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 const SocialsLinks = () => {
   const {
@@ -13,10 +13,22 @@ const SocialsLinks = () => {
   const links: string[] = watch('links', []);
   const [linkInput, setLinkInput] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+  const linkRef = useRef<HTMLDivElement | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+
+  const toogleLinkMenu = (e: MouseEvent) => {
+    if (linkRef.current === e.target) {
+      setIsOpen((prev) => !prev);
+    } else if (!menuRef.current?.contains(e.target as Node)) setIsOpen(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', toogleLinkMenu);
+    return () => document.removeEventListener('click', toogleLinkMenu);
+  }, [linkRef, menuRef]);
 
   const handleAddLink = () => {
     let formattedLink = linkInput;
-
     if (!formattedLink) {
       setError('linkInput', {
         message: "Посилання обов'язкове",
@@ -41,12 +53,8 @@ const SocialsLinks = () => {
     }
   };
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
-    <div className="bg-white rounded-[10px] py-5 border-card-border border flex flex-col gap-5 w-[412px]">
+    <div className="bg-white rounded-[10px] py-5 relative border-card-border border flex flex-col gap-5 w-[412px]">
       <ul className="flex flex-col gap-2 px-8">
         {links.map((link) => (
           <li key={link}>
@@ -61,29 +69,20 @@ const SocialsLinks = () => {
           </li>
         ))}
       </ul>
-      <div className="relative">
-        <div
-          className="flex items-center justify-between gap-2 px-8 cursor-pointer "
-          onClick={toggleDropdown}
-        >
-          <h3 className="font-semibold">Додати посилання на соц. мережі</h3>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={`h-6 w-6 duration-500 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
+      <div /* className="relative" */>
+        <div className="flex items-center justify-between gap-2 px-8 cursor-pointer ">
+          <h3
+            ref={linkRef}
+            className="font-normal  hover:text-primary-blue hover:underline"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
+            Додати посилання на соц. мережі
+          </h3>
         </div>
         {isOpen && (
-          <div className="absolute left-0 z-10 bg-input-normal-state rounded-[10px] shadow-lg top-8 w-full border-card-border border px-7 py-5">
+          <div
+            ref={menuRef}
+            className="absolute left-0 z-10 bg-input-normal-state rounded-[10px] shadow-lg -bottom-[11.6rem] w-full border-card-border border px-7 py-5"
+          >
             <label htmlFor="linkInput" className="">
               Нове посилання
             </label>
@@ -92,7 +91,9 @@ const SocialsLinks = () => {
               placeholder="Введіть посилання"
               type="text"
               value={linkInput}
-              onChange={(e) => handleInputChange(e.target.value)}
+              onChange={(e) => {
+                handleInputChange(e.target.value);
+              }}
             />
             <div className="h-5">
               {errors?.linkInput &&

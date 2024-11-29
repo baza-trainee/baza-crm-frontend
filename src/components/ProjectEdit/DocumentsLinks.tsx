@@ -1,5 +1,5 @@
 import { useFormContext } from 'react-hook-form';
-import { useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { Document } from '../../types';
 
@@ -14,13 +14,25 @@ const DocumentsLinks = () => {
 
   const documents: Document[] = watch('documents', []);
 
-  console.log(typeof documents);
-
   const [documentInput, setDocumentInput] = useState<Document>({
     name: '',
     link: '',
   });
   const [isOpen, setIsOpen] = useState(false);
+  const openDocRef = useRef<HTMLDivElement | null>(null);
+  const docMenuRef = useRef<HTMLDivElement | null>(null);
+  const toggleDocumentMenu = (e: MouseEvent) => {
+    if (openDocRef.current!.contains(e.target as Node))
+      setIsOpen((prev) => !prev);
+    else if (!docMenuRef.current!.contains(e.target as Node)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', toggleDocumentMenu);
+    return () => document.removeEventListener('click', toggleDocumentMenu);
+  }, [openDocRef, docMenuRef]);
 
   const handleAddDocument = () => {
     let hasError = false;
@@ -60,14 +72,10 @@ const DocumentsLinks = () => {
     }
   };
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
   return (
     <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border relative mt-4">
       <div
-        onClick={toggleDropdown}
+        ref={openDocRef}
         className="flex items-center justify-between cursor-pointer "
       >
         <span>Документація</span>
@@ -87,7 +95,10 @@ const DocumentsLinks = () => {
         </svg>
       </div>
       {isOpen && (
-        <div className="bg-white rounded-[10px] pt-5 border-card-border border flex flex-col gap-5 w-full absolute top-11 left-0 z-10">
+        <div
+          ref={docMenuRef}
+          className="bg-white rounded-[10px] pt-5 border-card-border border flex flex-col gap-5 w-full absolute top-11 left-0 z-10"
+        >
           <ul className="flex flex-col gap-2 px-8">
             {documents.map((doc) => (
               <li key={doc.link}>
