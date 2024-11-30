@@ -1,5 +1,5 @@
 import { FaCheck } from 'react-icons/fa6';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import { Tag } from '../../types';
 
@@ -20,12 +20,30 @@ const TableHeader: React.FC<TableHeaderProps> = ({
   const [isOpenSpecialization, setIsOpenSpecialization] = useState(false);
   const [isOpenStatus, setIsOpenStatus] = useState(false);
 
-  const toggleDropdownSpecialization = () => {
-    setIsOpenSpecialization(!isOpenSpecialization);
+  const toggleMenuStatusRef = useRef<HTMLTableCellElement | null>(null);
+  const toogleSpecializationMenuRef = useRef<HTMLTableCellElement | null>(null);
+  const menuSpecializationRef = useRef<HTMLUListElement | null>(null);
+  const menuStatusRef = useRef<HTMLUListElement | null>(null);
+
+  const toggleDropdown = (e: MouseEvent) => {
+    if (toggleMenuStatusRef.current?.contains(e.target as Node)) {
+      setIsOpenStatus((prev) => !prev);
+      setIsOpenSpecialization(false);
+    } else if (
+      toogleSpecializationMenuRef.current?.contains(e.target as Node)
+    ) {
+      setIsOpenSpecialization((prev) => !prev);
+      setIsOpenStatus(false);
+    } else if (!menuStatusRef.current?.contains(e.target as Node)) {
+      setIsOpenStatus(false);
+      setIsOpenSpecialization(false);
+    }
   };
-  const toggleDropdownStatus = () => {
-    setIsOpenStatus(!isOpenStatus);
-  };
+
+  useEffect(() => {
+    document.addEventListener('click', toggleDropdown);
+    return () => document.removeEventListener('click', toggleDropdown);
+  }, []);
 
   const toggleStatusTrue = () => {
     setResolvedFilter(true);
@@ -68,12 +86,14 @@ const TableHeader: React.FC<TableHeaderProps> = ({
           Телефон
           <span className="absolute top-0 right-0 w-full h-full border-r border-card-border"></span>
         </th>
-        <th className="relative z-10 px-4 py-2 w-44">
+        <th
+          ref={toogleSpecializationMenuRef}
+          className="relative z-10 px-4 py-2 w-44"
+        >
           Спеціалізація
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className={`size-6 cursor-pointer inline ml-2 duration-500 ${isOpenSpecialization ? 'rotate-180' : 'rotate-0'}`}
-            onClick={toggleDropdownSpecialization}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -86,7 +106,10 @@ const TableHeader: React.FC<TableHeaderProps> = ({
             />
           </svg>
           {isOpenSpecialization && (
-            <ul className="absolute left-0 z-10 w-full border rounded shadow-lg bg-input-normal-state top-[42px] border-card-border flex flex-col items-start">
+            <ul
+              ref={menuSpecializationRef}
+              className="absolute left-0 z-10 w-full border rounded shadow-lg bg-input-normal-state top-[42px] border-card-border flex flex-col items-start"
+            >
               {specializations?.map((specialization) => (
                 <li
                   className="flex items-center w-full gap-3 p-[10px] font-normal cursor-pointer hover:bg-hover-blue duration-500"
@@ -130,12 +153,11 @@ const TableHeader: React.FC<TableHeaderProps> = ({
           Відхилити заявку
           <span className="absolute top-0 right-0 w-full h-full border-r border-card-border"></span>
         </th>
-        <th className="relative w-40 px-4 py-2">
+        <th ref={toggleMenuStatusRef} className="relative w-40 px-4 py-2">
           Статус
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className={`size-6 cursor-pointer inline ml-2 duration-500 ${isOpenStatus ? 'rotate-180' : 'rotate-0'}`}
-            onClick={toggleDropdownStatus}
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -148,7 +170,10 @@ const TableHeader: React.FC<TableHeaderProps> = ({
             />
           </svg>
           {isOpenStatus && (
-            <ul className="absolute left-0 z-10 w-full border rounded shadow-lg bg-input-normal-state top-[42px] border-card-border flex flex-col items-start">
+            <ul
+              ref={menuStatusRef}
+              className="absolute left-0 z-10 w-full border rounded shadow-lg bg-input-normal-state top-[42px] border-card-border flex flex-col items-start"
+            >
               <li
                 className="flex items-center w-full gap-3 p-[10px] font-normal cursor-pointer hover:bg-hover-blue duration-500"
                 onClick={() => toggleStatusTrue()}
@@ -159,7 +184,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({
                     backgroundColor:
                       resolvedFilter === true ? '#1e70eb' : 'white',
                   }}
-                />{' '}
+                />
                 Оброблені
               </li>
               <li
@@ -172,7 +197,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({
                     backgroundColor:
                       resolvedFilter === false ? '#1e70eb' : 'white',
                   }}
-                />{' '}
+                />
                 Необроблені
               </li>
             </ul>
