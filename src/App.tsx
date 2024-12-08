@@ -9,7 +9,7 @@ import ForgottenPassword from './pages/ForgottenPassword';
 import HomeLayout from './components/HomeLayout';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
-import Portal from './pages/Portal';
+import UserPortal from './pages/UserPortal';
 import ProjectCreate from './pages/ProjectCreate';
 import ProjectDetails from './pages/ProjectDetails';
 import ProjectEdit from './pages/ProjectEdit';
@@ -65,7 +65,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'portal',
-        element: <Portal />,
+        element: <UserPortal />,
       },
       {
         path: 'projects',

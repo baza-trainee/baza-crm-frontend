@@ -9,11 +9,7 @@ import Select, {
 } from 'react-select';
 import chevronDown from '../../assets/common/chevron-down.svg';
 import CustomOption from './CustomOption';
-
-export type SelectOption = {
-  readonly value: string;
-  readonly label: string;
-};
+import { SelectOption } from '../../types';
 
 const DropdownIndicator = (
   props: DropdownIndicatorProps<SelectOption, true>,

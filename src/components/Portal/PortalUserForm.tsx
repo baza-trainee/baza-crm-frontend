@@ -3,38 +3,23 @@ import { useForm } from 'react-hook-form';
 import CustomInput from './CustomInput';
 import pencilIcon from '../../assets/common/pencil.svg';
 import chevronDownIcon from '../../assets/common/chevron-down.svg';
-import CustomSelect, { SelectOption } from './CustomSelect';
+import CustomSelect from './CustomSelect';
 import { useState } from 'react';
 import FileInput from './FileInput';
-import { UserData } from '../../types';
-import { getCurrentUser } from '../../utils/currentUserApi';
+import type { UserData, Member } from '../../types';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { getTags } from '../../utils/tagApi';
+import type { Specialization, Technology, SelectOption } from '../../types';
 
-const specializationList: SelectOption[] = [
-  { value: 'design', label: 'Design' },
-  { value: 'frontend', label: 'Frontend' },
-  { value: 'backend', label: 'Backend' },
-  { value: 'fullstack', label: 'Full Stack' },
-  { value: 'qa', label: 'QA Manual' },
-  { value: 'pm', label: 'PM' },
-];
+import type { RootState } from '../../types';
 
-// const technologiesList: SelectOption[] = [
-//   { value: 'figma', label: 'Figma' },
-//   { value: 'uiUx', label: 'Ui/UX' },
-//   { value: 'canva', label: 'Canva' },
-//   { value: 'adobe', label: 'Adobe Illustrator' },
-//   { value: 'photoshop', label: 'Photoshop' },
-//   { value: 'nodeJs', label: 'Node.js' },
-//   { value: 'java', label: 'Java' },
-//   { value: 'reactVue', label: 'React Vue' },
-//   { value: 'backend', label: 'Angular' },
-//   { value: 'fullstack', label: 'Swagger' },
-//   { value: 'qa', label: 'Postman' },
-// ];
-
-const PortalUserForm: React.FC = () => {
+const PortalUserForm = ({
+  userData,
+  handleUserUpdate,
+}: {
+  userData: Member;
+  handleUserUpdate: (tags: number[], data: UserData) => Promise<void>;
+}) => {
   const {
     register,
     handleSubmit,
@@ -51,35 +36,63 @@ const PortalUserForm: React.FC = () => {
       technologies: [],
       email: '',
       linkedin: '',
+      discordReceiving: false,
     },
   });
   const token = useSelector((state: RootState) => state.userState.user?.token);
-  console.log(token);
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const [allSpecializations, setAllSpecializations] = useState<
+    Specialization[]
+  >([]);
+  const [allTechnologies, setAllTechnologies] = useState<Technology[]>([]);
 
   const [selectedSpecializations, setSelectedSpecializations] = useState<
-    readonly SelectOption[]
+    SelectOption[]
   >([]);
+  const [selectedTechnologies, setSelectedTechnologies] = useState<
+    SelectOption[]
+  >([]);
+
+  const onSubmit = handleSubmit(async (data) => {
+    const tagIds = [
+      ...selectedTechnologies.map((t) => t.data.id),
+      ...selectedSpecializations.map((s) => s.data.id),
+    ];
+    await handleUserUpdate(tagIds, data);
+  });
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        if (token) {
-          const userData = await getCurrentUser(token);
-          console.log(userData);
+        if (userData && token) {
+          const allTags = await getTags(token!);
+          setAllSpecializations(allTags.filter((t) => t.isSpecialization));
+          setAllTechnologies(allTags.filter((t) => !t.isSpecialization));
 
           setValue('firstName', userData.firstName);
           setValue('lastName', userData.lastName);
           setValue('country', userData.country);
           setValue('city', userData.city);
-          setValue('phone', userData.phone);
+          setValue('phone', userData.phone!);
           setValue('email', userData.email);
-          setValue('linkedin', userData.linkedin);
+          setValue('linkedin', userData.linkedin!);
           setSelectedSpecializations(
-            specializationList.filter((item) =>
-              userData.specializations.includes(item.value as string),
-            ),
+            userData.specializations.map((s) => {
+              return {
+                value: s.name as string,
+                label: s.name as string,
+                data: s,
+              };
+            }),
+          );
+          setSelectedTechnologies(
+            userData.technologies.map((t) => {
+              return {
+                value: t.name as string,
+                label: t.name as string,
+                data: t,
+              };
+            }),
           );
         } else {
           console.error('No token or user ID found');
@@ -90,7 +103,7 @@ const PortalUserForm: React.FC = () => {
     };
 
     fetchUserData();
-  }, [token, setValue]);
+  }, [userData, token]);
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col gap-5 p-5">
@@ -137,13 +150,19 @@ const PortalUserForm: React.FC = () => {
         <div className="w-full">
           <CustomSelect
             label="Спеціалізація"
-            options={specializationList}
-            value={Array.from(selectedSpecializations)}
+            options={allSpecializations.map((s) => {
+              return {
+                value: s.name as string,
+                label: s.name as string,
+                data: s,
+              };
+            })}
+            value={selectedSpecializations}
             onChange={(newValue) => {
-              setSelectedSpecializations(newValue);
+              setSelectedSpecializations([...newValue]);
               setValue(
                 'specializations',
-                newValue.map((option) => option.value),
+                newValue.map((v) => v.data as Specialization),
               );
             }}
           />
@@ -151,31 +170,34 @@ const PortalUserForm: React.FC = () => {
             <div>
               <ul>
                 {selectedSpecializations.map((specialization) => (
-                  <li key={specialization.value}>{specialization.label}</li>
+                  <li key={specialization.data.id}>{specialization.label}</li>
                 ))}
               </ul>
             </div>
           )}
-
-          {/* <div className="relative">
-            <select
-              className="rounded-[10px] border-2 border-solid border-input-normal-state bg-light-blue-bg hover:bg-hover-blue px-4 h-10 w-full font-open-sans text-base font-normal leading-[26px]"
-              id="technologies"
-              {...register('technologies')}
-            >
-              <option value="Figma">Figma</option>
-              <option value="Ui/UX">Ui/UX</option>
-              <option value="Canva">Canva</option>
-              <option value="Adobe Illustrator">Adobe Illustrator</option>
-              <option value="Photoshop">Photoshop</option>
-              <option value="Node.js">Node.js</option>
-              <option value="Java">Java</option>
-              <option value="React Vue">React Vue</option>
-              <option value="Angular">Angular</option>
-              <option value="Swagger">Swagger</option>
-              <option value="Postman">Postman</option>
-            </select>
-          </div> */}
+          <CustomSelect
+            label="Технології"
+            options={allTechnologies.map((t) => {
+              return { value: t.name, label: t.name, data: t };
+            })}
+            value={selectedTechnologies}
+            onChange={(newValue) => {
+              setSelectedTechnologies([...newValue]);
+              setValue(
+                'technologies',
+                newValue.map((v) => v.data as Technology),
+              );
+            }}
+          />
+          {selectedTechnologies.length > 0 && (
+            <div>
+              <ul>
+                {selectedTechnologies.map((technologies) => (
+                  <li key={technologies.data.id}>{technologies.label}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <CustomInput id="email" label="Email" register={register} />
           <CustomInput
             id="linkedin"
@@ -183,6 +205,19 @@ const PortalUserForm: React.FC = () => {
             register={register}
             icon={pencilIcon}
           />
+
+          <label className="flex ">
+            <input
+              {...register('discordReceiving')}
+              className=" border-black border w-[20px] h-[20px] rounded-[4px]"
+              type="checkbox"
+              defaultChecked={userData.discordReceiving}
+              onChange={(e) =>
+                setValue('discordReceiving', e.currentTarget.checked)
+              }
+            />
+            Отримувати сповіщення у Discord
+          </label>
         </div>
       </div>
 

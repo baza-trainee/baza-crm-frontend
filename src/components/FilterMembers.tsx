@@ -3,7 +3,7 @@ import AnalyticsForm from './AnalyticsForm';
 import MultiSelect from './MultiSelect';
 import Wrapper from './Wrapper';
 import useMenuState from '../hooks';
-import { SelectOptionType } from '../types';
+import { RootState, SelectOptionType } from '../types';
 import Calendar from './Calendar';
 import FilterMembersTable from './Analytics/FilterMembersTable';
 // import { useQuery } from '@tanstack/react-query';
@@ -11,6 +11,7 @@ import FilterMembersTable from './Analytics/FilterMembersTable';
 import { Member, RequestBodyMembers } from '../types';
 import { getTags } from '../utils/tagApi';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 // import { filterMembers, filterProjects } from '../utils/filterApi';
 
 const statusOptions: SelectOptionType[] = [
@@ -55,7 +56,7 @@ const FilterMembers: React.FC<FilterMembersProps> = ({
   error,
 }) => {
   const { isMenuOpen } = useMenuState();
-  console.log(members);
+  const token = useSelector((state: RootState) => state.userState.user?.token);
   const [specializations, setSpecializations] = useState<
     { name: string; color: string; id: number }[]
     // string[]
@@ -64,9 +65,6 @@ const FilterMembers: React.FC<FilterMembersProps> = ({
     { name: string; id: number }[]
     // string[]
   >([]);
-
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzI4ODIwMzQwLCJleHAiOjE3Mjg5MDY3NDB9.ZEhMEU2j0IlrT-oa_WP4l7OniQv2SjWUvg3-NmBa8co';
 
   const fetchTags = async (token: string) => {
     try {
@@ -79,7 +77,6 @@ const FilterMembers: React.FC<FilterMembersProps> = ({
       const specializations = tags?.filter(
         (tag) => tag.isSpecialization === true,
       );
-      console.log(specializations);
       setSpecializations(specializations);
     } catch (error) {
       console.error('Error fetching tags:', error);
