@@ -1,4 +1,4 @@
-import { SelectOption } from './CustomSelect';
+import type { SelectOption } from '../../types';
 import { components, OptionProps } from 'react-select';
 import checkIcon from '../../assets/common/checkbox_select.svg';
 

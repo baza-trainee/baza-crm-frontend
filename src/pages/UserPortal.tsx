@@ -15,8 +15,6 @@ const UserPortal = () => {
   const [status, setStatus] = useState<Member['status']>();
 
   const handleUserUpdate = async (tags: number[], data: UserData) => {
-    console.log(tags);
-    console.log(data);
     const userData: UpdateUser = {
       linkedin: data.linkedin,
       discordReceiving: data.discordReceiving,
@@ -27,10 +25,10 @@ const UserPortal = () => {
       phone: data.phone,
       status: status as string,
     };
-    await updateUser(token!, userData); //TODO: tested update User fucnctionality and add tags
+    await updateUser(token!, userData);
+
     await addUserTag(token!, tags);
   };
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -60,7 +58,7 @@ const UserPortal = () => {
           />
           <TitleHeader title="Інформація учасника" />
           <div className="flex w-full gap-5">
-            <div className="flex-1 bg-white border rounded-xl border-card-border">
+            <div className="flex-0 lg:flex-1 bg-white border rounded-xl border-card-border">
               <PortalUserForm
                 handleUserUpdate={handleUserUpdate}
                 userData={userData}

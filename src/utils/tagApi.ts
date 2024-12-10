@@ -26,11 +26,21 @@ export const addUserTag = async (
       },
     };
 
-    const { data } = await axios.get<Tag[]>(url, authHeaders);
+    const { data } = await axios.post<Tag[]>(url, {}, authHeaders);
 
     return data;
   };
 
   const data = await Promise.all(tags.map(async (t) => await addTag(t)));
+  return data;
+};
+export const deleteTag = (token: string, tagId: string) => {
+  const url = `${import.meta.env.VITE_API_URL}/tag/removeTag/${tagId}`;
+  const authHeaders = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const data = axios.post(url, {}, authHeaders);
   return data;
 };
