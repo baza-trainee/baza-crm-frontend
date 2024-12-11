@@ -9,11 +9,7 @@ import Select, {
 } from 'react-select';
 import chevronDown from '../../assets/common/chevron-down.svg';
 import CustomOption from './CustomOption';
-
-export type SelectOption = {
-  readonly value: string;
-  readonly label: string;
-};
+import { SelectOption } from '../../types';
 
 const DropdownIndicator = (
   props: DropdownIndicatorProps<SelectOption, true>,
@@ -41,11 +37,11 @@ type CustomSelectProps = {
 const customStyles: StylesConfig<SelectOption, true> = {
   control: (provided, state) => ({
     ...provided,
+    height: '20px',
     backgroundColor: state.isFocused ? '#E8F2FF' : '#F8F9FD',
     borderRadius: '10px',
     borderWidth: '2px',
-    borderStyle: 'solid',
-    borderColor: 'lightgray',
+    borderColor: '#e8f2ff',
     boxShadow: 'none',
     '&:hover': {
       borderColor: 'gray',
@@ -58,6 +54,7 @@ const customStyles: StylesConfig<SelectOption, true> = {
   multiValueLabel: () => ({
     display: 'none',
   }),
+
   multiValueRemove: () => ({
     display: 'none',
   }),
@@ -84,7 +81,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
         options={options}
         value={value}
         onChange={onChange}
-        className="basic-single"
+        className="basic-single mt-2"
         classNamePrefix="select"
         placeholder=""
         styles={customStyles}

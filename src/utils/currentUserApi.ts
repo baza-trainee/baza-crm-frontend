@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { UserData } from '../types';
+import { Member } from '../types';
 
-export const getCurrentUser = async (token: string): Promise<UserData> => {
+export const getCurrentUser = async (token: string): Promise<Member> => {
   const url = `${import.meta.env.VITE_API_URL}/auth/me`;
 
-  const response = await axios.post<UserData>(
+  const response = await axios.post<Member>(
     url,
     {},
     {
@@ -14,6 +14,5 @@ export const getCurrentUser = async (token: string): Promise<UserData> => {
     },
   );
 
-  console.log(response.data);
   return response.data;
 };

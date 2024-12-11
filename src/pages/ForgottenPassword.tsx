@@ -29,16 +29,13 @@ const ForgottenPassword = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     setSend(true);
-    console.log('sent:', data);
     try {
       const response = await axios.post(
-        'http://185.161.208.63:5000/api/v1/auth/#', // поки немаЄ ендоінту !!!
+        'http://185.161.208.63:5000/api/v1/auth/#', //TODO:implement forgoten password logic
         {
           email: data.email,
         },
       );
-
-      console.log('answer:', response.data);
       dispatch(
         setUser({
           email: response.data.email,

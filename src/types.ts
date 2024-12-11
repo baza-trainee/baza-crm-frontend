@@ -120,26 +120,16 @@ export type Inputs = {
   login: string;
   password: string;
 };
-
-export type Member = {
-  id?: number;
-  email: string;
+export type UpdateUser = {
+  linkedin: string;
+  discordReceiving: boolean;
+  city: string;
+  country: string;
   firstName: string;
   lastName: string;
-  specializations: Specialization[];
-  technologies: [];
-  country: string;
-  city: string;
+  phone: string;
   status: string;
-  registerAt: string;
-  karmaPoints?: number;
-  projectPoints?: number;
-  linkedin?: string;
-  discord?: string;
-  phone?: string;
-  discordReceiving?: boolean;
 };
-
 export type DataForm = {
   // statuses: string[];
   // formats: string[];
@@ -178,7 +168,7 @@ export type Specialization = {
   count?: number | string;
   name?: string;
   color?: string;
-  isSpecialization?: boolean;
+  isSpecialization: boolean;
 };
 
 export type Technology = {
@@ -275,12 +265,13 @@ export type UserData = {
   city: string;
   phone: string;
   resume: File | null;
-  specializations: string[];
-  technologies: string[];
+  specializations: Specialization[];
+  technologies: Technology[];
   email: string;
   linkedin: string;
   karmaPoints?: number | null;
   projectPoints?: number | null;
+  discordReceiving: boolean;
 };
 
 export type Application = {
@@ -337,4 +328,34 @@ export type MembersEvaluations = {
 
 export type SetEvaluations = {
   karmas: MembersEvaluations[] | [];
+};
+export type SelectOption = {
+  value: string;
+  label: string;
+  data: Specialization | Technology;
+};
+
+export type Member = {
+  id?: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  specializations: Specialization[];
+  technologies: Technology[];
+  country: string;
+  city: string;
+  status: OptionStatus['name'];
+  registerAt: string;
+  karmaPoints?: number;
+  projectPoints?: number;
+  linkedin?: string;
+  discord?: string;
+  phone?: string;
+  discordReceiving?: boolean;
+};
+
+export type OptionStatus = {
+  name: 'active' | 'working' | 'pause';
+  label: string;
+  color: string;
 };

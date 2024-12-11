@@ -1,35 +1,13 @@
-import { useEffect, useState } from 'react';
 import star from '../../assets/common/star.svg';
 import fullStar from '../../assets/common/full-star.svg';
-import { getCurrentUser } from '../../utils/currentUserApi';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import { UserData } from '../../types';
 
-const UserRating: React.FC = () => {
-  const token = useSelector((state: RootState) => state.userState.user?.token);
-  const [projectPoints, setProjectPoints] = useState<number | null>(null);
-  const [karmaPoints, setKarmaPoints] = useState<number | null>(null);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        if (token) {
-          const userData: UserData = await getCurrentUser(token);
-          console.log(userData.projectPoints);
-          setProjectPoints(userData.projectPoints ?? 0);
-          setKarmaPoints(userData.karmaPoints ?? 0);
-        } else {
-          console.error('No token found');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-      }
-    };
-
-    fetchUserData();
-  }, [token]);
-
+const UserRating = ({
+  projectPoints,
+  karmaPoints,
+}: {
+  projectPoints: number | null | undefined;
+  karmaPoints: number | null | undefined;
+}) => {
   return (
     <div className="flex-1 h-[719px] overflow-hidden border rounded-xl border-card-border bg-white p-4">
       <h2 className="mb-4 text-lg font-bold text-center">Рейтинг співпраці</h2>
