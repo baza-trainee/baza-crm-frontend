@@ -199,7 +199,7 @@ const PortalUserForm = ({
                 );
               }}
             />
-            <div className="flex flex-col my-5">
+            <div className="flex flex-col">
               {exictingTechnologies && exictingSpecialization!.length > 0 && (
                 <ul className="flex flex-wrap gap-1">
                   {exictingSpecialization!.map((specialization) => (
@@ -256,7 +256,7 @@ const PortalUserForm = ({
                 );
               }}
             />
-            <div className="flex flex-col my-5">
+            <div className="flex flex-col">
               {exictingTechnologies && exictingTechnologies!.length > 0 && (
                 <ul className="flex flex-wrap gap-1">
                   {exictingTechnologies!.map((specialization) => (
