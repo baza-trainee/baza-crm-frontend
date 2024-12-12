@@ -8,7 +8,6 @@ import FilterProjects from '../components/FilterProjects';
 import SubjectOption from '../components/SubjectOption';
 import ActionOption from '../components/ActionOption';
 
-// import { useMutation } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import {
   Member,
@@ -27,9 +26,6 @@ const Analytics: React.FC = () => {
   const [filteredProjects, setFilteredProjects] = useState<Project[]>([]);
   const [filteredMembers, setFilteredMembers] = useState<Member[]>([]);
 
-  // const token =
-  //   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzI4ODQ3MzY5LCJleHAiOjE3Mjg5MzM3Njl9.wrtD6z92atAbY0SQSEoNj-3hB1R9UeKSXer9VHk4w-4';
-  console.log(user?.token);
   const handleProjectsFilter = async (data: RequestBodyProjects) => {
     console.log(data);
     try {
@@ -106,30 +102,27 @@ const Analytics: React.FC = () => {
           />
         </div>
       </div>
-      <div className="flex gap-5">
-        <div className="">
-          {infoType === 'Учасники' && action === 'Сортування' && (
-            <SortMembers members={filteredMembers} />
-          )}
-          {infoType === 'Учасники' && action === 'Фільтр' && (
-            <FilterMembers
-              members={filteredMembers}
-              onFilterMembers={handleMembersFilter}
-              error={'error'}
-            />
-          )}
-          {infoType === 'Проєкти' && action === 'Сортування' && (
-            <SortProjects projects={filteredProjects} />
-          )}
-          {infoType === 'Проєкти' && action === 'Фільтр' && (
-            <FilterProjects
-              projects={filteredProjects}
-              onFilterProjects={handleProjectsFilter}
-              error={'fvsdfgsdf'}
-            />
-          )}
-          {/* <ActionChoice action={action} infoType={infoType} /> */}
-        </div>
+      <div className="flex w-full gap-5">
+        {infoType === 'Учасники' && action === 'Сортування' && (
+          <SortMembers members={filteredMembers} />
+        )}
+        {infoType === 'Учасники' && action === 'Фільтр' && (
+          <FilterMembers
+            members={filteredMembers}
+            onFilterMembers={handleMembersFilter}
+            error={'error'}
+          />
+        )}
+        {infoType === 'Проєкти' && action === 'Сортування' && (
+          <SortProjects projects={filteredProjects} />
+        )}
+        {infoType === 'Проєкти' && action === 'Фільтр' && (
+          <FilterProjects
+            projects={filteredProjects}
+            onFilterProjects={handleProjectsFilter}
+            error={'fvsdfgsdf'}
+          />
+        )}
       </div>
     </section>
   );

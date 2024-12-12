@@ -2,47 +2,19 @@ import { Controller } from 'react-hook-form';
 import AnalyticsForm from './AnalyticsForm';
 import MultiSelect from './MultiSelect';
 import Wrapper from './Wrapper';
-import useMenuState from '../hooks';
 import { RootState, SelectOptionType } from '../types';
 import Calendar from './Calendar';
 import FilterMembersTable from './Analytics/FilterMembersTable';
-// import { useQuery } from '@tanstack/react-query';
-// import { useSelector } from 'react-redux';
 import { Member, RequestBodyMembers } from '../types';
 import { getTags } from '../utils/tagApi';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-// import { filterMembers, filterProjects } from '../utils/filterApi';
 
 const statusOptions: SelectOptionType[] = [
   { value: 'active', label: 'Активний' },
   { value: 'working', label: 'На проєкті' },
   { value: 'paused', label: 'На паузі' },
 ];
-
-// const specsOptions: SelectOptionType[] = [
-//   { value: 'Design', label: 'Design' },
-//   { value: 'Frontend', label: 'Frontend' },
-//   { value: 'Backend', label: 'Backend' },
-//   { value: 'Full Stack', label: 'Full Stack' },
-//   { value: 'QA Manual', label: 'QA Manual' },
-//   { value: 'PM', label: 'PM' },
-// ];
-
-// const technologyOptions: SelectOptionType[] = [
-//   { value: 'Figma', label: 'Figma' },
-//   { value: 'UI/UX', label: 'UI/UX' },
-//   { value: 'Canva', label: 'Canva' },
-//   { value: 'Adobe  Illustrator', label: 'Adobe  Illustrator' },
-//   { value: 'Photoshop', label: 'Photoshop' },
-//   { value: 'Node.js', label: 'Node.js' },
-//   { value: 'Java', label: 'Java' },
-//   { value: 'React', label: 'React' },
-//   { value: 'Vue', label: 'Vue' },
-//   { value: 'Angular', label: 'Angular' },
-//   { value: 'Swagger', label: 'Swagger' },
-//   { value: 'Postman', label: 'Postman' },
-// ];
 
 type FilterMembersProps = {
   members: Member[];
@@ -55,21 +27,17 @@ const FilterMembers: React.FC<FilterMembersProps> = ({
   onFilterMembers,
   error,
 }) => {
-  const { isMenuOpen } = useMenuState();
   const token = useSelector((state: RootState) => state.userState.user?.token);
   const [specializations, setSpecializations] = useState<
     { name: string; color: string; id: number }[]
-    // string[]
   >([]);
   const [technologies, setTechnologies] = useState<
     { name: string; id: number }[]
-    // string[]
   >([]);
 
   const fetchTags = async (token: string) => {
     try {
       const tags = await getTags(token);
-      console.log(tags);
       const technologies = tags?.filter(
         (tag) => tag.isSpecialization === false,
       );
@@ -90,67 +58,67 @@ const FilterMembers: React.FC<FilterMembersProps> = ({
   }, [token]);
 
   return (
-    <div className={'flex'}>
+    <div className="flex w-full gap-4">
       <AnalyticsForm onFilter={onFilterMembers}>
         {(control) => (
-          <Wrapper isMenuOpen={isMenuOpen} height="432px" width="268px">
-            <MultiSelect
-              options={statusOptions}
-              placeholder={'Статус'}
-              control={control}
-              className={'w-[228px] mb-4'}
-              name="statuses"
-            />
-            <MultiSelect
-              options={specializations.map((spec) => ({
-                id: spec.id,
-                value: spec.name,
-                label: spec.name,
-              }))}
-              placeholder={'Спеціалізація'}
-              control={control}
-              className={'w-[228px] mb-4'}
-              name="specializations"
-            />
-            <MultiSelect
-              options={technologies.map((techn) => ({
-                id: techn.id,
-                value: techn.name,
-                label: techn.name,
-              }))}
-              placeholder={'Технології'}
-              control={control}
-              className={'w-[228px] mb-24'}
-              name="technologies"
-            />
-            <div>
-              <p>Період реєстрації</p>
+          <Wrapper>
+            <div className="flex flex-col gap-4">
+              <MultiSelect
+                options={statusOptions}
+                placeholder={'Статус'}
+                control={control}
+                name="statuses"
+              />
+              <MultiSelect
+                options={specializations.map((spec) => ({
+                  id: spec.id,
+                  value: spec.name,
+                  label: spec.name,
+                }))}
+                placeholder={'Спеціалізація'}
+                control={control}
+                name="specializations"
+              />
+              <MultiSelect
+                options={technologies.map((techn) => ({
+                  id: techn.id,
+                  value: techn.name,
+                  label: techn.name,
+                }))}
+                placeholder={'Технології'}
+                control={control}
+                name="technologies"
+              />
+            </div>
 
-              <Controller
-                name="selectedDateFrom"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <Calendar
-                    text={'з'}
-                    selectedDate={value}
-                    onDateChange={(date) => {
-                      console.log(date);
-                      onChange(date);
-                    }}
-                  />
-                )}
-              />
-              <Controller
-                name="selectedDateTo"
-                control={control}
-                render={({ field: { onChange, value } }) => (
-                  <Calendar
-                    text={'по'}
-                    selectedDate={value}
-                    onDateChange={onChange}
-                  />
-                )}
-              />
+            <div className="flex flex-col">
+              <p className="text-center">Період реєстрації</p>
+              <div className="flex flex-col gap-2.5 mt-4">
+                <Controller
+                  name="selectedDateFrom"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <Calendar
+                      text={'з'}
+                      selectedDate={value}
+                      onDateChange={(date) => {
+                        onChange(date);
+                      }}
+                    />
+                  )}
+                />
+                <Controller
+                  name="selectedDateTo"
+                  control={control}
+                  render={({ field: { onChange, value } }) => (
+                    <Calendar
+                      text={'по'}
+                      selectedDate={value}
+                      onDateChange={onChange}
+                    />
+                  )}
+                />
+              </div>
             </div>
           </Wrapper>
         )}

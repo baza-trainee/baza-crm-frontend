@@ -22,19 +22,18 @@ const customStyles: StylesConfig<SelectOptionType, false> = {
     ...base,
     border: '2px solid #BCD7FF',
     borderRadius: '10px',
-    height: '158px',
     fontSize: '16px',
     lineHeight: '24px',
     paddingBottom: '10px',
     paddingTop: '5px',
     marginTop: '2px',
   }),
+  menuList: (base) => ({
+    ...base,
+  }),
   option: (base, state) => ({
     ...base,
     cursor: 'pointer',
-    height: '35px',
-    display: 'flex',
-    alignItems: 'center',
     backgroundColor: state.isSelected ? '#D2E4FF' : 'white',
     color: 'black',
     '&:hover': {
@@ -52,8 +51,6 @@ type SortProjectsProps = {
 };
 
 const SortProjects: React.FC<SortProjectsProps> = ({ projects }) => {
-  console.log(projects);
-
   const [selectedOptions, setSelectedOptions] = useState<SelectOptionType>();
   const [sortedProjects, setSortedProjects] = useState<Project[]>([
     ...projects,
@@ -104,13 +101,8 @@ const SortProjects: React.FC<SortProjectsProps> = ({ projects }) => {
   };
 
   return (
-    <div className={'flex'}>
-      <Wrapper
-        isMenuOpen={isMenuOpen}
-        height={'258px'}
-        width={'268px'}
-        // maxHeight={'258px'}
-      >
+    <div className="flex w-full gap-4">
+      <Wrapper classNames="h-[370px]">
         <Select
           options={sortOptions}
           closeMenuOnSelect={false}
@@ -118,7 +110,7 @@ const SortProjects: React.FC<SortProjectsProps> = ({ projects }) => {
           value={selectedOptions}
           placeholder="Оберіть порядок"
           isSearchable={false}
-          className="w-[228px] mb-4"
+          className="mb-4"
           menuIsOpen={isMenuOpen}
           onMenuOpen={handleMenuOpen}
           onMenuClose={handleMenuClose}

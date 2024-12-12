@@ -32,8 +32,6 @@ const AnalyticsForm: React.FC<FormProps> = ({ children, onFilter }) => {
     // reset({ status: [], format: [], technology: [], specialization: [] });
   };
   const onSubmit = async (data: DataForm) => {
-    console.log(data);
-    console.log(data.technologies);
     const formatOption = data.formats?.map((item) => item.value) || [];
     const statusOption = data.statuses?.map((item) => item.value) || [];
     const technologyOption = data.technologies?.map((item) => item.id) || [];
@@ -67,8 +65,10 @@ const AnalyticsForm: React.FC<FormProps> = ({ children, onFilter }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {children(control)}
-      <Button label={'Застосувати'} />{' '}
-      <Button label={'Скинути'} onClick={handleReset} />
+      <div className="flex flex-col gap-4 lg:gap-1 lg:flex-row">
+        <Button label={'Застосувати'} />
+        <Button label={'Скинути'} onClick={handleReset} />
+      </div>
     </form>
   );
 };

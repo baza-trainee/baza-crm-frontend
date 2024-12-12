@@ -20,50 +20,21 @@ const Calendar: React.FC<CalendarProps> = ({
   >(({ value, onClick, className }, ref) => (
     <button className={className} onClick={onClick} ref={ref}>
       {value || new Date().toLocaleDateString()}
-      <img src={calendarIcon} alt="calendar icon" />
+      <img className="size-10" src={calendarIcon} alt="calendar icon" />
     </button>
   ));
 
   return (
-    <div className="flex pb-4 justify-between items-center	">
+    <div className="flex justify-between items-center">
       <span>{text}</span>
       <DatePicker
         customInput={
-          <CustomInput className="flex w-[168px] h-[72px] p-1.5 gap-[6px] cursor-pointer items-center border-card-border border-2 border-solid rounded bg-white justify-center" />
+          <CustomInput className="flex p-3  text-sm gap-[6px] cursor-pointer items-center border-card-border border-2 border-solid rounded bg-white justify-center" />
         }
         selected={selectedDate}
         onChange={onDateChange}
       />
     </div>
-    // <div className="px-4 py-4 pt-4 ">
-    //   <div className="pb-4">
-    //     <span>Період реєстрації</span>
-    //   </div>
-    //   <div className="flex pb-4 justify-between items-center	">
-    //     <span>з</span>
-
-    //     {
-    //       <DatePicker
-    //         customInput={
-    //           <CustomInput className="flex w-[168px] h-[72px] p-1.5 gap-[6px]  cursor-pointer items-center border-card-border border-2 border-solid rounded bg-white justify-center font-Lato font-normal text-base" />
-    //         }
-    //         selected={selectedDateFrom}
-    //         onChange={onDateChangeFrom}
-    //         form="external-form"
-    //       />
-    //     }
-    //   </div>
-    //   <div className="flex pb-4 justify-between items-center	">
-    //     <span>по</span>
-    //     <DatePicker
-    //       customInput={
-    //         <CustomInput className="flex w-[168px] h-[72px] p-1.5 gap-[6px] cursor-pointer items-center border-card-border border-2 border-solid rounded bg-white justify-center" />
-    //       }
-    //       selected={selectedDateTo}
-    //       onChange={onDateChangeTo}
-    //     />
-    //   </div>
-    // </div>
   );
 };
 export default Calendar;

@@ -50,15 +50,18 @@ const customStyles: StylesConfig<SelectOptionType, false> = {
     ...base,
     border: '2px solid #BCD7FF',
     borderRadius: '10px',
-    height: '642px',
+    overflow: 'auto',
+    height: '460px',
     fontSize: '16px',
     lineHeight: '24px',
+  }),
+  menuList: () => ({
+    height: '460px',
   }),
   option: (base, state) => ({
     ...base,
     cursor: 'pointer',
     height: 'auto',
-    // paddingBottom: '10px',
     backgroundColor: state.isSelected ? '#D2E4FF' : 'white',
     color: 'black',
     '&:hover': {
@@ -170,8 +173,8 @@ const SortMembers: React.FC<SortMembersProps> = ({ members }) => {
     }
   };
   return (
-    <div className={'flex'}>
-      <Wrapper isMenuOpen={isMenuOpen} height={'766px'} width={'302px'}>
+    <div className="flex w-full gap-4">
+      <Wrapper classNames="h-full">
         <Select
           options={sortOptions}
           closeMenuOnSelect={false}
@@ -179,7 +182,7 @@ const SortMembers: React.FC<SortMembersProps> = ({ members }) => {
           value={selectedOptions}
           placeholder="Оберіть порядок"
           isSearchable={false}
-          className="w-[262px] mb-4"
+          className="mb-4"
           menuIsOpen={isMenuOpen}
           onMenuOpen={handleMenuOpen}
           onMenuClose={handleMenuClose}

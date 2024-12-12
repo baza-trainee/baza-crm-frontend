@@ -24,8 +24,8 @@ const FilterProjectsTable: React.FC<ProjectsTableProps> = ({
     return <div>За даними параметрами проєктів немає</div>;
   } else {
     return (
-      <div className="flex-1 ml-[30px] w-[1268px] bg-white rounded-t-[10px] overflow-hidden border-t border-card-border">
-        <table className="min-w-full text-base border-separate border-spacing-0">
+      <div className="w-full h-min bg-white rounded-t-[10px] overflow-auto border-t border-card-border">
+        <table className="w-full text-base border-collapse border-spacing-0">
           <thead className="bg-[#E9F3FE]">
             <tr>
               {tableHeaders.map((tableHeader, i) => (
@@ -69,12 +69,12 @@ const FilterProjectsTable: React.FC<ProjectsTableProps> = ({
                   {project.projectStatus === 'working' && (
                     <td
                       className="border border-card-border px-4 py-2 text-center capitalize "
-                      style={{ color: '##2E57DB' }}
+                      style={{ color: '#2E57DB' }}
                     >
                       У розробці
                     </td>
                   )}
-                  {project.projectStatus === 'finished' && (
+                  {project.projectStatus === 'ended' && (
                     <td
                       className="border border-card-border px-4 py-2 text-center capitalize "
                       style={{ color: '#14B541' }}

@@ -2,7 +2,6 @@ import Select, { MultiValue, StylesConfig } from 'react-select';
 import { Controller, Control } from 'react-hook-form';
 import { CustomOption } from './CustomOption';
 import useMenuState from '../hooks';
-// import { DataForm } from './AnalyticsForm';
 import { DataForm } from '../types';
 
 import { SelectOptionType } from '../types';
@@ -48,9 +47,7 @@ const customStyles: StylesConfig<SelectOptionType, true> = {
 type MultiSelectProps = {
   placeholder: string;
   options: SelectOptionType[];
-  // options: string[] | SelectOptionType[];
   control: Control<DataForm>;
-  className: string;
   name: keyof DataForm;
 };
 
@@ -58,7 +55,6 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
   options,
   placeholder,
   control,
-  className,
   name,
 }) => {
   const { isMenuOpen, handleMenuOpen, handleMenuClose } = useMenuState();
@@ -85,7 +81,6 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
             components={{
               Option: CustomOption,
             }}
-            className={className}
             menuIsOpen={isMenuOpen}
             onMenuOpen={handleMenuOpen}
             onMenuClose={handleMenuClose}
