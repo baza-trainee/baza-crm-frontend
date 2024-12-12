@@ -1,5 +1,4 @@
 type SubjectOptionProps = {
-  // infoType: string;
   setInfoType: (info: string) => void;
   text: string;
   id: string;
@@ -9,7 +8,6 @@ type SubjectOptionProps = {
 
 const SubjectOption: React.FC<SubjectOptionProps> = ({
   setInfoType,
-  // infoType,
   text,
   id,
 }) => {

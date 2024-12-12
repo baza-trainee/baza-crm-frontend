@@ -1,5 +1,4 @@
 import Wrapper from './Wrapper';
-import useMenuState from '../hooks';
 import AnalyticsForm from './AnalyticsForm';
 import MultiSelect from './MultiSelect';
 import { Project, SelectOptionType } from '../types';
@@ -8,7 +7,7 @@ import FilterProjectsTable from './Analytics/FilterProjectsTable';
 const statusOptions: SelectOptionType[] = [
   { value: 'searching', label: 'Формується команда' },
   { value: 'working', label: 'В розробці' },
-  { value: 'completed', label: 'Завершений' },
+  { value: 'ended', label: 'Завершений' },
 ];
 
 const formatOptions: SelectOptionType[] = [
@@ -27,31 +26,21 @@ const FilterProjects: React.FC<FilterProjectsProps> = ({
   onFilterProjects,
   error,
 }) => {
-  console.log(projects);
-
-  const { isMenuOpen } = useMenuState();
   return (
-    <div className={'flex'}>
+    <div className="flex w-full gap-4">
       <AnalyticsForm onFilter={onFilterProjects}>
         {(control) => (
-          <Wrapper
-            isMenuOpen={isMenuOpen}
-            height="432px"
-            width="268px"
-            maxHeight="258px"
-          >
+          <Wrapper>
             <MultiSelect
               options={statusOptions}
               placeholder={'Статус'}
               control={control}
-              className={'w-[228px] mb-4'}
               name="statuses"
             />
             <MultiSelect
               options={formatOptions}
               placeholder={'Формат'}
               control={control}
-              className={'w-[228px] hover:border-card-border'}
               name="formats"
             />
           </Wrapper>
@@ -60,7 +49,6 @@ const FilterProjects: React.FC<FilterProjectsProps> = ({
       {projects.length > 0 && (
         <FilterProjectsTable projects={projects} error={error} />
       )}
-      {/* <FilterProjectsTable projects={projects} error={error} /> */}
     </div>
   );
 };
