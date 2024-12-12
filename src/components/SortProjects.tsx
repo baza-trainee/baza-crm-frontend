@@ -28,9 +28,6 @@ const customStyles: StylesConfig<SelectOptionType, false> = {
     paddingTop: '5px',
     marginTop: '2px',
   }),
-  menuList: (base) => ({
-    ...base,
-  }),
   option: (base, state) => ({
     ...base,
     cursor: 'pointer',
