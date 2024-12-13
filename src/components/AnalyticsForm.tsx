@@ -26,7 +26,6 @@ const AnalyticsForm: React.FC<FormProps> = ({ children, onFilter }) => {
   } = useForm<DataForm>();
 
   const selectedOptions = watch('statuses');
-  console.log(selectedOptions);
 
   const handleReset = () => {
     // reset({ status: [], format: [], technology: [], specialization: [] });

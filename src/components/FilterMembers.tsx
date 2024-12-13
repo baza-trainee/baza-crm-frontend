@@ -11,9 +11,9 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const statusOptions: SelectOptionType[] = [
-  { value: 'active', label: 'Активний' },
-  { value: 'working', label: 'На проєкті' },
-  { value: 'paused', label: 'На паузі' },
+  { value: 'active', label: 'Активний', color: '#15C847' },
+  { value: 'working', label: 'На проєкті', color: '#1E70EB' },
+  { value: 'pause', label: 'На паузі', color: '#FFB800' },
 ];
 
 type FilterMembersProps = {
