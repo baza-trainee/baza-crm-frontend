@@ -43,8 +43,6 @@ const Analytics: React.FC = () => {
 
   const handleMembersFilter = async (data: RequestBodyMembers) => {
     console.log(data);
-    console.log(data.technologies);
-
     try {
       if (user) {
         // setLoading(true); // Set loading while fetching
@@ -55,7 +53,6 @@ const Analytics: React.FC = () => {
       }
     } catch (error) {
       throw new Error('Проєктів не знайдено');
-      console.error('Error fetching projects:', error);
     } finally {
       // setLoading(false); // Stop loading when the request is done
     }

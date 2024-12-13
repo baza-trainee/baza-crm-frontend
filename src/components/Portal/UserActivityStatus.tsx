@@ -20,15 +20,11 @@ const UserActivityStatus = ({
   const [selectedOption, setSelectedOption] = useState<
     OptionStatus | undefined
   >(options.find((o) => o.name === status));
-  const handleOptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const findOption = options.find((o) => o.label === e.currentTarget.value);
-    setSelectedOption(findOption);
-    setStatus(findOption?.name);
-  };
 
   const handleClick = (label: string) => {
     const findOption = options.find((o) => o.label === label);
-    setSelectedOption(findOption!);
+    setSelectedOption(findOption);
+    setStatus(findOption?.name);
   };
 
   return (
@@ -64,7 +60,7 @@ const UserActivityStatus = ({
               name="status"
               value={option.name}
               checked={selectedOption?.name === option.name}
-              onChange={handleOptionChange}
+              onChange={() => {}}
             />
             <label htmlFor={option.name} className="cursor-pointer">
               {option.label}

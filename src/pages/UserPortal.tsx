@@ -35,6 +35,7 @@ const UserPortal = () => {
         if (token) {
           const userData: Member = await getCurrentUser(token);
           setUserData(userData);
+          console.log(userData);
           setStatus(userData.status);
         } else {
           console.error('No token found');

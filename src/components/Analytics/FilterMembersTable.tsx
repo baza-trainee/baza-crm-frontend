@@ -8,6 +8,12 @@ type MembersTableProps = {
   error?: string;
 };
 
+const statusOptions = [
+  { value: 'active', label: 'Активний', color: '#15C847' },
+  { value: 'working', label: 'На проєкті', color: '#1E70EB' },
+  { value: 'pause', label: 'На паузі', color: '#FFB800' },
+];
+
 const FilterMembersTable: React.FC<MembersTableProps> = ({
   tableHeaders = [
     '№ з/п',
@@ -82,7 +88,20 @@ const FilterMembersTable: React.FC<MembersTableProps> = ({
                     {user.city}
                   </td>
                   <td className="py-3 px-2 border border-card-border">
-                    {user.status}
+                    <p
+                      style={{
+                        color: `${
+                          statusOptions.find(
+                            (s) => s.value === members[0].status,
+                          )?.color
+                        }`,
+                      }}
+                    >
+                      {
+                        statusOptions.find((s) => s.value === members[0].status)
+                          ?.label
+                      }
+                    </p>
                   </td>
                   <td className="py-3 px-2 border border-card-border">
                     {new Date(user.registerAt).toLocaleDateString()}
