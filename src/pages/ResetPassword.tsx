@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import PopUp from '../components/LoginRegister/PopUp';
 import LogoSection from '../components/LoginRegister/LogoSection';
+import { confirmPasswordApi } from '../utils/authApi';
 
 type Inputs = {
   password: string;
@@ -11,21 +12,39 @@ type Inputs = {
 };
 
 const ResetPassword = () => {
+  const location = useLocation();
+  const [isPopUpVisible, setIsPopUpVisible] = useState(false);
+  const [token, setToken] = useState<string>();
+
   const {
     register,
     formState: { errors, isValid },
     handleSubmit,
+    setError,
     reset,
   } = useForm<Inputs>({
     mode: 'onBlur',
   });
 
-  const onSubmit: SubmitHandler<Inputs> = () => {
+  const onSubmit: SubmitHandler<Inputs> = async ({
+    password,
+    confirmPassword,
+  }) => {
+    if (password === confirmPassword) console.log(true);
+    else
+      setError('confirmPassword', {
+        type: 'custom',
+        message: "Passwords don't match",
+      });
+    await confirmPasswordApi(password, token!);
     setIsPopUpVisible(true);
     reset();
   };
 
-  const [isPopUpVisible, setIsPopUpVisible] = useState(false);
+  useEffect(() => {
+    const dataQueryParams = new URLSearchParams(location.search);
+    setToken(dataQueryParams.get('data')!);
+  }, [location]);
 
   const handleClosePopUp = () => {
     setIsPopUpVisible(false);
@@ -82,10 +101,11 @@ const ResetPassword = () => {
                 message: 'Максимум 30 символів',
               },
             })}
-            className="font-Lato font-sans font-normal text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-[49px]"
+            className="font-Lato font-sans font-normal text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]  mb-3"
           />
           <div className="h-[40px] text-red">
             {errors?.password && <p>{errors?.password?.message || 'Error!'}</p>}
+            {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
           </div>
         </div>
         <ButtonLogin label="Зберегти" type="submit" disabled={!isValid} />

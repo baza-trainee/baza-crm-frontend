@@ -7,16 +7,14 @@ const Countdown = ({
   send: boolean;
   setSend: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const [count, setCount] = useState(59);
+  const [count, setCount] = useState(60);
 
   useEffect(() => {
     const timerId = setInterval(() => {
-      console.log(count);
-      if (count >= 0) {
+      if (count > 0) {
         setCount((prev) => prev - 1);
       }
       if (count === 0) {
-        console.log('count нуль');
         setSend(false);
       }
     }, 1000);

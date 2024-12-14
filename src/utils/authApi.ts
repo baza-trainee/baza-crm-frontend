@@ -26,3 +26,13 @@ export const getEmailByTokenApi = async (code: string) => {
   const response = await axios.post(url, { code: `${code}` });
   return response.data;
 };
+export const forgottenPasswordApi = async (email: string) => {
+  const url = `${import.meta.env.VITE_API_URL}/auth/changepassword`;
+  const response = await axios.post(url, { email: email });
+  return response.data;
+};
+export const confirmPasswordApi = async (password: string, code: string) => {
+  const url = `${import.meta.env.VITE_API_URL}/auth/changepasswordconfirm`;
+  const response = await axios.post(url, { password, code });
+  return response.data;
+};

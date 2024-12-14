@@ -1,13 +1,12 @@
-import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
 
 import ButtonLogin from '../components/LoginRegister/ButtonLogin';
 import LogoSection from '../components/LoginRegister/LogoSection';
-import { setUser } from '../features/authSlice';
-import { useState } from 'react';
 import Countdown from '../components/Forgotten-Password/Countdown';
+import { forgottenPasswordApi } from '../utils/authApi';
+import axios from 'axios';
 
 type Inputs = {
   email: string;
@@ -15,6 +14,7 @@ type Inputs = {
 
 const ForgottenPassword = () => {
   const [send, setSend] = useState(false);
+  const [dontExistUser, setDontExistUser] = useState(false);
   const {
     register,
     formState: { isValid },
@@ -22,37 +22,23 @@ const ForgottenPassword = () => {
     reset,
   } = useForm<Inputs>({
     mode: 'onBlur',
+    defaultValues: {
+      email: '',
+    },
   });
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    setSend(true);
     try {
-      const response = await axios.post(
-        'http://185.161.208.63:5000/api/v1/auth/#', //TODO:implement forgoten password logic
-        {
-          email: data.email,
-        },
-      );
-      dispatch(
-        setUser({
-          email: response.data.email,
-          id: response.data.id,
-          token: response.data.token,
-        }),
-      );
-
-      navigate('/login');
-      reset();
+      await forgottenPasswordApi(data.email);
+      setSend(true);
+      setDontExistUser(false);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        console.error('Login error:', error.response.data);
+        setDontExistUser(true);
       } else {
         console.error('Unexpected error:', error);
       }
     }
+    reset();
   };
 
   return (
@@ -72,11 +58,16 @@ const ForgottenPassword = () => {
           <label className="font-Open Sans font-sans text-[20px] font-normal leading-[1.5] text-white mb-[2.5px]">
             Email
           </label>
-          <input
-            type="email"
-            {...(register('email'), { required: true })}
-            className="font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px] mb-[23.5px]"
-          />
+          <div className="w-full mb-[23.5px]">
+            <input
+              type="email"
+              {...register('email', { required: true })}
+              className="font-Lato w-full mb-2 font-sans font-normal leading-relaxed text-[16px] bg-input-normal rounded-[10px] p-[16px] h-[40px]"
+            />
+            {dontExistUser && (
+              <p className="text-sm text-red">User dont exist</p>
+            )}
+          </div>
         </div>
         {send ? (
           <Countdown send={send} setSend={setSend} />
