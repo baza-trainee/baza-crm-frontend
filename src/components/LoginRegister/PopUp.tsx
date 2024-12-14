@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 type PopUpProps = {
   text1: string;
   text2: string;
@@ -33,7 +35,15 @@ const PopUp: React.FC<PopUpProps> = ({
           </svg>
         </div>
         <div className="flex justify-center mb-[12px]">{text1}</div>
-        <div className="flex justify-center">{text2}</div>
+        <div className="flex flex-col  items-center gap-3 justify-center">
+          <p>{text2}</p>
+          <Link to="/login">
+            <p className="text-base font-medium text-blue-600 hover:text-blue-800">
+              На сторінку логіну
+            </p>
+          </Link>
+        </div>
+        <div></div>
       </div>
     </div>
   );

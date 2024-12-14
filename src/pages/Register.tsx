@@ -137,7 +137,6 @@ const Register = () => {
                     ? 'border-red border-2 border-solid'
                     : ''
                 }`}
-                // readOnly
               />
               {tokenError && (
                 <LuAlertTriangle
