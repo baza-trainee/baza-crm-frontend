@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import ReactModal from 'react-modal';
+import Modal from 'react-modal';
 import { RxCross1 } from 'react-icons/rx';
 
 /* eslint-disable no-irregular-whitespace */
+
+Modal.setAppElement('#root');
+
 const InstructionConnectBot = () => {
   const [openErrorPopUp, setOpenErrorPopUp] = useState(false);
   const location = useLocation();
@@ -60,30 +63,36 @@ const InstructionConnectBot = () => {
         </div>
       </div>
 
-      <ReactModal
+      <Modal
         isOpen={openErrorPopUp}
         onAfterClose={() => setOpenErrorPopUp(false)}
+        onRequestClose={() => setOpenErrorPopUp(false)} //TODO:hide scroll
         style={{
           overlay: {
-            display: 'flex',
             zIndex: '50',
-            justifyContent: 'center',
-            alignContent: 'center',
           },
           content: {
-            position: 'relative',
-            padding: '50px 68px',
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            transform: 'translate(-37%, -50%)',
+            borderWidth: '1px',
+            borderRadius: '10px',
+            opacity: '0.8',
           },
         }}
       >
-        <div className="relative">
-          <RxCross1
-            className="absolute top-0 right-0"
-            onClick={() => setOpenErrorPopUp(false)} //TODO:work with MODALs
-          />
+        <div className="flex flex-col gap-9">
+          <div className="flex justify-end">
+            <RxCross1
+              onClick={() => setOpenErrorPopUp(false)} //TODO:work with MODALs
+            />
+          </div>
           <p>Щось пішло не так, прочитайте інструкцію і спробуйте ще раз</p>
         </div>
-      </ReactModal>
+      </Modal>
     </section>
   );
 };
