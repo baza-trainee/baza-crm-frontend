@@ -1,7 +1,8 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+//import ReactModal from 'react-modal';
 
 import Project from '../components/Projects/Project';
 import ProjectsHeader from '../components/Projects/ProjectsHeader';
@@ -14,12 +15,16 @@ import {
 } from '../utils/projectStatusOptions';
 import { getProjects } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { connectBot } from '../utils/connectBotApi';
 
 const Projects = () => {
   const [selectedOption, setSelectedOption] = useState(projectStatusOptions);
+  // const [openPopUp, setOpenPopUp] = useState(false);
   const [parent] = useAutoAnimate();
   const user = useSelector((state: RootState) => state.userState.user);
-
+  const location = useLocation();
+  const navigate = useNavigate();
   const {
     data: projects,
     isPending,
@@ -35,7 +40,24 @@ const Projects = () => {
     queryFn: () => getTags(user!.token),
     enabled: !!user?.token,
   });
-  console.log(tags);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const botToken = params.get('code');
+
+    const connect = async () => {
+      try {
+        await connectBot(user!.token, botToken as string);
+        // setOpenPopUp(true);
+        navigate(location.pathname);
+      } catch (err) {
+        navigate('/crm/instruction?status=error');
+      }
+    };
+    if (botToken) {
+      connect();
+    } //TODO:implement connect bot request
+  }, [user]);
 
   if (isTagsError) {
     console.log(isTagsError);
@@ -46,13 +68,6 @@ const Projects = () => {
   if (projects) {
     projectNumber = countProjectsByStatus(projects);
   }
-
-  // const filteredProjects =
-  //   selectedOption.value === 'all'
-  //     ? projects
-  //     : projects?.filter(
-  //         (project) => project.projectStatus === selectedOption.value,
-  //       );
 
   const filteredProjects = projects?.filter((project) =>
     selectedOption.some((option) => option.value === project.projectStatus),

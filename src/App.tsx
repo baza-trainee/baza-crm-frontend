@@ -19,6 +19,7 @@ import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
 import RouteWrapper from './components/RouteWrapper';
 import Technologies from './pages/Technologies';
+import InstructionConnectBot from './components/InstructionConnectBot';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
       {
         path: 'projects/:id/edit',
         element: <ProjectEdit />,
+      },
+      {
+        path: 'instruction',
+        element: <InstructionConnectBot />,
       },
       {
         path: 'projects/create',
