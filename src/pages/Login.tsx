@@ -37,7 +37,7 @@ const Login = () => {
     mutationFn: loginUserApi,
     onSuccess: async (data) => {
       dispatch(loginUser(data));
-      console.log('Login successful:', data);
+      toast.success('Вхід успішний');
       const currentUser = await getCurrentUser(data.token);
       if (currentUser.discord) navigate('/crm');
       else navigate('/crm/instruction');

@@ -8,11 +8,13 @@ import { RootState, Member, UserData, UpdateUser } from '../types';
 import { getCurrentUser } from '../utils/currentUserApi';
 import { updateUser } from '../utils/userApi';
 import { addUserTag } from '../utils/tagApi';
+import { useNavigate } from 'react-router-dom';
 
 const UserPortal = () => {
-  const token = useSelector((state: RootState) => state.userState.user?.token);
+  const user = useSelector((state: RootState) => state.userState.user);
   const [userData, setUserData] = useState<Member>();
   const [status, setStatus] = useState<Member['status']>();
+  const navigate = useNavigate();
 
   const handleUserUpdate = async (tags: number[], data: UserData) => {
     const userData: UpdateUser = {
@@ -25,18 +27,18 @@ const UserPortal = () => {
       phone: data.phone,
       status: status as string,
     };
-    await updateUser(token!, userData);
+    await updateUser(user!.token!, userData);
 
-    await addUserTag(token!, tags);
+    await addUserTag(user!.token!, tags);
   };
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        if (token) {
-          const userData: Member = await getCurrentUser(token);
+        if (user?.token) {
+          const userData: Member = await getCurrentUser(user.token);
           setUserData(userData);
-          console.log(userData);
           setStatus(userData.status);
+          if (!userData.discord) navigate('/crm/instruction');
         } else {
           console.error('No token found');
         }
@@ -46,7 +48,7 @@ const UserPortal = () => {
     };
 
     fetchUserData();
-  }, [token]);
+  }, [user]);
   return (
     <section className="flex flex-col w-full min-h-screen gap-5 px-8 pt-5 pb-24 bg-light-blue-bg">
       {userData && (

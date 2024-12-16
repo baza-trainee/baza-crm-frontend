@@ -2,7 +2,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-//import ReactModal from 'react-modal';
+import Modal from 'react-modal';
 
 import Project from '../components/Projects/Project';
 import ProjectsHeader from '../components/Projects/ProjectsHeader';
@@ -16,15 +16,16 @@ import {
 import { getProjects } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { connectBot } from '../utils/connectBotApi';
+import { getCurrentUser } from '../utils/currentUserApi';
+import { RxCross1 } from 'react-icons/rx';
 
 const Projects = () => {
   const [selectedOption, setSelectedOption] = useState(projectStatusOptions);
-  // const [openPopUp, setOpenPopUp] = useState(false);
+  const [openSuccessPopUp, setOpenSuccessPopUp] = useState(true);
   const [parent] = useAutoAnimate();
   const user = useSelector((state: RootState) => state.userState.user);
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
   const {
     data: projects,
     isPending,
@@ -42,21 +43,16 @@ const Projects = () => {
   });
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const botToken = params.get('code');
-
-    const connect = async () => {
-      try {
-        await connectBot(user!.token, botToken as string);
-        // setOpenPopUp(true);
-        navigate(location.pathname);
-      } catch (err) {
-        navigate('/crm/instruction?status=error');
-      }
+    const queryParams = location.search;
+    const status = new URLSearchParams(queryParams);
+    if (status.get('status')) {
+      setOpenSuccessPopUp(true);
+    }
+    const req = async () => {
+      const res = await getCurrentUser(user!.token);
+      if (!res.discord) return navigate('/crm/instruction');
     };
-    if (botToken) {
-      connect();
-    } //TODO:implement connect bot request
+    req(); //refactore with react query using cache from login page request
   }, [user]);
 
   if (isTagsError) {
@@ -131,6 +127,45 @@ const Projects = () => {
           ))}
         </div>
       )}
+      <Modal
+        isOpen={openSuccessPopUp}
+        onAfterClose={() => setOpenSuccessPopUp(false)}
+        onRequestClose={() => setOpenSuccessPopUp(false)}
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(145, 162, 182, 0.7)',
+            zIndex: '50',
+          },
+          content: {
+            backgroundColor: '#F8F9FD',
+            zIndex: '100',
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            padding: '50px 68px 106px',
+            transform: 'translate(-37%, -50%)',
+            borderWidth: '1px',
+            borderRadius: '10px',
+          },
+        }}
+      >
+        <div className="flex flex-col gap-10">
+          <div className="flex justify-end">
+            <RxCross1
+              size={'20px'}
+              className="cursor-pointer"
+              onClick={() => setOpenSuccessPopUp(false)} //TODO:work with MODALs
+            />
+          </div>
+          <p className="font-medium font-lato text-center">
+            Знайомство з ботом пройшло успішно, <br /> ласкаво просимо до CRM
+            системи
+            <b> Baza Trainee Ukraine</b>
+          </p>
+        </div>
+      </Modal>
     </section>
   );
 };

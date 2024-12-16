@@ -69,28 +69,35 @@ const InstructionConnectBot = () => {
         onRequestClose={() => setOpenErrorPopUp(false)} //TODO:hide scroll
         style={{
           overlay: {
+            backgroundColor: 'rgba(145, 162, 182, 0.7)',
             zIndex: '50',
           },
           content: {
+            backgroundColor: '#F8F9FD',
+            zIndex: '100',
             top: '50%',
             left: '50%',
             right: 'auto',
             bottom: 'auto',
             marginRight: '-50%',
+            padding: '50px 68px',
             transform: 'translate(-37%, -50%)',
             borderWidth: '1px',
             borderRadius: '10px',
-            opacity: '0.8',
           },
         }}
       >
-        <div className="flex flex-col gap-9">
+        <div className="flex flex-col gap-10">
           <div className="flex justify-end">
             <RxCross1
+              size={'20px'}
+              className="cursor-pointer"
               onClick={() => setOpenErrorPopUp(false)} //TODO:work with MODALs
             />
           </div>
-          <p>Щось пішло не так, прочитайте інструкцію і спробуйте ще раз</p>
+          <p className="font-medium font-lato">
+            Щось пішло не так, прочитайте інструкцію і спробуйте ще раз
+          </p>
         </div>
       </Modal>
     </section>

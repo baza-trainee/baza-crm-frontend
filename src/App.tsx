@@ -19,7 +19,8 @@ import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
 import RouteWrapper from './components/RouteWrapper';
 import Technologies from './pages/Technologies';
-import InstructionConnectBot from './components/InstructionConnectBot';
+import InstructionConnectBot from './pages/InstructionConnectBot';
+import BotLinking from './pages/BotLinking';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <RouteWrapper />,
+      },
+      {
+        path: 'bot-linking',
+        element: <BotLinking />,
       },
       {
         path: 'portal',
