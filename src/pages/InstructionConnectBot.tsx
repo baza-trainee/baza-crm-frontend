@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Modal from 'react-modal';
 import { RxCross1 } from 'react-icons/rx';
 
@@ -10,11 +10,21 @@ Modal.setAppElement('#root');
 const InstructionConnectBot = () => {
   const [openErrorPopUp, setOpenErrorPopUp] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleCloseErrorPopUp = () => {
+    setOpenErrorPopUp(false);
+    document.body.style.overflow = 'auto';
+    navigate(location.pathname);
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const status = params.get('status');
-    if (status === 'error') setOpenErrorPopUp(true);
+    if (status === 'error') {
+      setOpenErrorPopUp(true);
+      document.body.style.overflow = 'hidden';
+    }
   }, []);
 
   return (
@@ -65,8 +75,8 @@ const InstructionConnectBot = () => {
 
       <Modal
         isOpen={openErrorPopUp}
-        onAfterClose={() => setOpenErrorPopUp(false)}
-        onRequestClose={() => setOpenErrorPopUp(false)} //TODO:hide scroll
+        onAfterClose={handleCloseErrorPopUp}
+        onRequestClose={handleCloseErrorPopUp} //TODO:hide scroll
         style={{
           overlay: {
             backgroundColor: 'rgba(145, 162, 182, 0.7)',
@@ -92,7 +102,7 @@ const InstructionConnectBot = () => {
             <RxCross1
               size={'20px'}
               className="cursor-pointer"
-              onClick={() => setOpenErrorPopUp(false)} //TODO:work with MODALs
+              onClick={handleCloseErrorPopUp} //TODO:work with MODALs
             />
           </div>
           <p className="font-medium font-lato">

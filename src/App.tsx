@@ -20,7 +20,7 @@ import ResetPassword from './pages/ResetPassword';
 import RouteWrapper from './components/RouteWrapper';
 import Technologies from './pages/Technologies';
 import InstructionConnectBot from './pages/InstructionConnectBot';
-import BotLinking from './pages/BotLinking';
+import ConnectToDiscord from './pages/ConnectToDiscord';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -66,8 +66,8 @@ const router = createBrowserRouter([
         element: <RouteWrapper />,
       },
       {
-        path: 'bot-linking',
-        element: <BotLinking />,
+        path: 'connect-to-discord',
+        element: <ConnectToDiscord />,
       },
       {
         path: 'portal',

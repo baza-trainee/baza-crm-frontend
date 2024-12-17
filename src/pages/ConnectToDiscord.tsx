@@ -6,20 +6,20 @@ import { Auth } from '../types';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../features/userSlice';
 
-const BotLinking = () => {
+const ConnectToDiscord = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const botToken = params.get('code');
+    const botToken = params.get('token');
     const user: Auth = JSON.parse(localStorage.getItem('user')!);
     dispatch(loginUser(user));
     const connect = async () => {
       try {
         await connectBot(user!.token, botToken as string);
-        navigate('/crm/project/status=success');
+        navigate('/crm/project?status=success');
       } catch (err) {
         navigate('/crm/instruction?status=error');
       }
@@ -35,4 +35,4 @@ const BotLinking = () => {
   );
 };
 
-export default BotLinking;
+export default ConnectToDiscord;

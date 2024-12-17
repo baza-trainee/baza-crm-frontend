@@ -21,7 +21,7 @@ import { RxCross1 } from 'react-icons/rx';
 
 const Projects = () => {
   const [selectedOption, setSelectedOption] = useState(projectStatusOptions);
-  const [openSuccessPopUp, setOpenSuccessPopUp] = useState(true);
+  const [openSuccessPopUp, setOpenSuccessPopUp] = useState(false);
   const [parent] = useAutoAnimate();
   const user = useSelector((state: RootState) => state.userState.user);
   const navigate = useNavigate();
@@ -46,19 +46,24 @@ const Projects = () => {
     const queryParams = location.search;
     const status = new URLSearchParams(queryParams);
     if (status.get('status')) {
+      document.body.style.overflow = 'hidden';
       setOpenSuccessPopUp(true);
     }
     const req = async () => {
       const res = await getCurrentUser(user!.token);
-      if (!res.discord) return navigate('/crm/instruction');
+      if (!res.discord) navigate('/crm/instruction');
     };
-    req(); //refactore with react query using cache from login page request
+    req();
   }, [user]);
 
   if (isTagsError) {
     console.log(isTagsError);
   }
-
+  const handleCloseSuccessPopUp = () => {
+    document.body.style.overflow = 'auto';
+    setOpenSuccessPopUp(false);
+    navigate('/crm/projects');
+  };
   let projectNumber = {};
 
   if (projects) {
@@ -129,8 +134,8 @@ const Projects = () => {
       )}
       <Modal
         isOpen={openSuccessPopUp}
-        onAfterClose={() => setOpenSuccessPopUp(false)}
-        onRequestClose={() => setOpenSuccessPopUp(false)}
+        onAfterClose={handleCloseSuccessPopUp}
+        onRequestClose={handleCloseSuccessPopUp}
         style={{
           overlay: {
             backgroundColor: 'rgba(145, 162, 182, 0.7)',
@@ -156,7 +161,7 @@ const Projects = () => {
             <RxCross1
               size={'20px'}
               className="cursor-pointer"
-              onClick={() => setOpenSuccessPopUp(false)} //TODO:work with MODALs
+              onClick={handleCloseSuccessPopUp} //TODO:work with MODALs
             />
           </div>
           <p className="font-medium font-lato text-center">
