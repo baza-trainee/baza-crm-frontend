@@ -15,6 +15,7 @@ import Spinner from '../components/Spinner';
 import { Inputs } from '../types';
 import { loginUser } from '../features/userSlice';
 import { loginUserApi } from '../utils/authApi';
+import { getCurrentUser } from '../utils/currentUserApi';
 
 const Login = () => {
   const {
@@ -34,10 +35,12 @@ const Login = () => {
 
   const mutation = useMutation({
     mutationFn: loginUserApi,
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       dispatch(loginUser(data));
-      console.log('Login successful:', data);
-      navigate('/crm');
+      toast.success('Вхід успішний');
+      const currentUser = await getCurrentUser(data.token);
+      if (currentUser.discord) navigate('/crm');
+      else navigate('/crm/instruction');
       reset();
     },
     onError: (error: AxiosError<{ message: string }>) => {

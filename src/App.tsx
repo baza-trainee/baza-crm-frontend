@@ -19,6 +19,8 @@ import Register from './pages/Register';
 import ResetPassword from './pages/ResetPassword';
 import RouteWrapper from './components/RouteWrapper';
 import Technologies from './pages/Technologies';
+import InstructionConnectBot from './pages/InstructionConnectBot';
+import ConnectToDiscord from './pages/ConnectToDiscord';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -64,6 +66,10 @@ const router = createBrowserRouter([
         element: <RouteWrapper />,
       },
       {
+        path: 'connect-to-discord',
+        element: <ConnectToDiscord />,
+      },
+      {
         path: 'portal',
         element: <UserPortal />,
       },
@@ -78,6 +84,10 @@ const router = createBrowserRouter([
       {
         path: 'projects/:id/edit',
         element: <ProjectEdit />,
+      },
+      {
+        path: 'instruction',
+        element: <InstructionConnectBot />,
       },
       {
         path: 'projects/create',

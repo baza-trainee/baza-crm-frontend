@@ -1,7 +1,8 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useQuery } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Modal from 'react-modal';
 
 import Project from '../components/Projects/Project';
 import ProjectsHeader from '../components/Projects/ProjectsHeader';
@@ -14,12 +15,17 @@ import {
 } from '../utils/projectStatusOptions';
 import { getProjects } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getCurrentUser } from '../utils/currentUserApi';
+import { RxCross1 } from 'react-icons/rx';
 
 const Projects = () => {
   const [selectedOption, setSelectedOption] = useState(projectStatusOptions);
+  const [openSuccessPopUp, setOpenSuccessPopUp] = useState(false);
   const [parent] = useAutoAnimate();
   const user = useSelector((state: RootState) => state.userState.user);
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const {
     data: projects,
     isPending,
@@ -35,24 +41,34 @@ const Projects = () => {
     queryFn: () => getTags(user!.token),
     enabled: !!user?.token,
   });
-  console.log(tags);
+
+  useEffect(() => {
+    const queryParams = location.search;
+    const status = new URLSearchParams(queryParams);
+    if (status.get('status')) {
+      document.body.style.overflow = 'hidden';
+      setOpenSuccessPopUp(true);
+    }
+    const req = async () => {
+      const res = await getCurrentUser(user!.token);
+      if (!res.discord) navigate('/crm/instruction');
+    };
+    req();
+  }, [user]);
 
   if (isTagsError) {
     console.log(isTagsError);
   }
-
+  const handleCloseSuccessPopUp = () => {
+    document.body.style.overflow = 'auto';
+    setOpenSuccessPopUp(false);
+    navigate('/crm/projects');
+  };
   let projectNumber = {};
 
   if (projects) {
     projectNumber = countProjectsByStatus(projects);
   }
-
-  // const filteredProjects =
-  //   selectedOption.value === 'all'
-  //     ? projects
-  //     : projects?.filter(
-  //         (project) => project.projectStatus === selectedOption.value,
-  //       );
 
   const filteredProjects = projects?.filter((project) =>
     selectedOption.some((option) => option.value === project.projectStatus),
@@ -116,6 +132,45 @@ const Projects = () => {
           ))}
         </div>
       )}
+      <Modal
+        isOpen={openSuccessPopUp}
+        onAfterClose={handleCloseSuccessPopUp}
+        onRequestClose={handleCloseSuccessPopUp}
+        style={{
+          overlay: {
+            backgroundColor: 'rgba(145, 162, 182, 0.7)',
+            zIndex: '50',
+          },
+          content: {
+            backgroundColor: '#F8F9FD',
+            zIndex: '100',
+            top: '50%',
+            left: '50%',
+            right: 'auto',
+            bottom: 'auto',
+            marginRight: '-50%',
+            padding: '50px 68px 106px',
+            transform: 'translate(-37%, -50%)',
+            borderWidth: '1px',
+            borderRadius: '10px',
+          },
+        }}
+      >
+        <div className="flex flex-col gap-10">
+          <div className="flex justify-end">
+            <RxCross1
+              size={'20px'}
+              className="cursor-pointer"
+              onClick={handleCloseSuccessPopUp} //TODO:work with MODALs
+            />
+          </div>
+          <p className="font-medium font-lato text-center">
+            Знайомство з ботом пройшло успішно, <br /> ласкаво просимо до CRM
+            системи
+            <b> Baza Trainee Ukraine</b>
+          </p>
+        </div>
+      </Modal>
     </section>
   );
 };
