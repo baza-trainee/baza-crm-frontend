@@ -161,7 +161,7 @@ const Projects = () => {
             <RxCross1
               size={'20px'}
               className="cursor-pointer"
-              onClick={handleCloseSuccessPopUp} //TODO:work with MODALs
+              onClick={handleCloseSuccessPopUp}
             />
           </div>
           <p className="font-medium font-lato text-center">
