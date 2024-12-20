@@ -19,7 +19,7 @@ const ConnectToDiscord = () => {
     const connect = async () => {
       try {
         await connectBot(user!.token, botToken as string);
-        navigate('/crm/project?status=success');
+        navigate('/crm/projects?status=success');
       } catch (err) {
         navigate('/crm/instruction?status=error');
       }
