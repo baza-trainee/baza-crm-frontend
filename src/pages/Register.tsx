@@ -40,7 +40,6 @@ const Register = () => {
   const [emailLoading, setEmailLoading] = useState(true);
   const [tokenError, setTokenError] = useState('');
 
-  // get code from link
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get('code');
 
@@ -51,7 +50,7 @@ const Register = () => {
     },
     onSuccess: () => {
       setTimeout(() => {
-        navigate('/crm');
+        navigate('/crm/projects');
         reset();
       }, 1500);
     },

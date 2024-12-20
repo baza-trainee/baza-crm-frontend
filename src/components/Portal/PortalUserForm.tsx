@@ -21,7 +21,12 @@ const PortalUserForm = ({
   userData: Member;
   handleUserUpdate: (tags: number[], data: UserData) => Promise<void>;
 }) => {
-  const { register, handleSubmit, setValue } = useForm<UserData>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<UserData>({
     defaultValues: {
       firstName: '',
       lastName: '',
@@ -52,13 +57,13 @@ const PortalUserForm = ({
   const [selectedTechnologies, setSelectedTechnologies] = useState<
     SelectOption[]
   >([]);
-
+  console.log(errors);
   const onSubmit = handleSubmit(async (data) => {
     const tagIds = [
       ...selectedTechnologies.map((t) => t.data.id),
       ...selectedSpecializations.map((s) => s.data.id),
     ];
-
+    console.log(data);
     await handleUserUpdate(tagIds, data);
   });
 
@@ -296,12 +301,22 @@ const PortalUserForm = ({
             </div>
 
             <CustomInput id="email" label="Email" register={register} />
-            <CustomInput
-              id="linkedin"
-              label="Linkedin"
-              register={register}
-              icon={pencilIcon}
-            />
+            <div className="flex flex-col">
+              <CustomInput
+                id="linkedin"
+                label="Linkedin"
+                register={register}
+                icon={pencilIcon}
+                validate={{
+                  pattern:
+                    /^https:\/\/(www\.)?linkedin\.com\/in\/[a-zA-Z0-9\-_]+\/?$/,
+                }}
+              />
+
+              {errors.linkedin && (
+                <span className="text-red">Not valid url</span>
+              )}
+            </div>
 
             <label className="flex gap-2 items-center ">
               <input
