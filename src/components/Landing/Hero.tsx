@@ -14,12 +14,12 @@ const Hero: React.FC = () => {
         >
           Увійти
         </Link>
-        <Link
-          to="/register"
+        <a
+          href="https://baza-trainee.tech/uk/internship"
           className="flex justify-center items-center hover:bg-primary-blue border-2 border-primary-blue w-[254px] duration-500 h-10 text-white rounded-[10px]"
         >
           Заповнити анкету
-        </Link>
+        </a>
       </div>
       <p className="text-white text-xl w-[530px] mx-auto font-open-sans font-normal leading-7 tracking-[0.4px] text-center  ">
         Зареєструватися може лише учасник, який подав заявку та пройшов
