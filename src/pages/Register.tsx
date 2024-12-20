@@ -50,7 +50,7 @@ const Register = () => {
     },
     onSuccess: () => {
       setTimeout(() => {
-        navigate('/crm/projects');
+        navigate('/login');
         reset();
       }, 1500);
     },
