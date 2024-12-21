@@ -87,7 +87,6 @@ const Login = () => {
             <input
               {...register('login')}
               placeholder="example@gmail.com"
-              defaultValue="admin@gmail.com"
               className={`font-Lato font-sans font-normal leading-relaxed text-[16px] bg-input-normal hover:bg-hover-blue focus:outline-none focus:border-primary-blue border-2 border-solid rounded-[10px] p-[16px] h-[40px] mb-[23.5px] ${
                 login ? 'bg-white' : 'bg-input-normal-state'
               } ${errors?.login ? 'border-red border-2 border-solid' : ''}`}
@@ -115,7 +114,6 @@ const Login = () => {
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="Пароль"
-              defaultValue="adminTestPass"
               {...register('password', {
                 required: "обов'язкове поле",
                 minLength: {
