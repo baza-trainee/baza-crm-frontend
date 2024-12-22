@@ -9,11 +9,14 @@ import ProjectFormat from '../components/Projects/ProjectFormat';
 import Spinner from '../components/Spinner';
 import { RootState } from '../types';
 import { getProjectById } from '../utils/projectApi';
+import ApplyPopUp from '../components/PopUpMenu/ApplyPopUp';
 import { getProjectStatusLabel } from '../utils/projectStatusOptions';
+import { useState } from 'react';
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const user = useSelector((state: RootState) => state.userState.user);
+  const [openApplyPopUp, setApplyPopUp] = useState(false);
 
   const {
     data: project,
@@ -24,6 +27,16 @@ const ProjectDetails: React.FC = () => {
     queryFn: () => getProjectById(Number(id), user!.token),
     enabled: !!user?.token,
   });
+
+  const applyToProjectHandler = async () => {
+    setApplyPopUp(true);
+    document.body.style.overflow = 'hidden';
+    // const req = await applyToProject(id,user?.user.);
+  };
+  const handleCloseApplyPopUp = () => {
+    document.body.style.overflow = 'auto';
+    setApplyPopUp(false);
+  };
 
   if (isPending) {
     return <Spinner />;
@@ -135,7 +148,10 @@ const ProjectDetails: React.FC = () => {
       <h3 className="mb-3 ml-8 text-xl font-bold">Склад команди</h3>
       <div className="flex flex-wrap gap-5">
         {project.projectRequirments.map((tag) => (
-          <div className="w-[268px] bg-white rounded-[10px] px-8 py-5 border-card-border border h-[282px] flex flex-col justify-start gap-3">
+          <div
+            key={tag.tagId}
+            className="w-[268px] bg-white rounded-[10px] px-8 py-5 border-card-border border h-[282px] flex flex-col justify-start gap-3"
+          >
             <div className="flex items-center justify-between">
               <div className="px-8 py-2 text-white rounded-r-[10px] -ml-8 self-start bg-primary-blue">
                 {tag.tagId}
@@ -150,21 +166,33 @@ const ProjectDetails: React.FC = () => {
               </p>
             </div>
             <div>
-              <p>Аникій Філіппов</p>
+              {/*TODO:fix this behavior  */}
+              {/* <p>Аникій Філіппов</p>
               <p>Віктор Філіппов</p>
               <p>Оксана Лисенко</p>
               <p>Максим Головко</p>
-              <p>Софія Пономаренко</p>
+              <p>Софія Пономаренко</p> */}
             </div>
           </div>
         ))}
       </div>
       {/* BUTTON */}
       {project.projectStatus === 'searching' && !user?.user.isAdmin && (
-        <button className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-white hover:text-primary-blue font-semibold flex justify-center items-center w-[268px] h-10">
+        <button
+          onClick={applyToProjectHandler}
+          className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-white hover:text-primary-blue font-semibold flex justify-center items-center w-[268px] h-10"
+        >
           Подати заявку
         </button>
       )}
+      <ApplyPopUp
+        token={user?.token}
+        price={project.price}
+        projectId={project.id}
+        projectSpecializations={project.projectRequirments}
+        openApplyPopUp={openApplyPopUp}
+        handleCloseApplyPopUp={handleCloseApplyPopUp}
+      />
     </main>
   );
 };
