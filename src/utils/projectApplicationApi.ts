@@ -85,3 +85,17 @@ export const resolveApplication = async ({
 
   return data;
 };
+export const applyToProject = async (
+  projectId: string,
+  tagId: string,
+  token: string,
+) => {
+  const url = `${import.meta.env.VITE_API_URL}/project/${projectId}/aplication/${tagId}`;
+  const authHeaders = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const { data } = await axios.post<{ status: string }>(url, {}, authHeaders);
+  return data;
+};
