@@ -12,11 +12,13 @@ import { getProjectById } from '../utils/projectApi';
 import ApplyPopUp from '../components/PopUpMenu/ApplyPopUp';
 import { getProjectStatusLabel } from '../utils/projectStatusOptions';
 import { useState } from 'react';
+import SuccessApplyPopUp from '../components/PopUpMenu/SuccessApplyPopUp';
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const user = useSelector((state: RootState) => state.userState.user);
   const [openApplyPopUp, setApplyPopUp] = useState(false);
+  const [openSuccessApplyPopUp, setOpenSuccessApplyPopUp] = useState(false);
 
   const {
     data: project,
@@ -27,16 +29,23 @@ const ProjectDetails: React.FC = () => {
     queryFn: () => getProjectById(Number(id), user!.token),
     enabled: !!user?.token,
   });
-
-  const applyToProjectHandler = async () => {
+  const openApplyPopUpHandler = async () => {
     setApplyPopUp(true);
     document.body.style.overflow = 'hidden';
-    // const req = await applyToProject(id,user?.user.);
   };
   const handleCloseApplyPopUp = () => {
     document.body.style.overflow = 'auto';
     setApplyPopUp(false);
   };
+  const openSuccessApplyHandler = () => {
+    setOpenSuccessApplyPopUp(true);
+    document.body.style.overflow = 'hidden';
+  };
+  const closeSuccessApplyPopUpHandler = () => {
+    document.body.style.overflow = 'auto';
+    setOpenSuccessApplyPopUp(false);
+  };
+  console.log(project);
 
   if (isPending) {
     return <Spinner />;
@@ -179,7 +188,7 @@ const ProjectDetails: React.FC = () => {
       {/* BUTTON */}
       {project.projectStatus === 'searching' && !user?.user.isAdmin && (
         <button
-          onClick={applyToProjectHandler}
+          onClick={openApplyPopUpHandler}
           className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-white hover:text-primary-blue font-semibold flex justify-center items-center w-[268px] h-10"
         >
           Подати заявку
@@ -191,7 +200,12 @@ const ProjectDetails: React.FC = () => {
         projectId={project.id}
         projectSpecializations={project.projectRequirments}
         openApplyPopUp={openApplyPopUp}
+        openSuccessApplyHandler={openSuccessApplyHandler}
         handleCloseApplyPopUp={handleCloseApplyPopUp}
+      />
+      <SuccessApplyPopUp
+        openSuccessApplyPopUp={openSuccessApplyPopUp}
+        handleCloseSuccessApplyPopUp={closeSuccessApplyPopUpHandler}
       />
     </main>
   );

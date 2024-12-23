@@ -102,7 +102,7 @@ const InstructionConnectBot = () => {
             <RxCross1
               size={'20px'}
               className="cursor-pointer"
-              onClick={handleCloseErrorPopUp} //TODO:work with MODALs
+              onClick={handleCloseErrorPopUp}
             />
           </div>
           <p className="font-medium font-lato">
