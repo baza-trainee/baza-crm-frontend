@@ -65,9 +65,9 @@ const Project: React.FC<ProjectProps> = ({ project, tags = [] }) => {
               >
                 {tag.name}
                 {tag.count === tag.maxCount ? (
-                  <span className="text-primary-blue">{tag.count}</span>
+                  <span className="text-primary-blue"> {tag.count}</span>
                 ) : (
-                  <span>{tag.count}</span>
+                  <span> {tag.count}</span>
                 )}
                 <span className="text-primary-blue">/{tag.maxCount}</span>
               </div>

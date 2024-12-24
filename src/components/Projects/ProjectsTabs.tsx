@@ -2,9 +2,10 @@ import Select from 'react-select';
 import makeAnimated from 'react-select/animated';
 
 // import Select, { OptionProps } from 'react-select';
-import { OptionType, StatusCount } from '../../types';
+import { OptionType, RootState, StatusCount } from '../../types';
 import { projectStatusOptions } from '../../utils/projectStatusOptions';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 // import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
 
@@ -35,7 +36,8 @@ const ProjectsTabs: React.FC<ProjectsTabsProps> = ({
   selectedOption,
   setSelectedOption,
 }) => {
-  const isAdmin = true;
+  const user = useSelector((state: RootState) => state.userState.user);
+  //const isAdmin = true;
   const animatedComponents = makeAnimated();
   return (
     <div className="py-2 flex  items-stretch text-text-black bg-white rounded-[10px] border-card-border border px-8 gap-8">
@@ -78,7 +80,7 @@ const ProjectsTabs: React.FC<ProjectsTabsProps> = ({
         </div>
       </div>
 
-      {isAdmin && (
+      {user?.user.isAdmin && (
         <Link
           to="/crm/projects/create"
           className="text-white hover:bg-white bg-primary-blue py-2 h-min rounded-[10px] flex justify-center  items-center duration-500 w-[268px] border-2 border-primary-blue hover:text-black font-semibold"

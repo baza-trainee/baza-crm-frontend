@@ -11,7 +11,7 @@ import Select, {
 import Modal from 'react-modal';
 import { Controller, useForm } from 'react-hook-form';
 import chevronDown from '../../assets/common/chevron-down.svg';
-//import { applyToProject } from '../../utils/projectApplicationApi';
+import { applyToProject } from '../../utils/projectApplicationApi';
 
 type SelectSpecialization = {
   value: number | undefined;
@@ -37,7 +37,7 @@ const CustomOption = ({
   ...props
 }: OptionProps<SelectSpecialization, boolean>) => (
   <components.Option {...props}>
-    <div className="flex gap-1 items-center group se">
+    <div className="flex gap-1 items-center group">
       <span className="mt-0.5 size-4 rounded-full border-2 border-black group-hover:border-4  group-hover:border-primary-blue"></span>
       <p className=" group-hover:text-primary-blue text-black">{children}</p>
     </div>
@@ -129,7 +129,12 @@ const ApplyPopUp = ({
     console.log(data);
     console.log(projectId);
     try {
-      // await applyToProject(projectId.toString(), data.specialization, token!);
+      const res = await applyToProject(
+        projectId.toString(),
+        data.specialization,
+        token!,
+      );
+      console.log(res);
       handleCloseApplyPopUp();
       openSuccessApplyHandler();
     } catch (error) {
