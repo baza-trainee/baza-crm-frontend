@@ -81,7 +81,6 @@ const ProjectApplications: React.FC<ProjectApplicationsProps> = ({
       toast.error('Не вдалося обробити заявку');
     },
   });
-
   const handleAccept = (aplicationId: number) => {
     const projectId = project?.id;
     if (token) {

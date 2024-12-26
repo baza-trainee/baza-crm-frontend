@@ -98,7 +98,7 @@ const TeamForm = ({
                       className="flex justify-between w-full rounded-[10px] bg-blue-hover items-center"
                     >
                       <p className="mx-3 my-1">
-                        {member.user?.user.firstName}{' '}
+                        {member.user?.user.firstName}
                         {member.user?.user.lastName}
                       </p>
                       <RiCloseLine

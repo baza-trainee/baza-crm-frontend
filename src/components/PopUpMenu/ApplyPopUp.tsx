@@ -19,7 +19,7 @@ type SelectSpecialization = {
 };
 
 type ApplyForm = {
-  specialization: string;
+  specialization: { value: number | undefined; label: string | undefined };
   ndaCondition: boolean;
   projectRules: boolean;
 };
@@ -73,7 +73,7 @@ const ApplyPopUp = ({
     formState: { errors },
   } = useForm<ApplyForm>({
     defaultValues: {
-      specialization: '',
+      specialization: { value: undefined, label: undefined },
       ndaCondition: false,
       projectRules: false,
     },
@@ -128,10 +128,11 @@ const ApplyPopUp = ({
   const submitHandler = async (data: ApplyForm) => {
     console.log(data);
     console.log(projectId);
+    console.log(data.specialization.value);
     try {
       const res = await applyToProject(
         projectId.toString(),
-        data.specialization,
+        data.specialization.value!.toString(),
         token!,
       );
       console.log(res);
@@ -198,7 +199,7 @@ const ApplyPopUp = ({
                 options={specializations}
                 onChange={(selectedOption) => onChange(selectedOption)}
                 onBlur={onBlur}
-                value={specializations.find((s) => s.label === value)}
+                value={specializations.find((s) => s.label === value!.label)}
                 classNamePrefix="select"
                 placeholder=""
                 styles={customStyles}
