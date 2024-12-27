@@ -12,6 +12,8 @@ import { getProjectById } from '../utils/projectApi';
 import ApplyPopUp from '../components/PopUpMenu/ApplyPopUp';
 import { getProjectStatusLabel } from '../utils/projectStatusOptions';
 import { useState } from 'react';
+import { getTags } from '../utils/tagApi';
+
 import SuccessApplyPopUp from '../components/PopUpMenu/SuccessApplyPopUp';
 
 const ProjectDetails: React.FC = () => {
@@ -29,6 +31,13 @@ const ProjectDetails: React.FC = () => {
     queryFn: () => getProjectById(Number(id), user!.token),
     enabled: !!user?.token,
   });
+
+  const { data: tags } = useQuery({
+    queryKey: ['tags'],
+    queryFn: () => getTags(user!.token),
+    enabled: !!user?.token,
+  });
+  console.log(tags);
   const openApplyPopUpHandler = async () => {
     setApplyPopUp(true);
     document.body.style.overflow = 'hidden';
@@ -45,7 +54,6 @@ const ProjectDetails: React.FC = () => {
     document.body.style.overflow = 'auto';
     setOpenSuccessApplyPopUp(false);
   };
-  console.log(project);
 
   if (isPending) {
     return <Spinner />;
@@ -61,6 +69,10 @@ const ProjectDetails: React.FC = () => {
     );
   }
 
+  const convertDate = (date: string) => {
+    return new Date(date).toLocaleDateString();
+  };
+
   const borderColor =
     project.projectStatus === 'ended'
       ? '#14B541'
@@ -71,7 +83,7 @@ const ProjectDetails: React.FC = () => {
   return (
     <main className="flex flex-col w-full gap-5 px-8 py-5 height-100 bg-light-blue-bg text-text-black">
       {/* TITLE */}
-      <div className="h-[60px] flex justify-between items-center font-bold text-text-black bg-white rounded-xl border-card-border border px-8 w-[845px] mb-10">
+      <div className="py-4 flex justify-between items-center font-bold text-text-black bg-white rounded-xl border-card-border border px-8 w-[845px] mb-10">
         <h1 className="text-2xl">{project?.name}</h1>
         <div
           style={{ backgroundColor: borderColor }}
@@ -84,15 +96,17 @@ const ProjectDetails: React.FC = () => {
       <h3 className="mb-3 ml-8 text-xl font-bold">Опис проєкту</h3>
       <div className="flex flex-wrap gap-5 mb-10">
         <div className="w-[845px] bg-white rounded-[10px] px-8 py-5 border-card-border border flex flex-col justify-between">
-          <p>{project?.description}</p>
-          <p className="flex justify-between gap-5 font-bold max-w-[440px]">
-            Дата старту формування команди{' '}
-            <span className="ml-14">{project?.dateTeam}</span>
-          </p>
-          <p className="flex justify-between gap-5 font-bold max-w-[440px]">
-            Дата старту розробки{' '}
-            <span className="ml-14">{project?.dateStart}</span>
-          </p>
+          <p className="font-sans text-base">{project?.description}</p>
+          <div className="flex flex-col gap-2 mt-11">
+            <p className="flex justify-between gap-5 font-bold max-w-[440px]">
+              Дата старту формування команди{' '}
+              <span className="ml-14">{convertDate(project?.dateTeam)}</span>
+            </p>
+            <p className="flex justify-between gap-5 font-bold max-w-[440px]">
+              Дата старту розробки{' '}
+              <span className="ml-14">{convertDate(project?.dateStart)}</span>
+            </p>
+          </div>
         </div>
         <div className="w-[412px] flex flex-col justify-between gap-5">
           <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border justify-between flex items-end">
@@ -156,34 +170,35 @@ const ProjectDetails: React.FC = () => {
       {/* TEAM */}
       <h3 className="mb-3 ml-8 text-xl font-bold">Склад команди</h3>
       <div className="flex flex-wrap gap-5">
-        {project.projectRequirments.map((tag) => (
-          <div
-            key={tag.tagId}
-            className="w-[268px] bg-white rounded-[10px] px-8 py-5 border-card-border border h-[282px] flex flex-col justify-start gap-3"
-          >
-            <div className="flex items-center justify-between">
-              <div className="px-8 py-2 text-white rounded-r-[10px] -ml-8 self-start bg-primary-blue">
-                {tag.tagId}
+        {tags &&
+          project.projectRequirments.map((tag) => (
+            <div
+              key={tag.tagId}
+              className="w-[268px] bg-white rounded-[10px] px-8 py-5 border-card-border border h-[282px] flex flex-col justify-start gap-3"
+            >
+              <div className="flex items-center justify-between">
+                <div className="px-8 py-2 text-white rounded-r-[10px] -ml-8 self-start bg-primary-blue">
+                  {tags!.find((t) => t.id === tag.tagId)?.name}
+                </div>
+                <p>
+                  {tag.count === 5 ? (
+                    <span className="text-primary-blue">{tag.count}</span>
+                  ) : (
+                    <span>{tag.count}</span>
+                  )}
+                  <span className="text-primary-blue">/{tag.tagId}</span>
+                </p>
               </div>
-              <p>
-                {tag.count === 5 ? (
-                  <span className="text-primary-blue">{tag.count}</span>
-                ) : (
-                  <span>{tag.count}</span>
-                )}
-                <span className="text-primary-blue">/{tag.tagId}</span>
-              </p>
-            </div>
-            <div>
-              {/*TODO:fix this behavior  */}
-              {/* <p>Аникій Філіппов</p>
+              <div>
+                {/*TODO:fix this behavior  */}
+                {/* <p>Аникій Філіппов</p>
               <p>Віктор Філіппов</p>
               <p>Оксана Лисенко</p>
               <p>Максим Головко</p>
               <p>Софія Пономаренко</p> */}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
       {/* BUTTON */}
       {project.projectStatus === 'searching' && !user?.user.isAdmin && (

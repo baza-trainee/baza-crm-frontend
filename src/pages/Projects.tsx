@@ -37,7 +37,7 @@ const Projects = () => {
   });
 
   const { data: tags, isError: isTagsError } = useQuery({
-    queryKey: ['tags', user?.token],
+    queryKey: ['tags'],
     queryFn: () => getTags(user!.token),
     enabled: !!user?.token,
   });

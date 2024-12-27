@@ -37,6 +37,7 @@ const TeamForm = ({
       mutation.mutate({ userId, token, projectId });
     }
   };
+  console.log(projectSpecializations);
 
   return (
     <>
@@ -103,7 +104,7 @@ const TeamForm = ({
                       </p>
                       <RiCloseLine
                         className="p-1 duration-500 rounded-r-lg cursor-pointer size-7 text-normal-ui hover:text-red hover:bg-rose-100"
-                        onClick={() => handleDeleteMember(member.userId)}
+                        onClick={() => handleDeleteMember(member.userId)} //work with this
                       />
                     </div>
                   ),

@@ -57,13 +57,11 @@ const PortalUserForm = ({
   const [selectedTechnologies, setSelectedTechnologies] = useState<
     SelectOption[]
   >([]);
-  console.log(errors);
   const onSubmit = handleSubmit(async (data) => {
     const tagIds = [
       ...selectedTechnologies.map((t) => t.data.id),
       ...selectedSpecializations.map((s) => s.data.id),
     ];
-    console.log(data);
     await handleUserUpdate(tagIds, data);
   });
 

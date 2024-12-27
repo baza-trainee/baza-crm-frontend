@@ -126,9 +126,6 @@ const ApplyPopUp = ({
   };
 
   const submitHandler = async (data: ApplyForm) => {
-    console.log(data);
-    console.log(projectId);
-    console.log(data.specialization.value);
     try {
       const res = await applyToProject(
         projectId.toString(),
