@@ -149,6 +149,7 @@ export const deleteMember = async ({
   token,
   projectId,
 }: DeleteMemberMutationVariables): Promise<MessageResponse> => {
+  console.log(userId);
   const url = `${import.meta.env.VITE_API_URL}/project/${projectId}/member`;
   const authHeaders = {
     headers: {
@@ -157,7 +158,7 @@ export const deleteMember = async ({
   };
 
   const { data } = await axios.delete<MessageResponse>(url, {
-    params: { userId },
+    data: { userId },
     ...authHeaders,
   });
 

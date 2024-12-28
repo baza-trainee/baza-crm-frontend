@@ -279,7 +279,7 @@ export type Application = {
   projectId: number;
   tagId: number;
   userId: number;
-  state: string;
+  state: 'accepted' | 'declined' | 'waiting';
   user?: UserInformation;
 };
 

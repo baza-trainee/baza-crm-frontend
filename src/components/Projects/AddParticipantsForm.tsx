@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 
@@ -17,6 +17,7 @@ const AddParticipantsForm: React.FC<AddParticipantsFormProps> = ({
   projectSpecializations,
 }) => {
   const user = useSelector((state: RootState) => state.userState.user);
+  const queryClient = useQueryClient();
 
   const {
     register,
@@ -41,6 +42,12 @@ const AddParticipantsForm: React.FC<AddParticipantsFormProps> = ({
     mutationFn: addMember,
     onSuccess: () => {
       toast.success('Участник успішно доданий');
+      queryClient.invalidateQueries({
+        queryKey: ['projects'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['projectWithUsers', project?.id],
+      });
     },
     onError: () => {
       toast.error('Не вдалося додати участника');

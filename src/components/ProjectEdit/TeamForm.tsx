@@ -1,7 +1,7 @@
 import { RiCloseLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { useFormContext } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 
 import { Project, RootState, Tag } from '../../types';
@@ -19,11 +19,18 @@ const TeamForm = ({
     formState: { errors },
   } = useFormContext();
   const user = useSelector((state: RootState) => state.userState.user);
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: deleteMember,
     onSuccess: () => {
       toast.success('Учасник успішно видалений');
+      queryClient.invalidateQueries({
+        queryKey: ['projects'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['projectWithUsers', project?.id],
+      });
     },
     onError: () => {
       toast.error('Не вдалося видалити учасника');
@@ -37,6 +44,7 @@ const TeamForm = ({
       mutation.mutate({ userId, token, projectId });
     }
   };
+  console.log(projectSpecializations);
 
   return (
     <>
@@ -98,7 +106,7 @@ const TeamForm = ({
                       className="flex justify-between w-full rounded-[10px] bg-blue-hover items-center"
                     >
                       <p className="mx-3 my-1">
-                        {member.user?.user.firstName}{' '}
+                        {member.user?.user.firstName}
                         {member.user?.user.lastName}
                       </p>
                       <RiCloseLine

@@ -22,7 +22,8 @@ import Technologies from './pages/Technologies';
 import InstructionConnectBot from './pages/InstructionConnectBot';
 import ConnectToDiscord from './pages/ConnectToDiscord';
 
-const queryClient = new QueryClient({
+// eslint-disable-next-line react-refresh/only-export-components
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 1000 * 60 * 10,

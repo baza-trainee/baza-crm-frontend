@@ -12,11 +12,16 @@ import { getProjectById } from '../utils/projectApi';
 import ApplyPopUp from '../components/PopUpMenu/ApplyPopUp';
 import { getProjectStatusLabel } from '../utils/projectStatusOptions';
 import { useState } from 'react';
+import { getTags } from '../utils/tagApi';
+import ProjectUsersCards from '../components/Projects/ProjectUsersCards';
+
+import SuccessApplyPopUp from '../components/PopUpMenu/SuccessApplyPopUp';
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const user = useSelector((state: RootState) => state.userState.user);
   const [openApplyPopUp, setApplyPopUp] = useState(false);
+  const [openSuccessApplyPopUp, setOpenSuccessApplyPopUp] = useState(false);
 
   const {
     data: project,
@@ -28,14 +33,30 @@ const ProjectDetails: React.FC = () => {
     enabled: !!user?.token,
   });
 
-  const applyToProjectHandler = async () => {
+  console.log(project);
+
+  //const users = await Promise.all(userIds.map((id) => getUserById(token, id)));
+
+  const { data: tags } = useQuery({
+    queryKey: ['tags'],
+    queryFn: () => getTags(user!.token),
+    enabled: !!user?.token,
+  });
+  const openApplyPopUpHandler = async () => {
     setApplyPopUp(true);
     document.body.style.overflow = 'hidden';
-    // const req = await applyToProject(id,user?.user.);
   };
   const handleCloseApplyPopUp = () => {
     document.body.style.overflow = 'auto';
     setApplyPopUp(false);
+  };
+  const openSuccessApplyHandler = () => {
+    setOpenSuccessApplyPopUp(true);
+    document.body.style.overflow = 'hidden';
+  };
+  const closeSuccessApplyPopUpHandler = () => {
+    document.body.style.overflow = 'auto';
+    setOpenSuccessApplyPopUp(false);
   };
 
   if (isPending) {
@@ -52,17 +73,19 @@ const ProjectDetails: React.FC = () => {
     );
   }
 
+  const convertDate = (date: string) => {
+    return new Date(date).toLocaleDateString();
+  };
   const borderColor =
     project.projectStatus === 'ended'
       ? '#14B541'
       : project.projectStatus === 'working'
         ? '#2e57db'
         : '#f16600';
-
   return (
     <main className="flex flex-col w-full gap-5 px-8 py-5 height-100 bg-light-blue-bg text-text-black">
       {/* TITLE */}
-      <div className="h-[60px] flex justify-between items-center font-bold text-text-black bg-white rounded-xl border-card-border border px-8 w-[845px] mb-10">
+      <div className="py-4 flex justify-between items-center font-bold text-text-black bg-white rounded-xl border-card-border border px-8 w-[845px] mb-10">
         <h1 className="text-2xl">{project?.name}</h1>
         <div
           style={{ backgroundColor: borderColor }}
@@ -75,15 +98,17 @@ const ProjectDetails: React.FC = () => {
       <h3 className="mb-3 ml-8 text-xl font-bold">Опис проєкту</h3>
       <div className="flex flex-wrap gap-5 mb-10">
         <div className="w-[845px] bg-white rounded-[10px] px-8 py-5 border-card-border border flex flex-col justify-between">
-          <p>{project?.description}</p>
-          <p className="flex justify-between gap-5 font-bold max-w-[440px]">
-            Дата старту формування команди{' '}
-            <span className="ml-14">{project?.dateTeam}</span>
-          </p>
-          <p className="flex justify-between gap-5 font-bold max-w-[440px]">
-            Дата старту розробки{' '}
-            <span className="ml-14">{project?.dateStart}</span>
-          </p>
+          <p className="font-sans text-base">{project?.description}</p>
+          <div className="flex flex-col gap-2 mt-11">
+            <p className="flex justify-between gap-5 font-bold max-w-[440px]">
+              Дата старту формування команди{' '}
+              <span className="ml-14">{convertDate(project?.dateTeam)}</span>
+            </p>
+            <p className="flex justify-between gap-5 font-bold max-w-[440px]">
+              Дата старту розробки{' '}
+              <span className="ml-14">{convertDate(project?.dateStart)}</span>
+            </p>
+          </div>
         </div>
         <div className="w-[412px] flex flex-col justify-between gap-5">
           <div className="bg-white rounded-[10px] px-8 py-2 border-card-border border justify-between flex items-end">
@@ -146,40 +171,11 @@ const ProjectDetails: React.FC = () => {
       </div>
       {/* TEAM */}
       <h3 className="mb-3 ml-8 text-xl font-bold">Склад команди</h3>
-      <div className="flex flex-wrap gap-5">
-        {project.projectRequirments.map((tag) => (
-          <div
-            key={tag.tagId}
-            className="w-[268px] bg-white rounded-[10px] px-8 py-5 border-card-border border h-[282px] flex flex-col justify-start gap-3"
-          >
-            <div className="flex items-center justify-between">
-              <div className="px-8 py-2 text-white rounded-r-[10px] -ml-8 self-start bg-primary-blue">
-                {tag.tagId}
-              </div>
-              <p>
-                {tag.count === 5 ? (
-                  <span className="text-primary-blue">{tag.count}</span>
-                ) : (
-                  <span>{tag.count}</span>
-                )}
-                <span className="text-primary-blue">/{tag.tagId}</span>
-              </p>
-            </div>
-            <div>
-              {/*TODO:fix this behavior  */}
-              {/* <p>Аникій Філіппов</p>
-              <p>Віктор Філіппов</p>
-              <p>Оксана Лисенко</p>
-              <p>Максим Головко</p>
-              <p>Софія Пономаренко</p> */}
-            </div>
-          </div>
-        ))}
-      </div>
+      {tags && <ProjectUsersCards project={project} tags={tags} />}
       {/* BUTTON */}
       {project.projectStatus === 'searching' && !user?.user.isAdmin && (
         <button
-          onClick={applyToProjectHandler}
+          onClick={openApplyPopUpHandler}
           className="border-2 border-primary-blue rounded-[10px] duration-500 bg-primary-blue text-white hover:bg-white hover:text-primary-blue font-semibold flex justify-center items-center w-[268px] h-10"
         >
           Подати заявку
@@ -191,7 +187,12 @@ const ProjectDetails: React.FC = () => {
         projectId={project.id}
         projectSpecializations={project.projectRequirments}
         openApplyPopUp={openApplyPopUp}
+        openSuccessApplyHandler={openSuccessApplyHandler}
         handleCloseApplyPopUp={handleCloseApplyPopUp}
+      />
+      <SuccessApplyPopUp
+        openSuccessApplyPopUp={openSuccessApplyPopUp}
+        handleCloseSuccessApplyPopUp={closeSuccessApplyPopUpHandler}
       />
     </main>
   );
