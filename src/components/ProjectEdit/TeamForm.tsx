@@ -1,7 +1,7 @@
 import { RiCloseLine } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { useFormContext } from 'react-hook-form';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSelector } from 'react-redux';
 
 import { Project, RootState, Tag } from '../../types';
@@ -19,11 +19,18 @@ const TeamForm = ({
     formState: { errors },
   } = useFormContext();
   const user = useSelector((state: RootState) => state.userState.user);
+  const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: deleteMember,
     onSuccess: () => {
       toast.success('Учасник успішно видалений');
+      queryClient.invalidateQueries({
+        queryKey: ['projects'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['projectWithUsers', project?.id],
+      });
     },
     onError: () => {
       toast.error('Не вдалося видалити учасника');
@@ -104,7 +111,7 @@ const TeamForm = ({
                       </p>
                       <RiCloseLine
                         className="p-1 duration-500 rounded-r-lg cursor-pointer size-7 text-normal-ui hover:text-red hover:bg-rose-100"
-                        onClick={() => handleDeleteMember(member.userId)} //work with this
+                        onClick={() => handleDeleteMember(member.userId)}
                       />
                     </div>
                   ),

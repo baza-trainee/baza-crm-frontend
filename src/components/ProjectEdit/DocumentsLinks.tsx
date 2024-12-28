@@ -24,7 +24,10 @@ const DocumentsLinks = () => {
   const toggleDocumentMenu = (e: MouseEvent) => {
     if (openDocRef.current!.contains(e.target as Node))
       setIsOpen((prev) => !prev);
-    else if (!docMenuRef.current!.contains(e.target as Node)) {
+    else if (
+      docMenuRef.current &&
+      !docMenuRef.current!.contains!(e.target as Node)
+    ) {
       setIsOpen(false);
     }
   };

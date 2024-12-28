@@ -38,7 +38,6 @@ const ProjectUsersCards = ({
     const currentTag = tags?.find((t) => t.id === tagId);
     return currentTag;
   };
-  console.log(project.projectRequirments);
   return (
     <div className="flex flex-wrap gap-5">
       {project.projectRequirments.map((tag) => (
