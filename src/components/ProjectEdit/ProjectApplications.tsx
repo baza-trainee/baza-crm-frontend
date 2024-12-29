@@ -75,7 +75,12 @@ const ProjectApplications: React.FC<ProjectApplicationsProps> = ({
     mutationFn: resolveApplication,
     onSuccess: () => {
       toast.success('Заявка успішно оброблена');
-      queryClient.invalidateQueries({ queryKey: ['applicationsWithUsers'] });
+      queryClient.invalidateQueries({
+        queryKey: ['projectWithUsers', projectId],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['applicationsWithUsers', projectId],
+      });
     },
     onError: () => {
       toast.error('Не вдалося обробити заявку');

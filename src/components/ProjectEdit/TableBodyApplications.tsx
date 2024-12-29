@@ -15,11 +15,22 @@ const TableBodyApplications: React.FC<TableBodyApplicationsProps> = ({
   handleAccept,
   handleReject,
 }) => {
+  const sortedForStatus = () => {
+    return [...filteredApplications!].sort((a, b) => {
+      if (a.state === 'waiting' && b.state !== 'waiting') {
+        return -1; // a comes before b
+      }
+      if (a.state !== 'waiting' && b.state === 'waiting') {
+        return 1; // b comes before a
+      }
+      return 0; // a and b are equal
+    });
+  };
   const [parent] = useAutoAnimate();
   return (
     <tbody className="text-center" ref={parent}>
       {filteredApplications && filteredApplications?.length > 0 ? (
-        filteredApplications?.map((application) => (
+        sortedForStatus().map((application) => (
           <tr
             key={application.id}
             style={{
@@ -72,7 +83,7 @@ const TableBodyApplications: React.FC<TableBodyApplicationsProps> = ({
             <td className="relative z-10 px-4 py-2">
               <button
                 disabled={application.state !== 'waiting'}
-                onClick={() => handleReject(application.id)} //TODO:revalidate with tanstack query
+                onClick={() => handleReject(application.id)}
                 className="px-4 py-1 text-red rounded-[10px] duration-500 hover:text-black border border-red disabled:opacity-50 disabled:hover:text-red disabled:cursor-not-allowed disabled:filter disabled:brightness-50"
               >
                 Відхилити

@@ -29,6 +29,7 @@ export const useApplicationsWithUsers = (token: string, projectId: number) => {
     queryKey: ['applicationsWithUsers', projectId],
     queryFn: async () => {
       const requests = await getApplicationsById(token, projectId);
+      console.log(requests);
       // ARRAY OF UNIQUE USER IDS
       const userIds = [...new Set(requests.map((req) => req.userId))];
 
@@ -57,7 +58,6 @@ export const useApplicationsWithUsers = (token: string, projectId: number) => {
         ...req,
         user: usersById[req.userId],
       }));
-      console.log(data);
 
       return data;
     },
