@@ -72,7 +72,7 @@ const TableBodyApplications: React.FC<TableBodyApplicationsProps> = ({
             <td className="relative z-10 px-4 py-2">
               <button
                 disabled={application.state !== 'waiting'}
-                onClick={() => handleReject(application.id)} //TODO:revalidate with tanstack query
+                onClick={() => handleReject(application.id)}
                 className="px-4 py-1 text-red rounded-[10px] duration-500 hover:text-black border border-red disabled:opacity-50 disabled:hover:text-red disabled:cursor-not-allowed disabled:filter disabled:brightness-50"
               >
                 Відхилити
