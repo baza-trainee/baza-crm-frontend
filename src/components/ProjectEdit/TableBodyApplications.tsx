@@ -15,22 +15,11 @@ const TableBodyApplications: React.FC<TableBodyApplicationsProps> = ({
   handleAccept,
   handleReject,
 }) => {
-  const sortedForStatus = () => {
-    return [...filteredApplications!].sort((a, b) => {
-      if (a.state === 'waiting' && b.state !== 'waiting') {
-        return -1; // a comes before b
-      }
-      if (a.state !== 'waiting' && b.state === 'waiting') {
-        return 1; // b comes before a
-      }
-      return 0; // a and b are equal
-    });
-  };
   const [parent] = useAutoAnimate();
   return (
     <tbody className="text-center" ref={parent}>
       {filteredApplications && filteredApplications?.length > 0 ? (
-        sortedForStatus().map((application) => (
+        filteredApplications.map((application) => (
           <tr
             key={application.id}
             style={{
