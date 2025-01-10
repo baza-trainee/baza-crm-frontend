@@ -21,6 +21,7 @@ import RouteWrapper from './components/RouteWrapper';
 import Technologies from './pages/Technologies';
 import InstructionConnectBot from './pages/InstructionConnectBot';
 import ConnectToDiscord from './pages/ConnectToDiscord';
+import ConnectToDiscordProject from './pages/ConnectToDiscordProject';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const queryClient = new QueryClient({
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
       {
         path: 'connect-to-discord',
         element: <ConnectToDiscord />,
+      },
+      {
+        path: 'connect-to-discord-project',
+        element: <ConnectToDiscordProject />,
       },
       {
         path: 'portal',
