@@ -19,7 +19,7 @@ export const connectDiscordProject = async (
   guildId: string,
   projectId: string,
 ) => {
-  const url = `${import.meta.env.VITE_API_URL}/project/dicordCallback??guildId=${guildId}&projectId=${projectId}`;
+  const url = `${import.meta.env.VITE_API_URL}/project/dicordCallback?guildId=${guildId}&projectId=${projectId}`;
   const response = await axios.post(
     url,
     {},
