@@ -8,7 +8,8 @@ const HomeLayout: React.FC = () => {
   const location = useLocation();
   return (
     <main>
-      {location.pathname === '/crm/bot-linking' ? (
+      {location.pathname === '/crm/bot-linking' ||
+      location.pathname === '/crm/connect-to-discord-project' ? (
         <Outlet />
       ) : (
         <>
