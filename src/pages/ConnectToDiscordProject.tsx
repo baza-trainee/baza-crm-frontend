@@ -14,7 +14,6 @@ const ConnectToDiscordProject = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    console.log(params);
     const projectId = params.get('state');
     const guildId = params.get('guild_id');
     const user: Auth = JSON.parse(localStorage.getItem('user')!);
@@ -22,12 +21,7 @@ const ConnectToDiscordProject = () => {
 
     const connect = async () => {
       try {
-        const res = await connectDiscordProject(
-          user!.token,
-          guildId!,
-          projectId!,
-        );
-        console.log(res);
+        await connectDiscordProject(user!.token, guildId!, projectId!);
         toast.success('Успішно синхронізовано');
       } catch (err) {
         toast.error('Помилка в синхронізації');
