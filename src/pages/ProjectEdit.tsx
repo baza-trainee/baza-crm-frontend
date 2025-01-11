@@ -169,12 +169,9 @@ const ProjectEdit = () => {
     const status: string = 'working';
     if (token && projectId) {
       mutationChangeStatus.mutate({ status, token, projectId });
-
-      window.location.href = `${import.meta.env.VITE_SOME_KEY}&state=${projectId}`; //TODO:redirect to discord connect server
+      window.location.href = `${import.meta.env.VITE_DISCORD_PROJECT_CONNECT}&state=${projectId}`;
     }
   };
-  const discordConnectServerLink = import.meta.env.VITE_DISCORD_SERVER_CONNECT;
-  console.log(`${discordConnectServerLink}&state=${project?.id}`);
   const mutationFinishProject = useMutation({
     mutationFn: finishProject,
     onSuccess: () => {
