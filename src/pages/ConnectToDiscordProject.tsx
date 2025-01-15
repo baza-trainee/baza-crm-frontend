@@ -29,9 +29,9 @@ const ConnectToDiscordProject = () => {
     const params = new URLSearchParams(location.search);
     const projectId = Number(params.get('state'));
     const status: string = 'working';
-    const token: Auth['token'] = JSON.parse(localStorage.getItem('token')!);
-    if (token && projectId) {
-      mutationChangeStatus.mutate({ status, token, projectId });
+    const user: Auth = JSON.parse(localStorage.getItem('user')!);
+    if (user && projectId) {
+      mutationChangeStatus.mutate({ status, token: user.token, projectId });
     }
   };
 
@@ -39,18 +39,14 @@ const ConnectToDiscordProject = () => {
     const params = new URLSearchParams(location.search);
     const projectId = params.get('state');
     const guildId = params.get('guild_id');
-    const userInfo: Auth['user'] = JSON.parse(localStorage.getItem('user')!);
-    const token: Auth['token'] = JSON.parse(localStorage.getItem('token')!);
-    const user = {
-      token: token,
-      user: userInfo,
-    };
+    const user: Auth = JSON.parse(localStorage.getItem('user')!);
+
     dispatch(loginUser(user));
 
     const connect = async () => {
       try {
-        handleChangeStatus();
         await connectDiscordProject(user!.token, guildId!, projectId!);
+        handleChangeStatus();
         toast.success('Успішно синхронізовано');
       } catch (err) {
         toast.error('Помилка в синхронізації');

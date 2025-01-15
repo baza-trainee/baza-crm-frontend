@@ -88,7 +88,7 @@ const ProjectCreate: React.FC = () => {
     if (token) {
       mutation.mutate({ projectData: data, token });
     }
-  }; //TODO:only admin can create project - fix this for user
+  };
 
   return (
     <form
