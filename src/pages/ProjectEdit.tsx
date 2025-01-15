@@ -166,11 +166,11 @@ const ProjectEdit = () => {
 
   const handleChangeStatus = () => {
     const projectId = project?.id;
-    const status: string = 'working';
+
     const discordProjectUrl =
       'https://discord.com/oauth2/authorize?client_id=945645626945843200&permissions=8&response_type=code&redirect_uri=https%3A%2F%2Fbaza-crm-frontend.vercel.app%2Fcrm%2Fconnect-to-discord-project&integration_type=0&scope=identify+bot';
     if (token && projectId) {
-      mutationChangeStatus.mutate({ status, token, projectId });
+      //mutationChangeStatus.mutate({ status, token, projectId });
       window.location.href = `${discordProjectUrl}&state=${projectId}`;
     }
   };
