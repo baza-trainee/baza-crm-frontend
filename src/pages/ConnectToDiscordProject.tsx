@@ -28,7 +28,6 @@ const ConnectToDiscordProject = () => {
           token: user.token!,
           projectId: Number(projectId),
         });
-        //handleChangeStatus();
         toast.success('Успішно синхронізовано');
         toast.success('Статус успішно змінено');
       } catch (err) {
