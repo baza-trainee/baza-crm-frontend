@@ -29,7 +29,7 @@ const ConnectToDiscordProject = () => {
           projectId: Number(projectId),
         });
         toast.success('Успішно синхронізовано');
-        toast.success('Статус успішно змінено'); //TODO:maybe need refactore
+        toast.success('Статус успішно змінено');
       } catch (err) {
         toast.error('Помилка в синхронізації');
       } finally {

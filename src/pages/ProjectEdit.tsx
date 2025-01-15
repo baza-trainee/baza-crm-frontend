@@ -132,26 +132,8 @@ const ProjectEdit = () => {
         token,
         projectId,
       });
-      // console.log(data);
     }
   };
-
-  // const mutationDeleteProject = useMutation({
-  //   mutationFn: deleteMember,
-  //   onSuccess: () => {
-  //     toast.success('Учасник успішно видалений');
-  //   },
-  //   onError: () => {
-  //     toast.error('Не вдалося видалити учасника');
-  //   },
-  // });
-
-  // const handleDeleteProject = (userId: number) => {
-  //   const projectId = project?.id;
-  //   if (token && userId && projectId) {
-  //     mutationDeleteProject.mutate({ userId, token, projectId });
-  //   }
-  // };
 
   const mutationChangeStatus = useMutation({
     mutationFn: changeStatus,
@@ -170,7 +152,6 @@ const ProjectEdit = () => {
     const discordProjectUrl =
       'https://discord.com/oauth2/authorize?client_id=945645626945843200&permissions=8&response_type=code&redirect_uri=https%3A%2F%2Fbaza-crm-frontend.vercel.app%2Fcrm%2Fconnect-to-discord-project&integration_type=0&scope=identify+bot';
     if (token && projectId) {
-      //mutationChangeStatus.mutate({ status, token, projectId });
       window.location.href = `${discordProjectUrl}&state=${projectId}`;
     }
   };

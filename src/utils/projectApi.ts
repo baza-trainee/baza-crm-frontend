@@ -65,11 +65,7 @@ export const createProject = async ({
       authHeaders,
     ),
   );
-  // const memberData = { tagId: 211, email: 'admin@gmail.com' };
-  // await addMember({ memberData, token, projectId: Number(projectId) });
-
   await Promise.all(promises);
-
   return projectResponse.data;
 };
 
