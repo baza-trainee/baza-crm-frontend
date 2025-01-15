@@ -83,8 +83,8 @@ const ProjectCreate: React.FC = () => {
   });
 
   const onSubmit: SubmitHandler<CreateProjectRequest> = (data) => {
-    const token = user?.token;
     console.log(data);
+    const token = user?.token;
     if (token) {
       mutation.mutate({ projectData: data, token });
     }
