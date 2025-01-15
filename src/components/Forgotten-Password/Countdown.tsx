@@ -23,8 +23,8 @@ const Countdown = ({
   return (
     <div className="font-Open Sans font-sans my-[30px] p-[16px] rounded-[10px] bg-normal-ui">
       <p className="mb-[8px] text-[16px] leading-6 font-semibold text-[rgba(0, 0, 0, 0.2)]">
-        На вказану електронну пошту буде відправлено повідомлення з посиланням
-        для відновлення паролю. Посилання діє {count}.
+        На ваш discord аккаунт буде відправлено повідомлення з посиланням для
+        відновлення паролю. Посилання діє {count}.
       </p>
       <div className="flex justify-between">
         <p className="text-[14px] font-normal">

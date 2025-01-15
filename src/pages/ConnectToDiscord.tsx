@@ -14,7 +14,12 @@ const ConnectToDiscord = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     const botToken = params.get('token');
-    const user: Auth = JSON.parse(localStorage.getItem('user')!);
+    const userInfo: Auth['user'] = JSON.parse(localStorage.getItem('user')!);
+    const token: Auth['token'] = JSON.parse(localStorage.getItem('token')!);
+    const user = {
+      token: token,
+      user: userInfo,
+    };
     dispatch(loginUser(user));
     const connect = async () => {
       try {
