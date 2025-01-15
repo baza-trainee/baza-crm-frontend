@@ -82,11 +82,32 @@ const ProjectCreate: React.FC = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<CreateProjectRequest> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<CreateProjectRequest> = ({
+    description,
+    name,
+    projectPoints,
+    projectType,
+    price,
+    dateStart,
+    dateTeam,
+    specializations,
+  }) => {
+    const filteredSpecialization = specializations.filter(
+      (s) => Number(s.count) > 0,
+    );
+    const projectData = {
+      description,
+      name,
+      projectPoints,
+      projectType,
+      price,
+      dateStart,
+      dateTeam,
+      specializations: filteredSpecialization,
+    };
     const token = user?.token;
     if (token) {
-      mutation.mutate({ projectData: data, token });
+      mutation.mutate({ projectData, token });
     }
   };
 
@@ -374,18 +395,7 @@ const ProjectCreate: React.FC = () => {
                   defaultValue={specialization.name === 'PM2' ? 1 : 0}
                   min={specialization.name === 'PM2' ? 1 : 0}
                   max={20}
-                  {...register(`specializations.${index}.count`, {
-                    validate: (value) => {
-                      if (value) {
-                        if (specialization.name === 'PM2') {
-                          return true;
-                        } else if ((value as number) <= 0)
-                          return 'Кількість не може бути менше 0';
-                        else if ((value as number) > 20)
-                          return 'Кількість не може бути більше 20';
-                      }
-                    },
-                  })}
+                  {...register(`specializations.${index}.count`)}
                 />
                 <input
                   type="hidden"
