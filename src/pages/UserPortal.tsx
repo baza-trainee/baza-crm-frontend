@@ -38,6 +38,7 @@ const UserPortal = () => {
           const userData: Member = await getCurrentUser(user.token);
           setUserData(userData);
           setStatus(userData.status);
+          console.log('karmapoints' + ' ' + userData.karmaPoints);
           if (!userData.discord) navigate('/crm/instruction');
         } else {
           console.error('No token found');
