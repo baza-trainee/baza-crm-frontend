@@ -134,11 +134,11 @@ const SortMembers: React.FC<SortMembersProps> = ({ members }) => {
       });
     } else if (option === 'scoreUp') {
       return [...members].sort(
-        (a, b) => (a.karmaPoints ?? 0) - (b.karmaPoints ?? 0),
+        (a, b) => (Number(a.karmaPoints) ?? 0) - (Number(b.karmaPoints) ?? 0),
       );
     } else if (option === 'scoreDown') {
       return [...members].sort(
-        (a, b) => (b.karmaPoints ?? 0) - (a.karmaPoints ?? 0),
+        (a, b) => (Number(b.karmaPoints) ?? 0) - (Number(a.karmaPoints) ?? 0),
       );
     } else if (option === 'dateUp') {
       return [...members].sort((a, b) => {
