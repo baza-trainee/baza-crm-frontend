@@ -346,7 +346,7 @@ export type Member = {
   city: string;
   status: OptionStatus['name'];
   registerAt: string;
-  karmaPoints?: number;
+  karmaPoints?: string;
   projectPoints?: number;
   linkedin?: string;
   discord?: string;
@@ -358,4 +358,10 @@ export type OptionStatus = {
   name: 'active' | 'working' | 'pause';
   label: string;
   color: string;
+  text?: string;
+};
+export type EvaluatingsCalculate = {
+  fullStars: number[];
+  fractional: number;
+  emptyStars: number[];
 };

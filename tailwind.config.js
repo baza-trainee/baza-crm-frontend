@@ -1,6 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  safelist: [
+    'group/active',
+    'group/pause',
+    'group/working',
+    'group-hover/active:block',
+    'group-hover/pause:block',
+    'group-hover/working:block',
+  ],
   theme: {
     extend: {
       fontFamily: {
