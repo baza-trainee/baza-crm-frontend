@@ -12,9 +12,24 @@ const UserActivityStatus = ({
   >;
 }) => {
   const options: OptionStatus[] = [
-    { name: 'active', label: 'Aктивний', color: '#15c847' },
-    { name: 'working', label: 'На проекті', color: '#1e70eb' },
-    { name: 'pause', label: 'На паузі', color: '#ffb800' },
+    {
+      name: 'active',
+      label: 'Aктивний',
+      color: '#15c847',
+      text: ' - Цей статус означає, що ти готовий до роботи над новим проєктом. Тому ти першим отримуєш запрошення не лише на всі нові проєкти, а також запрошення на проєкти в розробці - це може бути добір в команду, якщо один з учасників вибув.',
+    },
+    {
+      name: 'working',
+      label: 'На проекті',
+      color: '#1e70eb',
+      text: ' - Цей статус означає, що ти активно залучений до розробки проєкту і не готовий до нового, але за особливих потреб можеш прийти на допомогу і долучитися ще до одного. Тому ти можеш отримати запрошення на проєкт, якщо протягом декількох тижнів для важливого проєкту не може зібратись команда.',
+    },
+    {
+      name: 'pause',
+      label: 'На паузі',
+      color: '#ffb800',
+      text: ' - Цей статус означає, що ти в даний час не можеш чи не готовий брати участь у процесі розробки. Але для нас кожен учасник важливий і ми не готові відпускати тебе назавжди. Тому ти можеш отримати запрошення на проєкт за особливих умов - коли команда на проєкт не може зібратись більше трьох тижнів і нам не вистачає саме тебе - за спеціалізацією та стеком технологій.',
+    },
   ];
 
   const [selectedOption, setSelectedOption] = useState<
@@ -31,13 +46,26 @@ const UserActivityStatus = ({
     <ul className="flex pr-9 gap-10">
       {options.map((option) => (
         <li key={option.name}>
-          <img
-            src={help}
-            alt="іконка підказки"
-            width={20}
-            height={20}
-            className="ml-auto mb-2"
-          />
+          <div className={`relative group/${option.name} size-max ml-auto`}>
+            <img
+              src={help}
+              alt="іконка підказки"
+              width={20}
+              height={20}
+              className="mb-2 cursor-pointer"
+            />
+            <div
+              className={`absolute px-4 py-4 bg-white w-[24.6875rem]  border border-card-border rounded-[10px] hidden group-hover/${option.name}:block top-3 right-6`}
+            >
+              <p className="font-sans">
+                <span className="font-semibold" style={{ color: option.color }}>
+                  {option.label.toLocaleUpperCase()}
+                </span>
+                {option.text}
+              </p>
+            </div>
+          </div>
+
           <div
             className="flex items-center cursor-pointer"
             onClick={() => handleClick(option.label)}
