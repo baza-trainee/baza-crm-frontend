@@ -16,6 +16,7 @@ const UserRating = ({
       emptyStars: new Array(5 - Math.ceil(points)).fill(1) as number[],
     };
   };
+  console.log(evaluatings());
   return (
     <div className="flex-1 h-[719px] overflow-hidden border rounded-xl border-card-border bg-white p-4">
       <h2 className="mb-4 text-lg font-bold text-center">Рейтинг співпраці</h2>
@@ -45,14 +46,17 @@ const UserRating = ({
                       </div>
                     ))}
                   </div>
-                  <div className="size-6 bg-gray-200 [mask-image:url(assets/common/star-mask.svg)] [mask-repeat:no-repeat] [mask-size:cover]">
-                    <div
-                      className="bg-[#FFB800] h-full"
-                      style={{
-                        width: `${evaluatings().fractional}%`,
-                      }}
-                    ></div>
-                  </div>
+                  {evaluatings().fractional > 0 && (
+                    <div className="size-6 bg-gray-200 [mask-image:url(assets/common/star-mask.svg)] [mask-repeat:no-repeat] [mask-size:cover]">
+                      <div
+                        className="bg-[#FFB800] h-full"
+                        style={{
+                          width: `${evaluatings().fractional}%`,
+                        }}
+                      ></div>
+                    </div>
+                  )}
+
                   <div className="flex gap-0.5">
                     {evaluatings().emptyStars.map((_s, i) => (
                       <div
