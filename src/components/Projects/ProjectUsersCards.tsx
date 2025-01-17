@@ -2,6 +2,7 @@ import type { Project, RootState, Tag, UserInformation } from '../../types';
 import { getUserById } from '../../utils/userApi';
 import { useSelector } from 'react-redux';
 import { useQueries, useQueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 
 const ProjectUsersCards = ({
   project,
@@ -71,9 +72,11 @@ const ProjectUsersCards = ({
           </div>
           <div className="flex flex-col gap-1">
             {membersFilter(tag.tagId).map((user, index) => (
-              <div className="bg-blue-hover px-3 rounded-[10px]" key={index}>
-                <p className="font-sans">{`${user?.firstName} ${user?.lastName}`}</p>
-              </div>
+              <Link to={`/crm/user/${user?.id}`}>
+                <div className="bg-blue-hover px-3 rounded-[10px]" key={index}>
+                  <p className="font-sans">{`${user?.firstName} ${user?.lastName}`}</p>
+                </div>
+              </Link>
             ))}
           </div>
         </div>

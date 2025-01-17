@@ -33,8 +33,6 @@ const ProjectDetails: React.FC = () => {
     enabled: !!user?.token,
   });
 
-  console.log(project);
-
   //const users = await Promise.all(userIds.map((id) => getUserById(token, id)));
 
   const { data: tags } = useQuery({
@@ -146,7 +144,7 @@ const ProjectDetails: React.FC = () => {
             </a>
           </div>
           <div className="flex items-center gap-3">
-            <FaSquareFacebook color="#1e70eb" size={32} />{' '}
+            <FaSquareFacebook color="#1e70eb" size={32} />
             <a
               href="https://www.facebook.com"
               className="relative inline-block duration-500 group"
@@ -157,7 +155,7 @@ const ProjectDetails: React.FC = () => {
             </a>
           </div>
           <div className="flex items-center gap-3">
-            <FaTelegram color="#1e70eb" size={32} />{' '}
+            <FaTelegram color="#1e70eb" size={32} />
             <a
               href="https://www.telegram.com"
               className="relative inline-block duration-500 group"

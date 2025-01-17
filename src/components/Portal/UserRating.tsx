@@ -16,7 +16,6 @@ const UserRating = ({
       emptyStars: new Array(5 - Math.ceil(points)).fill(1) as number[],
     };
   };
-  console.log(evaluatings());
   return (
     <div className="flex-1 h-[719px] overflow-hidden border rounded-xl border-card-border bg-white p-4">
       <h2 className="mb-4 text-lg font-bold text-center">Рейтинг співпраці</h2>

@@ -1,13 +1,14 @@
 import { Dispatch, SetStateAction, useState } from 'react';
 import help from '../../assets/common/circle-help.svg';
-import type { Member, OptionStatus } from '../../types';
+import type { Member, OptionStatus, RootState } from '../../types';
+import { useSelector } from 'react-redux';
 
 const UserActivityStatus = ({
   status,
   setStatus,
 }: {
   status: Member['status'] | undefined;
-  setStatus: Dispatch<
+  setStatus?: Dispatch<
     SetStateAction<'active' | 'working' | 'pause' | undefined>
   >;
 }) => {
@@ -31,15 +32,18 @@ const UserActivityStatus = ({
       text: ' - Цей статус означає, що ти в даний час не можеш чи не готовий брати участь у процесі розробки. Але для нас кожен учасник важливий і ми не готові відпускати тебе назавжди. Тому ти можеш отримати запрошення на проєкт за особливих умов - коли команда на проєкт не може зібратись більше трьох тижнів і нам не вистачає саме тебе - за спеціалізацією та стеком технологій.',
     },
   ];
+  const user = useSelector((state: RootState) => state.userState.user);
 
   const [selectedOption, setSelectedOption] = useState<
     OptionStatus | undefined
   >(options.find((o) => o.name === status));
 
   const handleClick = (label: string) => {
-    const findOption = options.find((o) => o.label === label);
-    setSelectedOption(findOption);
-    setStatus(findOption?.name);
+    if (!user?.user.isAdmin) {
+      const findOption = options.find((o) => o.label === label);
+      setSelectedOption(findOption);
+      setStatus!(findOption?.name);
+    }
   };
 
   return (
@@ -67,7 +71,10 @@ const UserActivityStatus = ({
           </div>
 
           <div
-            className="flex items-center cursor-pointer"
+            className="flex items-center "
+            style={
+              !user?.user.isAdmin ? { cursor: 'pointer' } : { cursor: 'auto' }
+            }
             onClick={() => handleClick(option.label)}
           >
             <span
@@ -90,7 +97,14 @@ const UserActivityStatus = ({
               checked={selectedOption?.name === option.name}
               onChange={() => {}}
             />
-            <label htmlFor={option.name} className="cursor-pointer">
+            <label
+              htmlFor={option.name}
+              style={
+                !user?.user.isAdmin
+                  ? { cursor: 'pointer' }
+                  : { cursor: 'default' }
+              }
+            >
               {option.label}
             </label>
           </div>

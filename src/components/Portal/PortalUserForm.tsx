@@ -2,10 +2,8 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import CustomInput from './CustomInput';
 import pencilIcon from '../../assets/common/pencil.svg';
-import chevronDownIcon from '../../assets/common/chevron-down.svg';
 import CustomSelect from './CustomSelect';
 import { useState } from 'react';
-import FileInput from './FileInput';
 import type { UserData, Member } from '../../types';
 import { useSelector } from 'react-redux';
 import { getTags, deleteTag } from '../../utils/tagApi';
@@ -19,7 +17,7 @@ const PortalUserForm = ({
   handleUserUpdate,
 }: {
   userData: Member;
-  handleUserUpdate: (tags: number[], data: UserData) => Promise<void>;
+  handleUserUpdate?: (tags: number[], data: UserData) => Promise<void>;
 }) => {
   const {
     register,
@@ -37,6 +35,7 @@ const PortalUserForm = ({
       technologies: [],
       email: '',
       linkedin: '',
+      cv_link: '',
       discordReceiving: false,
     },
   });
@@ -62,7 +61,7 @@ const PortalUserForm = ({
       ...selectedTechnologies.map((t) => t.data.id),
       ...selectedSpecializations.map((s) => s.data.id),
     ];
-    await handleUserUpdate(tagIds, data);
+    await handleUserUpdate!(tagIds, data);
   });
 
   const deleteTagById = async (tagId: number) => {
@@ -103,6 +102,7 @@ const PortalUserForm = ({
           setValue('phone', userData.phone!);
           setValue('email', userData.email);
           setValue('linkedin', userData.linkedin!);
+          setValue('cv_link', userData.cv_link);
           setExictingSpecialization(
             userData.specializations.map((s) => {
               return {
@@ -167,11 +167,11 @@ const PortalUserForm = ({
             icon={pencilIcon}
             placeholder="+380"
           />
-          <FileInput
-            id="resume"
-            label="Резюме"
+          <CustomInput
+            id="cv_link"
+            label="Ссилка на резюме"
             register={register}
-            icon={chevronDownIcon}
+            icon={pencilIcon}
           />
         </div>
 
