@@ -12,7 +12,7 @@ const UserProfileHeader = ({
   firstName: string;
   lastName: string;
   status: Member['status'];
-  setStatus: Dispatch<
+  setStatus?: Dispatch<
     SetStateAction<'active' | 'working' | 'pause' | undefined>
   >;
 }) => {

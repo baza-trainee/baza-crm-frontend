@@ -1,6 +1,7 @@
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 import { UserRequest } from '../../types';
+import { Link } from 'react-router-dom';
 
 interface TableBodyProps {
   filteredUsers: UserRequest[] | undefined;
@@ -26,7 +27,8 @@ const TableBody: React.FC<TableBodyProps> = ({
           }}
         >
           <td className="relative w-full px-4 py-2 truncate">
-            {user.firstName}
+            <Link to={`/crm/user/${user?.id}`}>{user.firstName}</Link>
+
             <span className="absolute top-0 right-0 w-full h-full border-t border-r border-card-border"></span>
           </td>
           <td className="relative px-4 py-2 truncate">

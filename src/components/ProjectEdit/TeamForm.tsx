@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 
 import { Project, RootState, Tag } from '../../types';
 import { deleteMember } from '../../utils/projectApi';
+import { Link } from 'react-router-dom';
 
 const TeamForm = ({
   project,
@@ -44,8 +45,6 @@ const TeamForm = ({
       mutation.mutate({ userId, token, projectId });
     }
   };
-  console.log(projectSpecializations);
-
   return (
     <>
       <h3 className="mb-3 ml-8 text-xl font-bold">Склад команди</h3>
@@ -105,10 +104,13 @@ const TeamForm = ({
                       key={member.userId}
                       className="flex justify-between w-full rounded-[10px] bg-blue-hover items-center"
                     >
-                      <p className="mx-3 my-1">
-                        {member.user?.user.firstName}
-                        {member.user?.user.lastName}
-                      </p>
+                      <Link to={`/crm/user/${member.userId}`}>
+                        <p className="mx-3 my-1">
+                          {member.user?.user.firstName}
+                          {member.user?.user.lastName}
+                        </p>
+                      </Link>
+
                       <RiCloseLine
                         className="p-1 duration-500 rounded-r-lg cursor-pointer size-7 text-normal-ui hover:text-red hover:bg-rose-100"
                         onClick={() => handleDeleteMember(member.userId)}

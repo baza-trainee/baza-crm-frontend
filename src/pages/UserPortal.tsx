@@ -26,7 +26,9 @@ const UserPortal = () => {
       lastName: data.lastName,
       phone: data.phone,
       status: status as string,
+      cv_link: data.cv_link,
     };
+
     await updateUser(user!.token!, userData);
 
     await addUserTag(user!.token!, tags);

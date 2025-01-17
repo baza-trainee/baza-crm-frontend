@@ -31,6 +31,7 @@ export type User = {
   discord: string | null;
   firstName: string;
   lastName: string;
+  cv_link?: string;
   phone: string;
   city: string;
   country: string;
@@ -129,6 +130,7 @@ export type UpdateUser = {
   lastName: string;
   phone: string;
   status: string;
+  cv_link: string | undefined;
 };
 export type DataForm = {
   // statuses: string[];
@@ -264,10 +266,10 @@ export type UserData = {
   country: string;
   city: string;
   phone: string;
-  resume: File | null;
   specializations: Specialization[];
   technologies: Technology[];
   email: string;
+  cv_link: string | undefined;
   linkedin: string;
   karmaPoints?: number | null;
   projectPoints?: number | null;
@@ -344,6 +346,7 @@ export type Member = {
   technologies: Technology[];
   country: string;
   city: string;
+  cv_link: string | undefined;
   status: OptionStatus['name'];
   registerAt: string;
   karmaPoints?: string;

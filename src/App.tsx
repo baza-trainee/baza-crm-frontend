@@ -22,6 +22,7 @@ import Technologies from './pages/Technologies';
 import InstructionConnectBot from './pages/InstructionConnectBot';
 import ConnectToDiscord from './pages/ConnectToDiscord';
 import ConnectToDiscordProject from './pages/ConnectToDiscordProject';
+import AdminUserView from './pages/AdminUserView';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const queryClient = new QueryClient({
@@ -115,6 +116,7 @@ const router = createBrowserRouter([
         path: 'evaluating',
         element: <Evaluating />,
       },
+      { path: 'user/:id', element: <AdminUserView /> },
     ],
   },
 ]);
