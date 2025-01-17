@@ -28,9 +28,7 @@ const UserPortal = () => {
       status: status as string,
       cv_link: data.cv_link,
     };
-
     await updateUser(user!.token!, userData);
-
     await addUserTag(user!.token!, tags);
   };
   useEffect(() => {
