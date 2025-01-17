@@ -9,6 +9,7 @@ import { getCurrentUser } from '../utils/currentUserApi';
 import { updateUser } from '../utils/userApi';
 import { addUserTag } from '../utils/tagApi';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const UserPortal = () => {
   const user = useSelector((state: RootState) => state.userState.user);
@@ -28,8 +29,14 @@ const UserPortal = () => {
       status: status as string,
       cv_link: data.cv_link,
     };
-    await updateUser(user!.token!, userData);
-    await addUserTag(user!.token!, tags);
+    try {
+      await updateUser(user!.token!, userData);
+      await addUserTag(user!.token!, tags);
+      toast.success('Налаштування збережені');
+    } catch (error) {
+      console.log(error);
+      toast.error('Налаштування не збережені');
+    }
   };
   useEffect(() => {
     const fetchUserData = async () => {
