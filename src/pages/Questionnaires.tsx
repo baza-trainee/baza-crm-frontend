@@ -9,10 +9,12 @@ import TableHead from '../components/Questionnaires/TableHead';
 import { RootState } from '../types';
 import { getTags } from '../utils/tagApi';
 import { getUserRequests, updateUserRequest } from '../utils/userRequestApi';
+import Pagination from '../components/Pagination';
 
 const Questionnaires = () => {
   const queryClient = useQueryClient();
   const user = useSelector((state: RootState) => state.userState.user);
+  const [skip, setSkip] = useState(0);
 
   const [selectedSpecializations, setSelectedSpecializations] = useState<
     number[]
@@ -24,8 +26,8 @@ const Questionnaires = () => {
     isError,
     isPending,
   } = useQuery({
-    queryKey: ['userRequests', user?.token, resolvedFilter],
-    queryFn: () => getUserRequests(user!.token, resolvedFilter),
+    queryKey: ['userRequests', user?.token, resolvedFilter, skip],
+    queryFn: () => getUserRequests(user!.token, skip, resolvedFilter),
     enabled: !!user?.token,
   });
 
@@ -38,7 +40,6 @@ const Questionnaires = () => {
     queryFn: () => getTags(user!.token),
     enabled: !!user?.token,
   });
-
   const specializations = tags?.filter((tag) => tag.isSpecialization === true);
 
   const filteredUsers = selectedSpecializations.length
@@ -115,6 +116,7 @@ const Questionnaires = () => {
           />
         </table>
       </div>
+      <Pagination page={skip} setPage={setSkip} />
     </main>
   );
 };

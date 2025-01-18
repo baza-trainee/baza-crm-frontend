@@ -60,7 +60,7 @@ const InstructionConnectBot = () => {
           <div className="flex justify-between">
             <a
               className="border-2 rounded-[10px]  border-primary-blue py-3 px-12"
-              href="https://discord.gg/Wg4RcsPhHA"
+              href={import.meta.env.VITE_DISCORD_INVITE}
             >
               <p className="font-semibold">До діскорд бот</p>
             </a>

@@ -8,10 +8,10 @@ import {
 
 export const getUserRequests = async (
   token: string,
+  page: number,
   resolvedFilter: boolean,
 ): Promise<UserRequest[]> => {
-  const url = `${import.meta.env.VITE_API_URL}/userRequest?skip=1&resolved=${resolvedFilter}`; //TODO: need implement pagination
-
+  const url = `${import.meta.env.VITE_API_URL}/userRequest?skip=${page}&resolved=${resolvedFilter}`;
   const { data } = await axios.get<UserRequest[]>(url, {
     headers: {
       Authorization: `Bearer ${token}`,

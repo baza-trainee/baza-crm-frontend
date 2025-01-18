@@ -13,7 +13,7 @@ import calendar from '../assets/common/calendar.svg';
 import { CreateProjectRequest, RootState } from '../types';
 import { createProject } from '../utils/projectApi';
 import { getTags } from '../utils/tagApi';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const ProjectCreate: React.FC = () => {
   const navigate = useNavigate();
@@ -372,28 +372,25 @@ const ProjectCreate: React.FC = () => {
       <h3 className="mb-3 ml-8 text-xl font-bold">Склад команди</h3>
       <div className="grid grid-cols-4 lg:grid-cols-5 gap-6">
         {specializations?.map((specialization, index) => {
-          if (specialization.name === 'PM2') {
-            setValue(`specializations.${index}.count`, '1');
-          }
           return (
             <div
-              className="h-[240px] bg-white rounded-[10px]  pr-6 py-5 border-color-pm border flex flex-col justify-start gap-3 relative"
+              className="h-[240px] bg-white rounded-[10px]  px-8 py-5 border-color-pm border flex flex-col justify-start gap-3 relative"
               key={specialization.id}
             >
               <div className="flex items-center justify-between gap-5">
                 <div
-                  className="px-3  py-2 text-white rounded-r-[10px]"
+                  className="px-8 py-2 text-white rounded-r-[10px] -ml-8"
                   style={{ backgroundColor: specialization.color }}
                 >
                   {specialization.name}
                 </div>
+
                 <input
                   className="w-20 text-center duration-500 border-b-2 outline-none focus:border-b-2 focus:border-b-primary-blue"
                   placeholder="Число"
                   type="number"
-                  disabled={specialization.name === 'PM2'}
-                  defaultValue={specialization.name === 'PM2' ? 1 : 0}
-                  min={specialization.name === 'PM2' ? 1 : 0}
+                  defaultValue={specialization.id === 21 ? 1 : 0}
+                  min={specialization.id === 21 ? 1 : 0}
                   max={20}
                   {...register(`specializations.${index}.count`)}
                 />
@@ -409,6 +406,18 @@ const ProjectCreate: React.FC = () => {
                   <span className="text-red">
                     {errors.specializations[index]?.count?.message}
                   </span>
+                )}
+              </div>
+              <div>
+                {specialization.id === 1 && (
+                  <div
+                    key={specialization.id}
+                    className="flex justify-between w-full rounded-[10px] bg-blue-hover items-center"
+                  >
+                    <Link to={`/crm/user/${1}`}>
+                      <p className="mx-3 my-1">Ольга Іванова</p>
+                    </Link>
+                  </div>
                 )}
               </div>
             </div>

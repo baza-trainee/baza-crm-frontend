@@ -71,6 +71,16 @@ const ProjectUsersCards = ({
             </p>
           </div>
           <div className="flex flex-col gap-1">
+            {tag.tagId === 1 && (
+              <div
+                key={tag.tagId}
+                className="flex justify-between w-full rounded-[10px] bg-blue-hover items-center"
+              >
+                <Link to={`/crm/user/${1}`}>
+                  <p className="mx-3 my-1">Ольга Іванова</p>
+                </Link>
+              </div>
+            )}
             {membersFilter(tag.tagId).map((user, index) => (
               <Link to={`/crm/user/${user?.id}`}>
                 <div className="bg-blue-hover px-3 rounded-[10px]" key={index}>

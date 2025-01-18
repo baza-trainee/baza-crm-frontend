@@ -3,7 +3,6 @@ import AdminViewInput from './AdminViewInput';
 import AdminViewSkillList from './AdminViewSkillList';
 
 const AdminUserForm = ({ user }: { user: User }) => {
-  console.log(!user.discord);
   return (
     <form className="flex flex-col gap-5 p-5">
       <div className="flex flex-col lg:flex-row w-[344px] lg:w-full gap-5">

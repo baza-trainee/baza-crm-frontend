@@ -66,12 +66,12 @@ const TeamForm = ({
                 <input
                   className="w-10 text-center duration-500 border-b-2 outline-none focus:border-b-2 focus:border-b-primary-blue text-primary-blue"
                   type="number"
-                  min={specialization.name === 'PM' ? 1 : 0}
+                  min={specialization.id === 1 ? 1 : 0}
                   max={20}
                   {...register(`specializations.${index}.count`, {
                     required: "Кількість обов'язкова",
                     min: {
-                      value: specialization.name === 'PM' ? 1 : 0,
+                      value: specialization.id === 1 ? 1 : 0,
                       message: 'Кількість не може бути менше 0',
                     },
                     max: {
@@ -97,6 +97,16 @@ const TeamForm = ({
                 )}
             </div>
             <div className="flex flex-col gap-2">
+              {specialization.id === 1 && (
+                <div
+                  key={specialization.id}
+                  className="flex justify-between w-full rounded-[10px] bg-blue-hover items-center"
+                >
+                  <Link to={`/crm/user/${1}`}>
+                    <p className="mx-3 my-1">Ольга Іванова</p>
+                  </Link>
+                </div>
+              )}
               {project?.projectMember.map(
                 (member) =>
                   member.tagId === specialization.id && (
